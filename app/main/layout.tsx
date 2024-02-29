@@ -61,7 +61,7 @@ export default async function MainLayout({
                       <div className="w-full h-[10%] p-5">
                         <Navbar user={user}/>
                       </div>
-                      <div className="w-full h-[90%]">
+                      <div className="w-full h-[90%] ">
                         {children}
                       </div>
                     </div>

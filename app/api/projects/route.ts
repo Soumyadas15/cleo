@@ -30,6 +30,28 @@ export async function POST(request: Request) {
             }
         })
 
+        const projectManager = await getUserByEmail(manager);
+        const projectClient = await getUserByEmail(clients);
+        
+        await db.member.create({
+            //@ts-ignore
+            data: {
+                role: 'MANAGER',
+                userId: projectManager?.id,
+                projectId: project.id,
+            }
+        });
+
+        await db.member.create({
+            //@ts-ignore
+            data: {
+                role: 'CLIENT',
+                userId: projectClient?.id,
+                projectId: project.id,
+            }
+        });
+
+
         return new Response(JSON.stringify(project), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
     } catch (error) {

@@ -2,6 +2,8 @@
 
 import Heading from "@/components/reusable/Heading";
 import { ProjectItem } from "./ProjectItem";
+import EmptyState from "../EmptyState";
+import useCreateModal from "@/hooks/useLoginModal";
 
 interface ProjectClientProps {
     user?: any;
@@ -12,6 +14,8 @@ export const ProjectClient = ({
     user,
     projects,
 }: ProjectClientProps) => {
+
+    const createModal = useCreateModal();
 
     // useEffect(() => {
     //     const fetchProjects = async () => {
@@ -32,17 +36,31 @@ export const ProjectClient = ({
 
 
     return (
-        <div>
-            <Heading 
-                title="Your projects"
-            />
-            <div>
-                {projects.map((project: any, index: number) => (
-                    <div key={index} className="flex flex-col mt-2">
-                    <ProjectItem project={project}/>
-                    </div>
-                ))}
+        <div className="w-full h-full ">
+            <div className="w-full h-[8%]">
+                <Heading 
+                    title="Your projects"
+                />
             </div>
+            <div className="overflow-hidden overflow-y-scroll w-full h-[92%] mt-2 mb-2 scrollbar-hide">
+                {projects && projects.length > 0 ? (
+                    projects.map((project: any, index: number) => (
+                        <div key={index} className="flex flex-col mt-2">
+                            <ProjectItem project={project}/>
+                        </div>
+                    ))
+                ) : (
+                    <div>
+                        <EmptyState
+                            title="No projects found"
+                            subtitle="Start by creating uyour first project"
+                            showButton
+                            buttonLabel="Hehe"
+                            onClick={createModal.onOpen}
+                        />
+                    </div>
+                )}
+            </div> 
         </div>
         
     )

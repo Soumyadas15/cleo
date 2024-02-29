@@ -15,6 +15,7 @@ import axios from 'axios';
 import toast from "react-hot-toast";
 import useCreateModal from "@/hooks/useLoginModal";
 import useSuccessModal from "@/hooks/useSuccessModal";
+import createProjectMember from "@/actions/createProjectMember";
 
 enum STEPS {
   DESCRIPTION = 0,
@@ -94,6 +95,7 @@ const CreateModal = ({
             setIsLoading(false);
             formToggle();
     })
+
   }
 
   const actionLabel = useMemo(() => {

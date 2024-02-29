@@ -43,6 +43,7 @@ model Project {
   updatedAt DateTime @default(now())
 
   members Member[]
+  audits Audit[]
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -59,4 +60,14 @@ model Member {
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+model Audit {
+  id String @id @default(uuid())
+  
+  date DateTime @default(now())
+  body String @db.Text
+
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }

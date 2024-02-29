@@ -25,7 +25,7 @@ export default async function ProjectLayout({
                 <ProjectNavbar project={project}/>
             </div>
             
-            <div className="w-full h-[88%] pt-5">
+            <div className="w-full h-[88%] pt-5 overflow-hidden overflow-y-scroll scrollbar-hide">
                 {children}
             </div>
             
