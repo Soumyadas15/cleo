@@ -55,7 +55,7 @@ export const ProjectClient = ({
                             title="No projects found"
                             subtitle="Start by creating uyour first project"
                             showButton
-                            buttonLabel="Hehe"
+                            buttonLabel="Create"
                             onClick={createModal.onOpen}
                         />
                     </div>

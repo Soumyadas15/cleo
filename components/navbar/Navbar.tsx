@@ -6,6 +6,7 @@ import { ModeToggle } from "../ThemeToggle";
 import { SearchBar } from "../SearchBar";
 import { Button } from "@/components/reusable/Button";
 import { useRouter } from "next/navigation";
+import UserMenu from "./UserMenu";
 
 interface NavbarProps {
     user: any;
@@ -26,11 +27,7 @@ export const Navbar = ({
             />
             <div className="flex items-center gap-2">
                 <ModeToggle/>
-                <Button
-                    label="Logout"
-                    onClick={() => {router.push('/api/auth/logout')}}
-                    className="p-2"
-                />
+                <UserMenu user={user} />
             </div>
             
         </div>
