@@ -13,10 +13,12 @@ const AuditTable = () => {
 
   const [editableRow, setEditableRow] = useState(null);
 
+  //@ts-ignore
   const handleEdit = (id) => {
     setEditableRow(id);
   };
 
+    //@ts-ignore
   const handleSave = (submittedData) => {
     const dateValue = submittedData[`date-${editableRow}`];
     const commentsValue = submittedData[`comments-${editableRow}`];
@@ -61,6 +63,7 @@ const AuditTable = () => {
                   <input
                     type="date"
                     defaultValue={row.date}
+                      //@ts-ignore
                     {...register(`date-${row.id}`)}
                     className="w-full"
                   />
@@ -72,6 +75,7 @@ const AuditTable = () => {
                 {editableRow === row.id ? (
                   <textarea
                     defaultValue={row.comments}
+                      //@ts-ignore
                     {...register(`comments-${row.id}`)}
                     className="w-full"
                   />
@@ -93,7 +97,7 @@ const AuditTable = () => {
             </tr>
           ))}
           <tr>
-            <td colSpan="4" className="py-2">
+            <td colSpan={4} className="py-2">
               <button onClick={handleAddRow} className="text-green-500 hover:text-green-700">
                 Add Row
               </button>
