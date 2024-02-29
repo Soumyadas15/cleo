@@ -12,7 +12,7 @@ export const Avatar = ({
     return (
         <div className="flex items-center p-2 gap-2">
             <Image 
-                src={user.picture}
+                src={user?.imageUrl}
                 alt="user"
                 height={32}
                 width={32}
@@ -20,7 +20,7 @@ export const Avatar = ({
             />
             <div>
                 <div className="text-sm font-bold">
-                    {user.name}
+                    {user?.name}
                 </div>
                 <div className="text-xs text-gray-500">
                     Role

@@ -9,6 +9,6 @@ export const getUserProfileData = async (): Promise<Claims> => {
   }
 
   const { user } = session;
-
   return user;
+  
 };

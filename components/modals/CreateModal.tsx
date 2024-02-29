@@ -1,24 +1,19 @@
 'use client';
 
 import { useCallback, useMemo, useState } from "react";
-
 import { 
   FieldValues, 
   SubmitHandler, 
   useForm
 } from "react-hook-form";
-
 import { useRouter } from "next/navigation";
-
-
 import useLoginModal from "@/hooks/useLoginModal";
 import { motion } from 'framer-motion';
-
-
 import Modal from "./Modal";
 import Heading from "../reusable/Heading";
 import Input from "../reusable/Input";
-
+import axios from 'axios';
+import toast from "react-hot-toast";
 
 enum STEPS {
   DESCRIPTION = 0,
@@ -26,14 +21,17 @@ enum STEPS {
   MANAGER = 2,
 }
 
-const CreateModal = () => {
+interface CreateModalProps {
+  user: any;
+}
+const CreateModal = ({
+  user,
+}: CreateModalProps) => {
+
   const router = useRouter();
   const loginModal = useLoginModal();
-
   const [currentStage, setCurrentStage] = useState(1);
-
   const [step, setStep] = useState(STEPS.DESCRIPTION);
-
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -47,6 +45,7 @@ const CreateModal = () => {
     reset
 } = useForm<FieldValues>({
     defaultValues: {
+        createdBy: user?.id,
         name: '',
         clients: '',
         manager: '',
@@ -69,11 +68,20 @@ const CreateModal = () => {
       setStep((value) => value + 1);
   }
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (step !== STEPS.MANAGER){
       return onNext();
     }
     console.log(data);
+    axios.post('/api/projects', data)
+        .then(() => {
+            router.refresh();
+            toast.success('Done');
+        }) .catch((error) => {
+            toast.error(error.message);
+        }) .finally(() => {
+            setIsLoading(false);
+    })
   }
 
   const actionLabel = useMemo(() => {
@@ -215,7 +223,7 @@ const CreateModal = () => {
       onSubmit={handleSubmit(onSubmit)}
       body={
         <div className="flex flex-col gap-6">
-          <div className="w-full bg-gray-200 h-[2px] rounded-full">
+          <div className="w-full dark:bg-neutral-800 bg-gray-200 h-[2px] rounded-full">
             <motion.div
               className="bg-blue-500 h-[2px] rounded-full"
               style={{ width: `${progress}%` }}

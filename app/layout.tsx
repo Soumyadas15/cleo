@@ -7,6 +7,11 @@ import { Sidebar } from "@/components/sidebar/Sidebar";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import LoginModal from "@/components/modals/CreateModal";
 import CreateModal from "@/components/modals/CreateModal";
+import { Navbar } from "@/components/navbar/Navbar";
+import { initialProfile } from "@/lib/initial-profile";
+import getUserByEmail from "@/actions/getUsers/getUserByEmail";
+import { Landingpage } from "@/components/pages/landing/Landing";
+import { Claims } from "@auth0/nextjs-auth0";
 
 const font = Montserrat({ subsets: ["latin"] });
 
@@ -21,25 +26,25 @@ export const metadata: Metadata = {
  * @param children - the application content to render
  */
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <UserProvider>
-        <body className={`${font.className} bg-neutral-200 overflow-x-hidden`}>
+        <body className={`${font.className} bg-slate-950 overflow-x-hidden`}>
         <ThemeProvider
             attribute="class"
             defaultTheme="light"
             disableTransitionOnChange
           >
-            <CreateModal/>
+            
             <Toaster/>
             {children}
-          </ThemeProvider>
-          
+        </ThemeProvider>
         </body>
       </UserProvider>
     </html>

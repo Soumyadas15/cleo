@@ -5,10 +5,19 @@ import { SidebarItem } from "./SidebarItem"
 import { Button } from "../reusable/Button"
 import Image from "next/image"
 import useLoginModal from "@/hooks/useLoginModal"
+import { usePathname } from "next/navigation"
 
-export const Sidebar = () => {
+
+interface SidebarProps {
+    user: any;
+}
+
+export const Sidebar = ({
+    user,
+}: SidebarProps) => {
 
     const loginModal = useLoginModal();
+    const pathname = usePathname();
 
     return (
         <div className="h-full w-full bg-white dark:bg-slate-950 transition p-5">
@@ -24,38 +33,43 @@ export const Sidebar = () => {
                 </div>
                 <div className="flex flex-col h-[20%] w-full">
                     <Button 
-                        onClick={loginModal.onOpen}
-                        label="Add project" 
-                        color="bg-cyan-500" 
-                        className="p-2 rounded-[5px] flex items-center text-sm text-white" 
-                        icon={<Plus className="scale-[0.8]"/>}
-                    />
+                                onClick={loginModal.onOpen}
+                                label="Add project" 
+                                color="bg-cyan-500" 
+                                className="p-2 rounded-[5px] flex items-center text-sm text-white" 
+                                icon={<Plus className="scale-[0.8]"/>}
+                            />
                 </div>
 
                 <div className="flex flex-col h-[70%] w-full gap-3 -mt-8">
                     <SidebarItem 
                         label="Projects" 
-                        to="/list"
+                        to="main/projects"
                         icon={ <Briefcase/>}
                         highlight="text-red-600"
+                        isActive = {pathname === '/projects'}
+                        
                     />
                     <SidebarItem 
                         label="Managers"  
-                        to="/add"
+                        to="main/projects"
                         icon={ <User/>}
                         highlight="text-green-600"
+                        isActive = {pathname === '/managers'}
                     />
                     <SidebarItem 
                         label="Employees"  
-                        to="/add"
+                        to="main/projects"
                         icon={ <UserRoundPlus/>}
                         highlight="text-green-600"
+                        isActive = {pathname === '/employees'}
                     />
                     <SidebarItem 
                         label="Settings"  
-                        to="/add"
+                        to="main/projects"
                         icon={ <Settings/>}
                         highlight="text-green-600"
+                        isActive = {pathname === '/settings'}
                     />
                 </div>
                 

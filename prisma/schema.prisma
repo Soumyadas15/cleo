@@ -12,12 +12,13 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model User {
   id String @id @default(uuid())
   userId String @unique
   name String
   imageUrl String @db.Text
-  email String @db.Text
+  email String @unique
   isAdmin Boolean?
 
   createdAt DateTime @default(now())
@@ -37,7 +38,6 @@ enum UserRole {
 model Project {
   id String @id @default(uuid())
   name String
-  imageUrl String @db.Text
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())

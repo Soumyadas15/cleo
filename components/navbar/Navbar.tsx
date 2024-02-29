@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Avatar } from "./Avatar";
 import { ModeToggle } from "../ThemeToggle";
 import { SearchBar } from "../SearchBar";
-import { Button } from "../ui/button";
+import { Button } from "@/components/reusable/Button";
 import { useRouter } from "next/navigation";
 
 interface NavbarProps {
@@ -18,33 +18,19 @@ export const Navbar = ({
     const router = useRouter();
 
     return (
-        <div className="h-full w-full bg-white dark:bg-neutral-700 p-4 flex items-center justify-between z-10">
+        <div className="h-full w-full flex items-center justify-between">
+            <h1 className="font-bold text-2xl">
+                {user?.name}
+            </h1>
+            <input
+                placeholder="search"
+                className="w-[30rem] p-2 rounded-[5px] !outline-none pl-3 bg-neutral-200 dark:bg-white/5"
+            />
             <div className="flex items-center gap-2">
-                <Image 
-                    src={'/logo.png'}
-                    alt="logo"
-                    height={32}
-                    width={32}
-                />
-                <div className="text-sm font-bold">Customer success</div>
-            </div>
-            <div>
-                <SearchBar/>
-            </div>
-            <div className="flex items-center ">
                 <ModeToggle/>
-                {user? (
-                        <Button 
-                            variant={'outline'}
-                            onClick={() => {router.push('/api/auth/logout')}}
-                        > 
-                            Logout 
-                        </Button>
-                    ) : (
-                        <div></div>
-                    )
-                }
+                <Avatar user={user}/>
             </div>
+            
         </div>
     )
 }
