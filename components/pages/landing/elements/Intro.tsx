@@ -5,6 +5,23 @@ import { LampContainer } from "@/components/ui/lamp";
 import { ContainerScroll } from "@/components/ui/skew-scroll";
 import { Button } from "@/components/ui/button";
 
+const translateStatic = {
+    initial: {
+        y: "110%",
+        opacity: 0
+    },
+    enter:{
+        y: 0,
+        opacity: 1,
+        transition: {duration: 0.5, ease: [0.76, 0, 0.24, 1], delay: 0.1}
+    },
+    exit:{
+        y: "100%",
+        opacity: 1,
+        transition: {duration: 0.7, ease: [0.76, 0, 0.24, 1], delay: 0.2}
+    }
+}
+
 export const Intro = () => {
     return (
         <div className="h-auto">
@@ -13,12 +30,10 @@ export const Intro = () => {
                 titleComponent={
                 <>
                 <div className="absolute pointer-events-none inset-0 flex items-center justify-center [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
-                    <h1 className="text-4xl font-semibold text-white dark:text-white">
-                    Introducing <br />
-                    <span className="text-4xl md:text-[10rem] bg-clip-text text-transparent bg-gradient-to-b from-cyan-300 to-cyan-600 font-bold mt-1 leading-none">
-                        Cleo
-                    </span>
-                    </h1>
+                    <h1 className="text-3xl font-light text-neutral-400">Introducing</h1>
+                    <motion.div variants={translateStatic} initial='initial' animate='enter' exit='exit'>
+                        <h1 className="text-4xl md:text-[10rem] bg-clip-text text-transparent bg-gradient-to-b from-cyan-300 to-cyan-600 font-bold mt-1 leading-none">Cleo</h1>
+                    </motion.div>  
                 </>
                 }
             />

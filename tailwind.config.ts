@@ -25,6 +25,13 @@ const config = {
       },
     },
     extend: {
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--gradient-color-stops))',
+        'gradient-conic':
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        "hero-glow":
+          "conic-gradient(from 230.29deg at 51.63% 52.16%, rgb(36, 0, 255) 0deg, rgb(0, 135, 255) 67.5deg, rgb(108, 39, 157) 198.75deg, rgb(24, 38, 163) 251.25deg, rgb(54, 103, 196) 301.88deg, rgb(105, 30, 255) 360deg)",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -74,10 +81,36 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "image-glow": {
+          "0%": {
+            //@ts-ignore
+            opacity: 0,
+            "animation-timing-function": "cubic-bezier(0.74,0.25,0.76,1)",
+          },
+          "10%": {
+            //@ts-ignore
+            opacity: 1,
+            "animation-timing-function": "cubic-bezier(0.12,0.01,0.08,0.99)",
+          },
+          "100%": {
+            //@ts-ignore
+            opacity: 0.2,
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fade-in 1000ms var(--animation-delay, 0ms) ease forwards",
+        "image-rotate": "image-rotate 1400ms ease forwards",
+        "image-glow": "image-glow 1100ms ease-out forwards",
+        "sketch-lines": "sketch-lines 1200ms ease-out forwards",
+        "glow-line-horizontal":
+          "glow-line-horizontal var(--animation-duration) ease-in forwards",
+        "glow-line-vertical":
+          "glow-line-vertical var(--animation-duration) ease-in forwards",
+        zap: "zap 2250ms calc(var(--index) * 20ms) linear infinite",
+        bounce: "240ms ease 0s 1 running bounce",
       },
     },
   },
