@@ -4,8 +4,8 @@ import { Briefcase, Home, List, Plus, Settings, User, UserRoundPlus } from "luci
 import { SidebarItem } from "./SidebarItem"
 import { Button } from "../reusable/Button"
 import Image from "next/image"
-import useLoginModal from "@/hooks/useLoginModal"
 import { usePathname } from "next/navigation"
+import useCreateModal from "@/hooks/useLoginModal"
 
 
 interface SidebarProps {
@@ -16,7 +16,7 @@ export const Sidebar = ({
     user,
 }: SidebarProps) => {
 
-    const loginModal = useLoginModal();
+    const createModal = useCreateModal()
     const pathname = usePathname();
 
     return (
@@ -32,13 +32,18 @@ export const Sidebar = ({
                     <div className="text-sm font-bold">Cleo</div>
                 </div>
                 <div className="flex flex-col h-[20%] w-full">
-                    <Button 
-                                onClick={loginModal.onOpen}
+                    {user.isAdmin ? (
+                            <Button
+                                onClick={createModal.onOpen}
                                 label="Add project" 
                                 color="bg-cyan-500" 
                                 className="p-2 rounded-[5px] flex items-center text-sm text-white" 
                                 icon={<Plus className="scale-[0.8]"/>}
                             />
+                        ) : (
+                            <div></div>
+                        )
+                    }
                 </div>
 
                 <div className="flex flex-col h-[70%] w-full gap-3 -mt-8">
@@ -47,7 +52,7 @@ export const Sidebar = ({
                         to="main/projects"
                         icon={ <Briefcase/>}
                         highlight="text-red-600"
-                        isActive = {pathname === '/projects'}
+                        isActive = {pathname.startsWith('/main/projects')}
                         
                     />
                     <SidebarItem 
@@ -55,21 +60,21 @@ export const Sidebar = ({
                         to="main/projects"
                         icon={ <User/>}
                         highlight="text-green-600"
-                        isActive = {pathname === '/managers'}
+                        isActive = {pathname.startsWith('/main/settings')}
                     />
                     <SidebarItem 
                         label="Employees"  
                         to="main/projects"
                         icon={ <UserRoundPlus/>}
                         highlight="text-green-600"
-                        isActive = {pathname === '/employees'}
+                        isActive = {pathname.startsWith('/main/settings')}
                     />
                     <SidebarItem 
                         label="Settings"  
                         to="main/projects"
                         icon={ <Settings/>}
                         highlight="text-green-600"
-                        isActive = {pathname === '/settings'}
+                        isActive = {pathname.startsWith('/main/settings')}
                     />
                 </div>
                 

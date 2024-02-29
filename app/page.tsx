@@ -14,7 +14,10 @@ import { initialProfile } from "@/lib/initial-profile";
 */
 
 export default function Home() {
+
   return (
-    <Landingpage/>
+    <div>
+      <Landingpage/>
+    </div>
   );
 }

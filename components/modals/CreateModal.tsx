@@ -7,18 +7,20 @@ import {
   useForm
 } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import useLoginModal from "@/hooks/useLoginModal";
 import { motion } from 'framer-motion';
 import Modal from "./Modal";
 import Heading from "../reusable/Heading";
 import Input from "../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
+import useCreateModal from "@/hooks/useLoginModal";
+import useSuccessModal from "@/hooks/useSuccessModal";
 
 enum STEPS {
   DESCRIPTION = 0,
   CLIENTS = 1,
   MANAGER = 2,
+  AUDITOR = 3,
 }
 
 interface CreateModalProps {
@@ -29,9 +31,11 @@ const CreateModal = ({
 }: CreateModalProps) => {
 
   const router = useRouter();
-  const loginModal = useLoginModal();
+  const createModal = useCreateModal();
+  const successModal = useSuccessModal();
   const [currentStage, setCurrentStage] = useState(1);
   const [step, setStep] = useState(STEPS.DESCRIPTION);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -49,6 +53,7 @@ const CreateModal = ({
         name: '',
         clients: '',
         manager: '',
+        auditor: '',
     }
 })
 
@@ -61,6 +66,11 @@ const CreateModal = ({
     })
   }
 
+  const formToggle = () => {
+    createModal.onClose();
+    successModal.onOpen()
+}
+
   const onBack = () => {
       setStep((value) => value - 1);
   }
@@ -69,9 +79,10 @@ const CreateModal = ({
   }
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    if (step !== STEPS.MANAGER){
+    if (step !== STEPS.AUDITOR){
       return onNext();
     }
+    setIsLoading(true)
     console.log(data);
     axios.post('/api/projects', data)
         .then(() => {
@@ -81,11 +92,12 @@ const CreateModal = ({
             toast.error(error.message);
         }) .finally(() => {
             setIsLoading(false);
+            formToggle();
     })
   }
 
   const actionLabel = useMemo(() => {
-    if(step === STEPS.MANAGER){
+    if(step === STEPS.AUDITOR){
         return 'Create'
     }
 
@@ -210,14 +222,43 @@ const CreateModal = ({
     )
   }
 
+  if (step === STEPS.AUDITOR){
+    bodyContent = (
+      <div className="flex flex-col gap-4">
+        <Heading
+          title="Auditor"
+          subtitle=""
+          center
+        />
+        <motion.div
+            key="auditor"
+            initial={{ opacity: 0, x: "-50%" }}
+            animate={{ opacity: 1, x: "0%" }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <Input
+            id="auditor"
+            label="Project auditor"
+            disabled={isLoading}
+            register={register}  
+            errors={errors}
+            required
+          />
+        </motion.div>
+        
+      </div>
+    )
+  }
+
 
   return (
     <Modal
       disabled={isLoading}
-      isOpen={loginModal.isOpen}
+      isOpen={createModal.isOpen}
       title="New project"
       actionLabel={actionLabel}
-      onClose={loginModal.onClose}
+      onClose={createModal.onClose}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step == STEPS.DESCRIPTION ? undefined : onBack}
       onSubmit={handleSubmit(onSubmit)}

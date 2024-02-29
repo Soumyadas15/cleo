@@ -26,25 +26,19 @@ export const metadata: Metadata = {
  * @param children - the application content to render
  */
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
 
   return (
-    <html lang="en">
+    <html lang="en"  suppressHydrationWarning>
       <UserProvider>
         <body className={`${font.className} bg-slate-950 overflow-x-hidden`}>
-        <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            disableTransitionOnChange
-          >
-            
-            <Toaster/>
+       
             {children}
-        </ThemeProvider>
+        
         </body>
       </UserProvider>
     </html>

@@ -35,6 +35,7 @@ export const Button = ({
 
     return (
         <button
+            suppressHydrationWarning
             onClick={onClick}
             disabled={disabled}
             className={`

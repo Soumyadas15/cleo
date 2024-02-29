@@ -13,6 +13,7 @@ import getUserByEmail from "@/actions/getUsers/getUserByEmail";
 import { Landingpage } from "@/components/pages/landing/Landing";
 import { Claims } from "@auth0/nextjs-auth0";
 import { getUserProfileData } from "@/lib/profile-service";
+import SuccessModal from "@/components/modals/SuccessModal";
 
 const font = Montserrat({ subsets: ["latin"] });
 
@@ -36,7 +37,7 @@ export default async function MainLayout({
   const user = await initialProfile();
 
   return (
-    <html lang="en">
+    <html lang="en" >
       <UserProvider>
         <body className={`${font.className} bg-slate-950 overflow-x-hidden`}>
         <ThemeProvider
@@ -45,6 +46,7 @@ export default async function MainLayout({
             disableTransitionOnChange
           >
             <CreateModal user={user}/>
+            <SuccessModal/>
             <Toaster/>
             <div>
               <div className="h-screen">
@@ -54,12 +56,12 @@ export default async function MainLayout({
                       <Sidebar user={user}/>
                     </div>
                   </div>
-                  <div className="bg-neutral-200 dark:bg-slate-950 w-[85%] h-full flex items-center justify-center pl-1">
+                  <div className="bg-white dark:bg-slate-950 w-[85%] h-full flex items-center justify-center pl-1">
                     <div className=" dark:bg-slate-950 h-full w-full">
                       <div className="w-full h-[10%] p-5">
                         <Navbar user={user}/>
                       </div>
-                      <div>
+                      <div className="w-full h-[90%]">
                         {children}
                       </div>
                     </div>

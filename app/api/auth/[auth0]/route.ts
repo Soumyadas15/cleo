@@ -36,4 +36,3 @@ const afterCallback = async (req: NextApiRequest, session: Session) => {
         
     return session;
 };
-
