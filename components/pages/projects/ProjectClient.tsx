@@ -44,16 +44,18 @@ export const ProjectClient = ({
             </div>
             <div className="overflow-hidden overflow-y-scroll w-full h-[92%] mt-2 mb-2 scrollbar-hide">
                 {projects && projects.length > 0 ? (
-                    projects.map((project: any, index: number) => (
-                        <div key={index} className="flex flex-col mt-2">
-                            <ProjectItem project={project}/>
-                        </div>
-                    ))
+                    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-2">
+                        {projects.map((project: any, index: number) => (
+                            <div key={index} className="flex flex-col mt-2">
+                                <ProjectItem project={project}/>
+                            </div>
+                        ))}
+                    </div>
                 ) : (
                     <div>
                         <EmptyState
                             title="No projects found"
-                            subtitle="Start by creating uyour first project"
+                            subtitle="Start by creating your first project"
                             showButton
                             buttonLabel="Create"
                             onClick={createModal.onOpen}
@@ -62,6 +64,5 @@ export const ProjectClient = ({
                 )}
             </div> 
         </div>
-        
     )
 }

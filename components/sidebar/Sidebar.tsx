@@ -29,7 +29,7 @@ export const Sidebar = ({
                         height={32}
                         width={32}
                     />
-                    <div className="text-sm font-bold">Cleo</div>
+                    <div className="text-3xl font-bold">Cleo</div>
                 </div>
                 <div className="flex flex-col h-[20%] w-full">
                     {user.isAdmin ? (
