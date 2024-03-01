@@ -9,6 +9,7 @@ import CreateModal from "@/components/modals/CreateModal";
 import { Navbar } from "@/components/navbar/Navbar";
 import { initialProfile } from "@/lib/initial-profile";
 import SuccessModal from "@/components/modals/SuccessModal";
+import NameModal from "@/components/modals/NameModal";
 
 const font = Montserrat({ subsets: ["latin"] });
 
@@ -42,7 +43,7 @@ export default async function MainLayout({
           >
             <CreateModal user={user}/>
             <SuccessModal/>
-            
+            <NameModal user={user}/>
             <Toaster/>
             <div>
               <div className="h-screen">

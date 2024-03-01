@@ -16,14 +16,27 @@ export const initialProfile = async () => {
         return profile;
     }
 
+    let userEmail;
+    if (isEmail(user.nickname)){
+        userEmail = user.nickname;
+    }
+    else{
+        userEmail = user.name;
+    }
+
     const newProfile = await db.user.create({
         data: {
             userId: user.sub,
             name: user.name,
             imageUrl: user.picture,
-            email: user.email
+            email: userEmail
         }
     })
 
     return newProfile;
+}
+
+
+const isEmail = (email: string) => {
+    return /\S+@\S+\.\S+/.test(email);
 }

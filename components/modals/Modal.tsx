@@ -10,6 +10,7 @@ interface ModalProps {
     isOpen? : boolean;
     onClose: () => void;
     onSubmit: () => void;
+    showCloseIcon?: boolean;
     title?: string;
     body?: React.ReactElement;
     footer?: React.ReactElement;
@@ -31,7 +32,8 @@ const Modal: React.FC<ModalProps> = ({
     disabled,
     noHide,
     secondaryAction,
-    secondaryActionLabel
+    secondaryActionLabel,
+    showCloseIcon = true,
 }) => {
     const [showModal, setShowModal] = useState(isOpen);
 
@@ -151,7 +153,10 @@ const Modal: React.FC<ModalProps> = ({
                                     left-0
                                 '
                             >
-                                <div className='text-black dark:text-white'><X size={18}/></div>
+                                <div className={`${showCloseIcon ? 'block' : 'hidden'}`}>
+                                    <div className='text-black dark:text-white'><X size={18}/></div>
+                                </div>
+                                
                             </button>
                             <div className='text-lg text-black dark:text-white font-semibold'>
                                 {title}

@@ -14,7 +14,6 @@ export const MilestonesClient = ({
     return (
         <EmptyState 
             title="Work underway"
-            subtitle="Come back after a while"
         />
     )
 }

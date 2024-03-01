@@ -13,8 +13,8 @@ export const EscalationClient = ({
 
     return (
         <EmptyState 
-            title="N0thing to show"
-            subtitle="Start by adding an escalation matrix"
+            title="Work underway"
+            
         />
     )
 }

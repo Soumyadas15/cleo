@@ -56,9 +56,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
             w-[15vw]
             p-4
             bg-neutral-100
+            dark:bg-slate-800
             overflow-hidden 
             right-0 
-            top-12 
+            top-15 
             z-[99]
           "
         >
@@ -67,7 +68,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
               <>
               <div className=" w-full h-[6rem] flex flex-col items-center justify-between">
                 <div className="flex items-center flex-col">
-                  <div className="text-black font-bold">
+                  <div className="text-black dark:text-white font-bold">
                     {user.name}
                   </div>
                   <div className="text-sm">
@@ -78,7 +79,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                 <Button
                   label="Logout"
                   onClick={() => {router.push('/api/auth/logout')}}
-                  className="p-1 pr-3 pl-3 rounded-[5px]"
+                  className="p-2 pr-3 pl-3 rounded-[5px] text-sm"
                 />
               </div>
                 

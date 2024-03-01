@@ -3,7 +3,8 @@ const nextConfig = {
     images: {
         domains: [
             "s.gravatar.com",
-            "pbs.twimg.com"
+            "pbs.twimg.com",
+            "apis.live.net"
         ]
     },
 };

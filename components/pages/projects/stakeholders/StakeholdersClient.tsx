@@ -14,7 +14,6 @@ export const StakeholdersClient = ({
     return (
         <EmptyState 
             title="Work underway"
-            subtitle="Add risk profile"
         />
     )
 }

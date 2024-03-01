@@ -39,7 +39,7 @@ export const Button = ({
             onClick={onClick}
             disabled={disabled}
             className={`
-                ${disabled ? "opacity-75 cursor-not-allowed" : "opacity-100 hover:opacity-90 hover:cursor-pointer"}
+                ${disabled ? "opacity-75 cursor-not-allowed" : "opacity-100 hover:opacity-90 hover:cursor-pointer font-semibold"}
                 ${className}
                 ${outline ? '' : 'bg-black dark:bg-white'}
                 ${outline ? 'border-black border-[2px] dark:border-white' : 'border-black dark:border-white'}

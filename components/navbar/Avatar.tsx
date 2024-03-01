@@ -17,10 +17,10 @@ export const Avatar = ({
     return (
         <div className="flex items-center p-2 gap-2">
             <Image 
-                src={user?.imageUrl}
+                src={'/avatar.png'}
                 alt="user"
-                height={32}
-                width={32}
+                height={42}
+                width={42}
                 className="rounded-full"
             />
             {/* <div>

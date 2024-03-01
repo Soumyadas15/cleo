@@ -6,6 +6,7 @@ import { HomeClient } from "@/components/pages/home/HomeClient";
 
 import { getUserProfileData } from "@/lib/profile-service";
 import { initialProfile } from "@/lib/initial-profile";
+import useCreateModal from "@/hooks/useLoginModal";
 
 
 /**
