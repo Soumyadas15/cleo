@@ -46,18 +46,18 @@ export const AuditTable = ({
       </TableHeader>
       <TableBody>
       {audits.map((audit: any, index: number) => (
-          <TableRow className="dark:border-slate-600">
-            <TableCell className="font-medium">{index}</TableCell>
-            <TableCell>{format(new Date(audit.date), 'MMM do yyyy')}</TableCell>
-            <TableCell>{audit.body}</TableCell>
-            <TableCell className="flex items-center justify-center">
-              <Pen 
-                className="scale-[0.8] hover:opacity-75 hover:cursor-pointer transition"
-                onClick={() => {clickEdit(audit)}}
-              />
-            </TableCell>
+          <TableRow key={audit.id} className="dark:border-slate-600">
+              <TableCell className="font-medium">{index}</TableCell>
+              <TableCell>{format(new Date(audit.date), 'MMM do yyyy')}</TableCell>
+              <TableCell>{audit.body}</TableCell>
+              <TableCell className="flex items-center justify-center">
+                  <Pen
+                      className="scale-[0.8] hover:opacity-75 hover:cursor-pointer transition"
+                      onClick={() => {clickEdit(audit)}}
+                  />
+              </TableCell>
           </TableRow>
-        ))}
+      ))}
       </TableBody>
     </Table>
   )
