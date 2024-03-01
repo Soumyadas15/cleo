@@ -58,15 +58,6 @@ const CreateModal = ({
     }
 })
 
-
-  const setCustomValue = (id: string, value: any) => {
-    setValue(id, value, {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true,
-    })
-  }
-
   const formToggle = () => {
     createModal.onClose();
     successModal.onOpen()
@@ -112,30 +103,10 @@ const CreateModal = ({
       return 'Back'
   }, [step]);
 
-  const renderStageNumber = (stage: number) => {
-    const isActive = step === stage;
-    return (
-      <motion.div
-        key={stage}
-        className={`w-6 h-6 flex items-center justify-center rounded-full text-sm ${
-          isActive ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-700"
-        }`}
-        whileHover={{ scale: 1.2 }}
-      >
-        {stage + 1}
-      </motion.div>
-    );
-  };
 
   const progress = useMemo(() => {
     return (step / (Object.keys(STEPS).length / 2 - 1)) * 100; // Adjust for enum length
   }, [step]);
-
-  const variants = {
-    hidden: { opacity: 0, x: "-50%" },
-    visible: { opacity: 1, x: "0%" },
-    exit: { opacity: 0, x: "100%" },
-  };
 
 
 

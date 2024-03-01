@@ -1,5 +1,6 @@
 import getProjectById from "@/actions/getProjects/getProjectById";
 import AuditModal from "@/components/modals/AuditModal";
+import EditAuditModal from "@/components/modals/EditAuditModal";
 import { ProjectNavbar } from "@/components/pages/projects/ProjectNavbar";
 import Heading from "@/components/reusable/Heading";
 import { initialProfile } from "@/lib/initial-profile";

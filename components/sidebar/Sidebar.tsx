@@ -57,21 +57,21 @@ export const Sidebar = ({
                     />
                     <SidebarItem 
                         label="Managers"  
-                        to="main/projects"
+                        to="main/managers"
                         icon={ <User/>}
                         highlight="text-green-600"
-                        isActive = {pathname.startsWith('/main/settings')}
+                        isActive = {pathname.startsWith('/main/managers')}
                     />
                     <SidebarItem 
                         label="Employees"  
-                        to="main/projects"
+                        to="main/employees"
                         icon={ <UserRoundPlus/>}
                         highlight="text-green-600"
-                        isActive = {pathname.startsWith('/main/settings')}
+                        isActive = {pathname.startsWith('/main/employees')}
                     />
                     <SidebarItem 
                         label="Settings"  
-                        to="main/projects"
+                        to="main/settings"
                         icon={ <Settings/>}
                         highlight="text-green-600"
                         isActive = {pathname.startsWith('/main/settings')}
