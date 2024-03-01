@@ -1,4 +1,6 @@
 import getProjectById from "@/actions/getProjects/getProjectById";
+import EmptyState from "@/components/pages/EmptyState";
+import { EscalationClient } from "@/components/pages/projects/escalation/EscalationCLient";
 
 interface IParams {
     projectId?: string;
@@ -11,9 +13,9 @@ const EscalationPage = async (
     const project = await getProjectById(params);
 
     return (
-        <h1 className="font-bold text-md">
-            Escalation matrix for {project?.name}
-        </h1>
+        <div className="flex flex-col">
+            <EscalationClient project={project}/>
+        </div>
     )
 }
 export default EscalationPage;

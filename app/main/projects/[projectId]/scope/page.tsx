@@ -1,4 +1,5 @@
 import getProjectById from "@/actions/getProjects/getProjectById";
+import { ScopeClient } from "@/components/pages/projects/scope/ScopeClient";
 
 interface IParams {
     projectId?: string;
@@ -11,9 +12,9 @@ const ScopePage = async (
     const project = await getProjectById(params);
 
     return (
-        <h1 className="font-bold text-md">
-            Scope for {project?.name}
-        </h1>
+        <div className="flex flex-col">
+            <ScopeClient project={project}/>
+        </div>
     )
 }
 export default ScopePage;

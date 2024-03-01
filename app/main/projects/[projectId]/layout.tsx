@@ -1,6 +1,8 @@
 import getProjectById from "@/actions/getProjects/getProjectById";
+import AuditModal from "@/components/modals/AuditModal";
 import { ProjectNavbar } from "@/components/pages/projects/ProjectNavbar";
 import Heading from "@/components/reusable/Heading";
+import { initialProfile } from "@/lib/initial-profile";
 
 interface IParams {
     projectId?: string;
@@ -14,9 +16,12 @@ export default async function ProjectLayout({
     params: IParams;
   }>) {
 
-    const project = await getProjectById(params)
+    const project = await getProjectById(params);
+    const user = await initialProfile();
 
     return (  
+        <>
+        <AuditModal project={project} user={user}/>
         <div className="p-5 h-full w-full">
             <div className="h-[5%]">
                 <Heading title={`${project?.name}`}/>
@@ -30,5 +35,7 @@ export default async function ProjectLayout({
             </div>
             
         </div>
+        </>
+        
     );
 }

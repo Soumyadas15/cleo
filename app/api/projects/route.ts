@@ -11,7 +11,7 @@ export async function POST(request: Request) {
             return new Response("User not authenticated", { status: 401 });
         }
 
-        if (!currentUser.isAdmin) {
+        if (currentUser.role !== "ADMIN") {
             return new Response("You don't have the required permissions", { status: 401 });
         }
 

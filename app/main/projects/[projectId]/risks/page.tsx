@@ -1,4 +1,5 @@
 import getProjectById from "@/actions/getProjects/getProjectById";
+import { RisksClient } from "@/components/pages/projects/risks/RisksClient";
 
 interface IParams {
     projectId?: string;
@@ -11,9 +12,9 @@ const RisksPage = async (
     const project = await getProjectById(params);
 
     return (
-        <h1 className="font-bold text-md">
-            Risks for {project?.name}
-        </h1>
+        <div className="flex flex-col">
+            <RisksClient project={project}/>
+        </div>
     )
 }
 export default RisksPage;

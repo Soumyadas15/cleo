@@ -13,26 +13,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  ADMIN
+  CLIENT
+  MANAGER
+  AUDITOR
+}
+
 model User {
   id String @id @default(uuid())
   userId String @unique
   name String
   imageUrl String @db.Text
   email String @unique
-  isAdmin Boolean?
+  role UserRole? @default(CLIENT)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
   projects Project[]
   members Member[]
-}
-
-enum UserRole {
-  ADMIN
-  CLIENT
-  MANAGER
-  AUDITOR
 }
 
 model Project {

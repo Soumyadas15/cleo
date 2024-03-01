@@ -1,18 +1,13 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import '@/app/globals.css'
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { Toaster } from "react-hot-toast";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import LoginModal from "@/components/modals/CreateModal";
 import CreateModal from "@/components/modals/CreateModal";
 import { Navbar } from "@/components/navbar/Navbar";
 import { initialProfile } from "@/lib/initial-profile";
-import getUserByEmail from "@/actions/getUsers/getUserByEmail";
-import { Landingpage } from "@/components/pages/landing/Landing";
-import { Claims } from "@auth0/nextjs-auth0";
-import { getUserProfileData } from "@/lib/profile-service";
 import SuccessModal from "@/components/modals/SuccessModal";
 
 const font = Montserrat({ subsets: ["latin"] });
@@ -47,6 +42,7 @@ export default async function MainLayout({
           >
             <CreateModal user={user}/>
             <SuccessModal/>
+            
             <Toaster/>
             <div>
               <div className="h-screen">

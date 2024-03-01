@@ -59,6 +59,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
             overflow-hidden 
             right-0 
             top-12 
+            z-[99]
           "
         >
           <div className="flex flex-col cursor-pointer items-center">
@@ -69,13 +70,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   <div className="text-black font-bold">
                     {user.name}
                   </div>
-                  {user.isAdmin ? (
-                    <div className="text-sm">
-                      Admin
-                    </div>
-                  ) : (
-                    <div></div>
-                  )}
+                  <div className="text-sm">
+                    {user.role}
+                  </div>
                 </div>
                 
                 <Button

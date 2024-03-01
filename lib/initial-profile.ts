@@ -21,7 +21,6 @@ export const initialProfile = async () => {
             userId: user.sub,
             name: user.name,
             imageUrl: user.picture,
-            isAdmin: false,
             email: user.email
         }
     })

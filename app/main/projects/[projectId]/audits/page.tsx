@@ -1,4 +1,5 @@
 import getProjectById from "@/actions/getProjects/getProjectById";
+import { AuditClient } from "@/components/pages/projects/audit/AuditClient";
 import AuditTable from "@/components/pages/projects/audit/AuditTable";
 
 interface IParams {
@@ -13,7 +14,7 @@ const AuditsPage = async (
 
     return (
         <div className="flex flex-col">
-            <AuditTable/>
+            <AuditClient project={project}/>
         </div>
         
     )

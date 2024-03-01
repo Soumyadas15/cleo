@@ -1,4 +1,5 @@
 import getProjectById from "@/actions/getProjects/getProjectById";
+import { StakeholdersClient } from "@/components/pages/projects/stakeholders/StakeholdersClient";
 
 interface IParams {
     projectId?: string;
@@ -11,9 +12,9 @@ const StakeholdersPage = async (
     const project = await getProjectById(params);
 
     return (
-        <h1 className="font-bold text-md">
-            Stakeholders for {project?.name}
-        </h1>
+         <div className="flex flex-col">
+            <StakeholdersClient project={project}/>
+        </div>
     )
 }
 export default StakeholdersPage;
