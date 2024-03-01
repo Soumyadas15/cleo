@@ -3,6 +3,7 @@ import getAudits from "@/actions/getAudits/getAudits";
 import getProjectByAuditId from "@/actions/getProjects/getProjectByAuditId";
 import getProjectById from "@/actions/getProjects/getProjectById";
 import AuditModal from "@/components/modals/AuditModal";
+import DeleteAuditModal from "@/components/modals/DeleteAuditModal";
 import EditAuditModal from "@/components/modals/EditAuditModal";
 import { ProjectNavbar } from "@/components/pages/projects/ProjectNavbar";
 import { AuditClient } from "@/components/pages/projects/audit/AuditClient";
@@ -27,15 +28,15 @@ export default async function AuditLayout({
     const project = await getProjectByAuditId(params);
     //@ts-ignore
     const audits = await getAudits({ projectId: project.id });
-
     
     const audit = await getAuditById(params);
 
     console.log(audit)
 
     return (  
-        <div className="">
+        <div className="overflow-hidden h-[99%]">
             <AuditClient audits={audits} user={user} project={project}/>
+            <DeleteAuditModal audit={audit} project={project} />
             <EditAuditModal audit={audit}/>
             {children}
         </div>

@@ -1,5 +1,3 @@
-"use server"
-
 import { db } from "@/lib/db";
 import { initialProfile } from "@/lib/initial-profile";
 
@@ -19,11 +17,11 @@ export default async function getAudits(params: IParams){
         const audits = await db.audit.findMany({
             where: {
                 projectId: projectId
+            },
+            orderBy: {
+                date: 'desc'
             }
-        })
-        if (!audits) {
-            return [null];
-        }
+        });
 
         return audits;
 

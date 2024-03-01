@@ -19,9 +19,12 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [clicked, setClicked] = useState(false);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
+    setClicked(true);
+    setTimeout(() => setClicked(false), 150);
   }, []);
 
 
@@ -40,6 +43,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
           cursor-pointer 
           transition
           "
+        style={{ transform: clicked ? 'scale(0.9)' : 'scale(1)' }}
         >
           
           <div className="hidden md:block">

@@ -8,7 +8,7 @@
 "use client"
 
 import { useRouter } from "next/navigation";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 
 interface ButtonProps {
     label: string;
@@ -32,23 +32,34 @@ export const Button = ({
     outline
 }: ButtonProps) => {
     const router = useRouter();
+    const [clicked, setClicked] = useState(false);
+
+    const handleClick = () => {
+        setClicked(true);
+        setTimeout(() => setClicked(false), 150);
+    };
 
     return (
-        <button
-            suppressHydrationWarning
-            onClick={onClick}
-            disabled={disabled}
-            className={`
-                ${disabled ? "opacity-75 cursor-not-allowed" : "opacity-100 hover:opacity-90 hover:cursor-pointer font-semibold"}
-                ${className}
-                ${outline ? '' : 'bg-black dark:bg-white'}
-                ${outline ? 'border-black border-[2px] dark:border-white' : 'border-black dark:border-white'}
-                ${outline ? 'text-black dark:text-white' : 'text-white dark:text-black'}
-                `                
-            }
+        <div 
+            onClick={handleClick}
+            className="transition"
+            style={{ transform: clicked ? 'scale(0.9)' : 'scale(1)' }}
         >
-            {icon && <span className="mr-2">{icon}</span>} {/* Render the icon if provided */}
-            {label}
-        </button>
+            <button
+                suppressHydrationWarning
+                onClick={onClick}
+                disabled={disabled}
+                className={`
+                    ${disabled ? "opacity-75 cursor-not-allowed" : "opacity-100 hover:opacity-90 hover:cursor-pointer font-semibold"}
+                    ${className}
+                    ${outline ? '' : 'bg-black dark:bg-white'}
+                    ${outline ? 'border-black border-[2px] dark:border-white' : 'border-black dark:border-white'}
+                    ${outline ? 'text-black dark:text-white' : 'text-white dark:text-black'}`}
+            >
+                {icon && <span className="mr-2">{icon}</span>}
+                {label}
+            </button>
+        </div>
+
     );
 };

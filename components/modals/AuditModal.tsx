@@ -60,7 +60,6 @@ const AuditModal = ({
   }, [date, setValue]);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
     axios.post('/api/audits', data)
         .then(() => {
             router.refresh();

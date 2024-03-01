@@ -69,4 +69,61 @@ export async function GET(request: Request) {
           return new Response('An unknown error occurred', { status: 500 });
       }
     }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { auditId, date, content } = body;
+
+    if (!auditId || !content) {
+      return new Response('Missing required fields', { status: 400 });
+    }
+
+    const audit = await db.audit.findUnique({
+      where: {
+        id: auditId,
+      },
+    });
+
+    if (!audit) {
+      return new Response('Audit not found', { status: 404 });
+    }
+
+    const updatedAudit = await db.audit.update({
+      where: {
+        id: auditId,
+      },
+      data: {
+        body: content,
+      },
+    });
+
+    return new Response(JSON.stringify(updatedAudit), { status: 200, headers: { 'Content-Type': 'application/json' } });
+
+  } catch (error) {
+    if (error instanceof Error) {
+        return new Response(error.message, { status: 500 });
+    } else {
+        return new Response('An unknown error occurred', { status: 500 });
+    }
   }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const body = await request.json();
+    const { auditId } = body;
+
+    console.log(auditId)
+
+    return new Response('Audit deleted successfully', { status: 200 });
+
+  } catch (error) {
+    if (error instanceof Error) {
+        return new Response(error.message, { status: 500 });
+    } else {
+        return new Response('An unknown error occurred', { status: 500 });
+    }
+  }
+}

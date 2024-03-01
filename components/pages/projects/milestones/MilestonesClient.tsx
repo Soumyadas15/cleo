@@ -10,7 +10,6 @@ export const MilestonesClient = ({
     project,
 }: MilestonesClientProps) => {
 
-
     return (
         <EmptyState 
             title="Work underway"
