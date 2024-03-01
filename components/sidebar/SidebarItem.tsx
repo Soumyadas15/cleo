@@ -21,8 +21,8 @@ export const SidebarItem = ({
     return (
         <div  
             onClick={() => {router.push(`/${to}`)}}
-            className={`p-2 rounded-[5px] text-sm hover:bg-cyan-300/40 dark:hover:bg-cyan-600/20 transition cursor-pointer flex gap-2 items-center
-                    ${isActive ? 'dark:bg-slate-900 bg-neutral-300' : ''}
+            className={`p-2 rounded-[5px] text-sm hover:bg-neutral-300/30 dark:hover:bg-cyan-600/20 transition cursor-pointer flex gap-2 items-center
+                    ${isActive ? 'dark:bg-slate-900 bg-neutral-300 font-bold' : ''}
         `}>
              <div className="scale-[0.8]">
                 {icon}

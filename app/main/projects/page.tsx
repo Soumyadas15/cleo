@@ -9,7 +9,7 @@ const ProjectsPage = async () => {
     
     return (  
         <div className="p-5 h-full w-full">
-            <ProjectClient projects={projects}/>
+            <ProjectClient projects={projects} user={user}/>
         </div>
     );
 }

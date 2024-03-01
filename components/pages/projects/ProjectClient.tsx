@@ -4,6 +4,7 @@ import Heading from "@/components/reusable/Heading";
 import { ProjectItem } from "./ProjectItem";
 import EmptyState from "../EmptyState";
 import useCreateModal from "@/hooks/useLoginModal";
+import { useEffect, useState } from "react";
 
 interface ProjectClientProps {
     user?: any;
@@ -34,12 +35,30 @@ export const ProjectClient = ({
     //     return () => clearInterval(intervalId); // Cleanup on component unmount
     //   }, [user]);
 
+    const [heading, setHeading] = useState('');
+
+    useEffect(() => {
+        const userRole = user.role;
+        let newHeading = '';
+
+        if (userRole === 'ADMIN' || userRole === 'CLIENT') {
+            newHeading = 'Your projects';
+        } else if (userRole === 'MANAGER' || userRole === 'AUDITOR') {
+            newHeading = 'Projects assigned to you';
+        } else {
+            // Default title if the user role doesn't match any condition
+            newHeading = 'Projects';
+        }
+
+        setHeading(newHeading);
+    }, [user.role]);
+
 
     return (
         <div className="w-full h-full ">
             <div className="w-full h-[8%]">
                 <Heading 
-                    title="Your projects"
+                    title={`${heading}`}
                 />
             </div>
             <div className="overflow-hidden overflow-y-scroll w-full h-[92%] mt-2 mb-2 scrollbar-hide">
@@ -56,7 +75,7 @@ export const ProjectClient = ({
                         <EmptyState
                             title="No projects found"
                             subtitle="Start by creating your first project"
-                            showButton
+                            showButton={user.role === "ADMIN"}
                             buttonLabel="Create"
                             onClick={createModal.onOpen}
                         />

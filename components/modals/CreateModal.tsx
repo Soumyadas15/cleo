@@ -52,7 +52,7 @@ const CreateModal = ({
     defaultValues: {
         createdBy: user?.id,
         name: '',
-        clients: '',
+        client: '',
         manager: '',
         auditor: '',
     }
@@ -95,7 +95,6 @@ const CreateModal = ({
             setIsLoading(false);
             formToggle();
     })
-
   }
 
   const actionLabel = useMemo(() => {
@@ -175,15 +174,15 @@ const CreateModal = ({
           center
         />
         <motion.div
-            key="clients"
+            key="client"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <Input
-            id="clients"
-            label="Clients"
+            id="client"
+            label="Client"
             disabled={isLoading}
             register={register}  
             errors={errors}

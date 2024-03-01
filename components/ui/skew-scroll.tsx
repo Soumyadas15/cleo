@@ -54,9 +54,13 @@ export const ContainerScroll = ({
         }}
       >
         <Header translate={translate} titleComponent={titleComponent} />
-        <div  
+        <motion.div  
+          style={{
+            rotateX: rotate,
+            scale,
+          }}
           className={cn(
-            "absolute top-[32%] left-[5%] w-[90%] h-[55%] bg-hero-glow blur-3xl -z-[99] opacity-0",
+            "absolute top-[32%] left-0 w-[100%] h-[55%] bg-hero-glow blur-3xl -z-[99] opacity-0",
             isLoading && 'animate-image-glow'
         )} />
         <Card

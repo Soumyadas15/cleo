@@ -20,6 +20,9 @@ enum UserRole {
   AUDITOR
 }
 
+
+
+
 model User {
   id String @id @default(uuid())
   userId String @unique
@@ -33,7 +36,14 @@ model User {
 
   projects Project[]
   members Member[]
+
+  managedProjects Project[] @relation("ProjectManager")
+  auditedProjects Project[] @relation("Auditor")
 }
+
+
+
+
 
 model Project {
   id String @id @default(uuid())
@@ -47,7 +57,17 @@ model Project {
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  projectManagerId String?
+  projectManager User? @relation("ProjectManager", fields: [projectManagerId], references: [id], onDelete: SetNull)
+
+  auditorId String?
+  auditor User? @relation("Auditor", fields: [auditorId], references: [id], onDelete: SetNull)
 }
+
+
+
+
 
 model Member {
   id String @id @default(uuid())
@@ -62,6 +82,10 @@ model Member {
   @@index([userId])
 }
 
+
+
+
+
 model Audit {
   id String @id @default(uuid())
   
@@ -70,4 +94,5 @@ model Audit {
 
   projectId String
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
 }

@@ -16,9 +16,9 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json();
-        const { createdBy, name, manager, clients } = body;
+        const { createdBy, name, manager, client, auditor } = body;
 
-        if (!createdBy || !name || !manager || !clients) {
+        if (!createdBy || !name || !manager || !client || !auditor) {
             return new Response("Missing required fields", { status: 400 });
         }
 
@@ -31,7 +31,10 @@ export async function POST(request: Request) {
         })
 
         const projectManager = await getUserByEmail(manager);
-        const projectClient = await getUserByEmail(clients);
+        const projectClient = await getUserByEmail(client);
+        const projectAuditor = await getUserByEmail(auditor);
+
+        
         
         await db.member.create({
             //@ts-ignore
@@ -50,6 +53,26 @@ export async function POST(request: Request) {
                 projectId: project.id,
             }
         });
+
+        await db.member.create({
+            //@ts-ignore
+            data: {
+                role: 'AUDITOR',
+                userId: projectAuditor?.id,
+                projectId: project.id,
+            }
+        });
+
+        await db.project.update({
+            //@ts-ignore
+            where: {
+                id: project.id,
+            },
+            data: {
+                projectManagerId: projectManager?.id,
+                auditorId: projectAuditor?.id,
+            }
+        })
 
 
         return new Response(JSON.stringify(project), { status: 200, headers: { 'Content-Type': 'application/json' } });
