@@ -63,12 +63,12 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
     try {
       await axios.delete(`/api/audits/${audit.id}`);
       toast.success("Deleted audit");
+      router.push(`/main/projects/${project.id}/audits`);
       router.refresh();
     } catch (error: any) {
       toast.error(error.message);
     } finally {
       setIsLoading(false);
-      deleteAuditModal.onClose();
       setSureToDeleteId(null);
     }
   };

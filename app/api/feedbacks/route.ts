@@ -76,38 +76,38 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const body = await request.json();
-    const { resourceId, name, role, comment, startDate, endDate } = body;
+    const content = await request.json();
+    const { feedbackId, type, body, action, date, closureDate } = content;
 
-    if (!resourceId ||!name ||!role ||!comment ||!startDate ||!endDate) {
+
+    if (!feedbackId ||!type ||!body ||!action ||!date ||!closureDate) {
       return new Response('Missing required fields', { status: 400 });
     }
 
-    const resource = await db.resource.findUnique({
+    const feedback = await db.feedback.findUnique({
       where: {
-        id: resourceId,
+        id: feedbackId,
       },
     });
 
-    if (!resource) {
+    if (!feedback) {
       return new Response('Audit not found', { status: 404 });
     }
 
-    const updatedResource = await db.resource.update({
+    const updatedFeedback = await db.feedback.update({
       where: {
-        id: resourceId,
+        id: feedbackId,
       },
       data: {
-        name: name,
-        role: role,
-        comment: comment,
-        startDate: startDate,
-        endDate: endDate,
-        isEdited: true,
+        type: type,
+        body: body,
+        action: action,
+        date: date,
+        closureDate: closureDate,
       },
     });
 
-    return new Response(JSON.stringify(updatedResource), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify(updatedFeedback), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
   } catch (error) {
     if (error instanceof Error) {

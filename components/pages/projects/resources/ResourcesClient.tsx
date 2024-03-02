@@ -7,6 +7,7 @@ import axios from "axios";
 import { Button } from "@/components/reusable/Button";
 import { Plus } from "lucide-react";
 import { ResourceTable } from "./ResourcesTable";
+import useResourceModal from "@/hooks/useResourceModal";
 
 interface ResourcesClientProps {
     resources: any;
@@ -20,7 +21,7 @@ export const ResourcesClient = ({
     project,
 }: ResourcesClientProps) => {
 
-    const resourceModal = useAuditModal();
+    const resourceModal = useResourceModal();
 
     if (resources.length === 0){
         return(

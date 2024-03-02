@@ -1,6 +1,5 @@
-import getAudits from "@/actions/getAudits/getAudits";
+import getFeedbacks from "@/actions/getFeedbacks/getFeedbacks";
 import getProjectById from "@/actions/getProjects/getProjectById";
-import { AuditClient } from "@/components/pages/projects/audit/AuditClient";
 import { FeedbacksClient } from "@/components/pages/projects/feedback/FeedbackClient";
 import { initialProfile } from "@/lib/initial-profile";
 
@@ -13,13 +12,12 @@ const FeedbacksPage = async (
 ) => {
 
     const project = await getProjectById(params);
-    const audits = await getAudits(params);
     const user = await initialProfile();
+    const feedbacks = await getFeedbacks(params);
 
     return (
         <div className="flex flex-col h-full">
-            Hehe
-            {/* <FeedbacksClient audits={audits} user={user} project={project}/> */}
+            <FeedbacksClient feedbacks={feedbacks} user={user} project={project}/>
         </div>
         
     )

@@ -2,11 +2,12 @@ import { db } from '@/lib/db';
 import { initialProfile } from '@/lib/initial-profile';
 import { PrismaClient } from '@prisma/client';
 
+
 interface IParams {
-    resourceId?: string;
+    feedbackId?: string;
 }
 
-export default async function getProjectByResourceId(params: IParams) {
+export default async function getProjectByFeedbackId(params: IParams) {
     try {
         const user = await initialProfile();
 
@@ -14,26 +15,26 @@ export default async function getProjectByResourceId(params: IParams) {
             return [];
         }
 
-        const { resourceId } = params;
+        const { feedbackId } = params;
 
-        if (!resourceId) {
-            throw new Error('Resource ID is required');
+        if (!feedbackId) {
+            throw new Error('Feedback ID is required');
         }
 
-        const resource = await db.resource.findUnique({
+        const feedback = await db.feedback.findUnique({
             where: {
-                id: resourceId,
+                id: feedbackId,
             },
             include: {
                 project: true,
             },
         });
 
-        if (!resource) {
-            throw new Error('Resource not found');
+        if (!feedback) {
+            throw new Error('Feedback not found');
         }
 
-        return resource.project;
+        return feedback.project;
         
     } catch (error) {
         if (error instanceof Error) {

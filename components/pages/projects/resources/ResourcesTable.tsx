@@ -67,8 +67,9 @@ export const ResourceTable = ({
     setIsLoading(true);
     try {
       await axios.delete(`/api/resources/${resource.id}`);
-      toast.success("Resource deleted");
+      router.push(`/main/projects/${project.id}/resources`);
       router.refresh();
+      toast.success("Resource deleted");
     } catch (error: any) {
       toast.error(error.message);
     } finally {

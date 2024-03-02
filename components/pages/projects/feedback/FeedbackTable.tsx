@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import useEditResourceModal from "@/hooks/useEditResourceModal";
+import useEditFeedbackModal from "@/hooks/useEditFeedbackModal";
 
 interface FeedbackTableProps {
   project: any;
@@ -49,13 +50,13 @@ export const FeedbackTable = ({
 }: FeedbackTableProps) => {
 
   const router = useRouter();
-  const editResourceModal = useEditResourceModal();
+  const editFeedbackModal = useEditFeedbackModal();
   const [isLoading, setIsLoading] = useState(false);
   const [sureToDeleteId, setSureToDeleteId] = useState<string | null>(null);
 
   const clickEdit = (feedback: any) => {
     router.push(`/main/projects/${project.id}/feedbacks/${feedback.id}`);
-    editResourceModal.onOpen();
+    editFeedbackModal.onOpen();
   };
 
   /**
@@ -67,7 +68,8 @@ export const FeedbackTable = ({
     setIsLoading(true);
     try {
       await axios.delete(`/api/feedbacks/${feedback.id}`);
-      toast.success("Resource deleted");
+      toast.success("Feedback deleted");
+      router.push(`/main/projects/${project.id}/feedbacks`);
       router.refresh();
     } catch (error: any) {
       toast.error(error.message);
@@ -77,8 +79,8 @@ export const FeedbackTable = ({
     }
   };
 
-  const toggleSureToDelete = (resourceId: string) => {
-    setSureToDeleteId(sureToDeleteId === resourceId ? null : resourceId);
+  const toggleSureToDelete = (feedbackId: string) => {
+    setSureToDeleteId(sureToDeleteId === feedbackId ? null : feedbackId);
   };
 
   return (
@@ -86,11 +88,11 @@ export const FeedbackTable = ({
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">
         <TableRow>
           <TableHead className="w-[100px] font-bold">Serial</TableHead>
-          <TableHead className="w-[150px] font-bold">Name</TableHead>
-          <TableHead className="w-[150px] font-bold">Role</TableHead>
+          <TableHead className="w-[150px] font-bold">Type</TableHead>
+          <TableHead className="w-[150px] font-bold">Feedback</TableHead>
+          <TableHead className="w-[150px] font-bold">Action taken</TableHead>
           <TableHead className="w-[200px] font-bold">Start Date</TableHead>
           <TableHead className="w-[200px] font-bold">End Date</TableHead>
-          <TableHead className="font-bold w-[45rem]">Comment</TableHead>
           {user.role === "MANAGER" ? (
             <TableHead className="w-[130px]">Actions</TableHead>
           ) : (
@@ -109,20 +111,13 @@ export const FeedbackTable = ({
             <TableCell className="font-medium">{feedback.type}</TableCell>
             
 
-            <TableCell>{feedback.role}</TableCell>
+            <TableCell>{feedback.body}</TableCell>
+
+            <TableCell>{feedback.action}</TableCell>
 
             <TableCell>{format(new Date(feedback.date), "MMM do yyyy")}</TableCell>
 
-            <TableCell>{format(new Date(feedback.endDate), "MMM do yyyy")}</TableCell>
-
-            <TableCell>
-              {feedback.comment}
-              {feedback.isEdited ? (
-                 <span className="text-neutral-400 text-[12px] ml-2">(edited)</span>
-              ) : (
-                <div></div>
-              )}
-            </TableCell>
+            <TableCell>{format(new Date(feedback.closureDate), "MMM do yyyy")}</TableCell>
 
             {user.role === "MANAGER" && (
               <TableCell className="flex items-center justify-start gap-5">

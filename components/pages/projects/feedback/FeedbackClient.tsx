@@ -2,11 +2,8 @@
 
 import useAuditModal from "@/hooks/useAuditModal";
 import EmptyState from "../../EmptyState";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Button } from "@/components/reusable/Button";
-import { Plus } from "lucide-react";
 import { FeedbackTable } from "./FeedbackTable";
+import useFeedbackModal from "@/hooks/useFeedbackModal";
 
 interface FeedbacksClientProps {
     feedbacks: any;
@@ -20,16 +17,16 @@ export const FeedbacksClient = ({
     project,
 }: FeedbacksClientProps) => {
 
-    const auditModal = useAuditModal();
+    const feedbackModal = useFeedbackModal();
 
     if (feedbacks.length === 0){
         return(
             <EmptyState 
-                title="No resources yet"
-                subtitle="Add a resource"
+                title="No feedbacks yet"
+                subtitle="Add a feedback"
                 showButton = {user.role === "MANAGER"}
                 buttonLabel="Create"
-                onClick={auditModal.onOpen}
+                onClick={feedbackModal.onOpen}
             />
         )
 
@@ -38,19 +35,18 @@ export const FeedbacksClient = ({
 
     return (
         <div className="w-full h-full scrollbar-hide">
-            Hehe
-            {/* {user.role === "MANAGER" ? (
+            {user.role === "MANAGER" ? (
                 <>
                 <div className="h-[90%] overflow-hidden overflow-y-scroll scrollbar-hide">
-                    <FeedbackTable feedbacks={resources} project={project} user={user}/>
+                    <FeedbackTable feedbacks={feedbacks} project={project} user={user}/>
                 </div>
                 </>
                 ) : (
                     <div className="h-full overflow-hidden overflow-y-scroll scrollbar-hide">
-                       <FeedbackTable feedbacks={resources} project={project} user={user}/>
+                       <FeedbackTable feedbacks={feedbacks} project={project} user={user}/>
                     </div>
                 )
-            } */}
+            }
             
         </div>
     )
