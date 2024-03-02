@@ -96,6 +96,7 @@ export async function PUT(request: Request) {
       },
       data: {
         body: content,
+        isEdited: true,
       },
     });
 

@@ -26,9 +26,9 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import useEditResourceModal from "@/hooks/useEditResourceModal";
 
-interface ResourceTableProps {
+interface FeedbackTableProps {
   project: any;
-  resources: any;
+  feedbacks: any;
   user: any;
 }
 
@@ -42,31 +42,31 @@ interface ResourceTableProps {
  */
 
 
-export const ResourceTable = ({ 
+export const FeedbackTable = ({ 
     project, 
-    resources, 
+    feedbacks, 
     user 
-}: ResourceTableProps) => {
+}: FeedbackTableProps) => {
 
   const router = useRouter();
   const editResourceModal = useEditResourceModal();
   const [isLoading, setIsLoading] = useState(false);
   const [sureToDeleteId, setSureToDeleteId] = useState<string | null>(null);
 
-  const clickEdit = (resource: any) => {
-    router.push(`/main/projects/${project.id}/resources/${resource.id}`);
+  const clickEdit = (feedback: any) => {
+    router.push(`/main/projects/${project.id}/feedbacks/${feedback.id}`);
     editResourceModal.onOpen();
   };
 
   /**
    * Handler for clicking the delete button of an audit
-   * @param resource The audit data to delete
+   * @param feedback The feedback data to delete
    */
 
-  const clickDelete = async (resource: any) => {
+  const clickDelete = async (feedback: any) => {
     setIsLoading(true);
     try {
-      await axios.delete(`/api/resources/${resource.id}`);
+      await axios.delete(`/api/feedbacks/${feedback.id}`);
       toast.success("Resource deleted");
       router.refresh();
     } catch (error: any) {
@@ -101,23 +101,23 @@ export const ResourceTable = ({
       <TableBody>
 
 
-        {resources.map((resource: any, index: number) => (
-          <TableRow key={resource.id} className="dark:border-slate-600">
+        {feedbacks.map((feedback: any, index: number) => (
+          <TableRow key={feedback.id} className="dark:border-slate-600">
 
             <TableCell className="font-medium">{index}</TableCell>
 
-            <TableCell className="font-medium">{resource.name}</TableCell>
+            <TableCell className="font-medium">{feedback.type}</TableCell>
             
 
-            <TableCell>{resource.role}</TableCell>
+            <TableCell>{feedback.role}</TableCell>
 
-            <TableCell>{format(new Date(resource.startDate), "MMM do yyyy")}</TableCell>
+            <TableCell>{format(new Date(feedback.date), "MMM do yyyy")}</TableCell>
 
-            <TableCell>{format(new Date(resource.endDate), "MMM do yyyy")}</TableCell>
+            <TableCell>{format(new Date(feedback.endDate), "MMM do yyyy")}</TableCell>
 
             <TableCell>
-              {resource.comment}
-              {resource.isEdited ? (
+              {feedback.comment}
+              {feedback.isEdited ? (
                  <span className="text-neutral-400 text-[12px] ml-2">(edited)</span>
               ) : (
                 <div></div>
@@ -126,7 +126,7 @@ export const ResourceTable = ({
 
             {user.role === "MANAGER" && (
               <TableCell className="flex items-center justify-start gap-5">
-                {sureToDeleteId === resource.id ? (
+                {sureToDeleteId === feedback.id ? (
                   <>
                     
                   </>
@@ -136,21 +136,21 @@ export const ResourceTable = ({
                         <DropdownMenuTrigger asChild>
                             <MoreHorizontal
                                 className="hover:opacity-50 hover:cursor-pointer transition font-bold"
-                                onClick={() => toggleSureToDelete(resource.id)}
+                                onClick={() => toggleSureToDelete(feedback.id)}
                             />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-32 z-[9999] bg-white dark:bg-neutral-800 border-none rounded-[5px]">
                             <DropdownMenuGroup>
                                 <DropdownMenuItem 
                                     className="hover:cursor-pointer rounded-[5px] focus:bg-neutral-100 dark:focus:bg-neutral-700"
-                                    onClick={() => {clickEdit(resource)}}
+                                    onClick={() => {clickEdit(feedback)}}
                                 >
                                     <Pen className="mr-2 h-4 w-4"/>
                                     <span>Edit</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem 
                                     className="hover:cursor-pointer rounded-[5px] focus:bg-neutral-100 dark:focus:bg-neutral-700"
-                                    onClick={() => {clickDelete(resource)}}
+                                    onClick={() => {clickDelete(feedback)}}
                                 >
                                     <Trash className="mr-2 h-4 w-4 text-red-700 dark:text-500" />
                                     <span className="text-red-700 dark:text-red-500">Delete</span>

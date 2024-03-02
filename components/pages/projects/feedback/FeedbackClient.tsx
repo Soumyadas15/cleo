@@ -6,30 +6,30 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/reusable/Button";
 import { Plus } from "lucide-react";
-import { ResourceTable } from "./ResourcesTable";
+import { FeedbackTable } from "./FeedbackTable";
 
-interface ResourcesClientProps {
-    resources: any;
+interface FeedbacksClientProps {
+    feedbacks: any;
     user: any;
     project: any;
 }
 
-export const ResourcesClient = ({
-    resources,
+export const FeedbacksClient = ({
+    feedbacks,
     user,
     project,
-}: ResourcesClientProps) => {
+}: FeedbacksClientProps) => {
 
-    const resourceModal = useAuditModal();
+    const auditModal = useAuditModal();
 
-    if (resources.length === 0){
+    if (feedbacks.length === 0){
         return(
             <EmptyState 
                 title="No resources yet"
                 subtitle="Add a resource"
                 showButton = {user.role === "MANAGER"}
                 buttonLabel="Create"
-                onClick={resourceModal.onOpen}
+                onClick={auditModal.onOpen}
             />
         )
 
@@ -38,18 +38,19 @@ export const ResourcesClient = ({
 
     return (
         <div className="w-full h-full scrollbar-hide">
-            {user.role === "MANAGER" ? (
+            Hehe
+            {/* {user.role === "MANAGER" ? (
                 <>
                 <div className="h-[90%] overflow-hidden overflow-y-scroll scrollbar-hide">
-                    <ResourceTable resources={resources} project={project} user={user}/>
+                    <FeedbackTable feedbacks={resources} project={project} user={user}/>
                 </div>
                 </>
                 ) : (
                     <div className="h-full overflow-hidden overflow-y-scroll scrollbar-hide">
-                       <ResourceTable resources={resources} project={project} user={user}/>
+                       <FeedbackTable feedbacks={resources} project={project} user={user}/>
                     </div>
                 )
-            }
+            } */}
             
         </div>
     )

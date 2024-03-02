@@ -6,6 +6,7 @@ import useAuditModal from "@/hooks/useAuditModal";
 import { Button } from "@/components/reusable/Button";
 import { Plus } from "lucide-react";
 import useResourceModal from "@/hooks/useResourceModal";
+import useFeedbackModal from "@/hooks/useFeedbackModal";
 
 interface ProjectNavbarProps {
     project: any;
@@ -21,14 +22,16 @@ export const ProjectNavbar = ({
     
     const auditModal = useAuditModal();
     const resourceModal = useResourceModal();
+    const feedbackModal = useFeedbackModal();
 
     const isAuditRoute = pathname.startsWith(`/main/projects/${project.id}/audits`);
     const isResourceRoute = pathname.startsWith(`/main/projects/${project.id}/resources`);
+    const isFeedbackRoute = pathname.startsWith(`/main/projects/${project.id}/feedbacks`);
 
     const routes = [
         '/phases',
         '/resources',
-        '/feedback',
+        '/feedbacks',
         '/updates',
         '/moms',
         '/scope',
@@ -72,12 +75,12 @@ export const ProjectNavbar = ({
                             onClick={resourceModal.onOpen}
                         />
                     )}
-                    {pathname.endsWith('/feedback') && (
+                    {isFeedbackRoute && (
                         <Button 
                             label="Add feedback" 
                             icon={<Plus className="scale-[0.8]"/>}
                             className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={auditModal.onOpen}
+                            onClick={feedbackModal.onOpen}
                         />
                     )}
                     {pathname.endsWith('/updates') && (

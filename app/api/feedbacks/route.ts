@@ -10,10 +10,10 @@ export async function POST(request: Request) {
       return new Response('User not found', { status: 404 });
     }
 
-    const body = await request.json();
-    const { projectId, name, role, comment, startDate, endDate } = body;
+    const content = await request.json();
+    const { projectId, type, body, action, date, closureDate } = content;
 
-    if (!projectId ||!name ||!role ||!comment ||!startDate ||!endDate) {
+    if (!projectId ||!type ||!body ||!action ||!date ||!closureDate) {
       return new Response('Missing required fields', { status: 400 });
     }
 
@@ -27,18 +27,18 @@ export async function POST(request: Request) {
         return new Response('Project not found', { status: 400 });
     }
 
-    const resource = await db.resource.create({
+    const feedback = await db.feedback.create({
         data: {
-            name: name,
-            role: role,
-            comment: comment,
-            startDate: startDate,
-            endDate: endDate,
+            type: type,
+            body: body,
+            action: action,
+            date: date,
+            closureDate: closureDate,
             projectId: projectId
         }
     }) 
 
-    return new Response(JSON.stringify(resource), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify(feedback), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
   } catch (error) {
     if (error instanceof Error) {

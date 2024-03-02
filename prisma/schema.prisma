@@ -94,6 +94,7 @@ model Audit {
   
   date DateTime @default(now())
   body String @db.Text
+  isEdited Boolean @default(false)
 
   projectId String
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -111,6 +112,7 @@ model Resource {
   startDate DateTime @default(now())
   endDate DateTime @default(now())
   comment String @db.Text
+  isEdited Boolean @default(false)
 
   projectId String
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -129,6 +131,7 @@ model Feedback {
   body String @db.Text
   action String @db.Text
   closureDate DateTime @default(now())
+  isEdited Boolean @default(false)
 
   projectId String
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)

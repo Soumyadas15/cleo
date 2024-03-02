@@ -100,7 +100,14 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
 
             <TableCell>{format(new Date(audit.date), "MMM do yyyy")}</TableCell>
 
-            <TableCell>{audit.body}</TableCell>
+            <TableCell>
+              {audit.body} 
+              {audit.isEdited ? (
+                 <span className="text-neutral-400 text-[12px] ml-2">(edited)</span>
+              ) : (
+                <div></div>
+              )}
+            </TableCell>
 
             {user.role === "AUDITOR" && (
               <TableCell className="flex items-center justify-start gap-5">
