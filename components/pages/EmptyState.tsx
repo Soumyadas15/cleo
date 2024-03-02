@@ -47,7 +47,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
                 <Button
                     label={`${buttonLabel}`}
                     onClick={onClick}
-                    className="p-1 pr-2 pl-2 mt-2 rounded-[5px]"
+                    className="p-3 pr-4 pl-4 mt-1 rounded-[5px] text-sm"
                 />
                 )}
             </div>

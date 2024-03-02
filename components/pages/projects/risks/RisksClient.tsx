@@ -13,7 +13,7 @@ export const RisksClient = ({
 
     return (
         <EmptyState 
-            title="Work underway"
+            title="To be made later"
         />
     )
 }

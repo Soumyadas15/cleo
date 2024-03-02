@@ -1,6 +1,7 @@
 import getProjectById from "@/actions/getProjects/getProjectById";
 import AuditModal from "@/components/modals/AuditModal";
 import EditAuditModal from "@/components/modals/EditAuditModal";
+import ResourceModal from "@/components/modals/ResourceModal";
 import { ProjectNavbar } from "@/components/pages/projects/ProjectNavbar";
 import Heading from "@/components/reusable/Heading";
 import { initialProfile } from "@/lib/initial-profile";
@@ -23,12 +24,13 @@ export default async function ProjectLayout({
     return (  
         <>
         <AuditModal project={project} user={user}/>
+        <ResourceModal project={project} user={user}/>
         <div className="p-5 h-full w-full">
             <div className="h-[5%]">
                 <Heading title={`${project?.name}`}/>
             </div>
             <div className="h-[5%]">
-                <ProjectNavbar project={project}/>
+                <ProjectNavbar project={project} user={user}/>
             </div>
             
             <div className="w-full h-[88%] pt-5 overflow-hidden overflow-y-scroll scrollbar-hide">

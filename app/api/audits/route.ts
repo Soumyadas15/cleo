@@ -109,21 +109,3 @@ export async function PUT(request: Request) {
     }
   }
 }
-
-export async function DELETE(request: Request) {
-  try {
-    const body = await request.json();
-    const { auditId } = body;
-
-    console.log(auditId)
-
-    return new Response('Audit deleted successfully', { status: 200 });
-
-  } catch (error) {
-    if (error instanceof Error) {
-        return new Response(error.message, { status: 500 });
-    } else {
-        return new Response('An unknown error occurred', { status: 500 });
-    }
-  }
-}

@@ -13,7 +13,7 @@ export const StakeholdersClient = ({
 
     return (
         <EmptyState 
-            title="Work underway"
+            title="To be made later"
         />
     )
 }

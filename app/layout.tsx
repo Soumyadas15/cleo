@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en"  suppressHydrationWarning>
       <UserProvider>
-        <body className={`${font.className} bg-slate-950 overflow-x-hidden`}>
+        <body className={`${font.className} bg-black overflow-x-hidden`}>
        
             {children}
         

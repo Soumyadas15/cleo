@@ -2,8 +2,6 @@ import { db } from '@/lib/db';
 import { initialProfile } from '@/lib/initial-profile';
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
-
 interface IParams {
     auditId?: string;
 }
@@ -22,7 +20,7 @@ export default async function getProjectByAuditId(params: IParams) {
             throw new Error('Audit ID is required');
         }
 
-        const audit = await prisma.audit.findUnique({
+        const audit = await db.audit.findUnique({
             where: {
                 id: auditId,
             },

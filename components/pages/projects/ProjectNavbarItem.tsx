@@ -31,8 +31,8 @@ export const ProjectNavbarItem = ({
     return (
         <div 
             onClick={handleClick}
-            className={`font-bold hover:cursor-pointer hover:opacity-80 transition rounded-[5px] underline-offset-4
-                        ${isActive ? 'text-black' : 'text-neutral-400'}`}
+            className={`hover:cursor-pointer hover:opacity-80 transition rounded-[5px] underline-offset-4
+                        ${isActive ? 'text-black dark:text-white font-bold' : 'text-neutral-400 dark:text-neutral-600 font-semibold'}`}
             style={{ transform: clicked ? 'scale(0.9)' : 'scale(1)' }}
         >
                 {label}

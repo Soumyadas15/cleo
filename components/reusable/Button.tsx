@@ -43,7 +43,7 @@ export const Button = ({
         <div 
             onClick={handleClick}
             className="transition"
-            style={{ transform: clicked ? 'scale(0.9)' : 'scale(1)' }}
+            style={{ transform: clicked ? 'scale(0.95)' : 'scale(1)' }}
         >
             <button
                 suppressHydrationWarning

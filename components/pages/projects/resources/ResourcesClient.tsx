@@ -6,29 +6,28 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/reusable/Button";
 import { Plus } from "lucide-react";
-import { AuditTable } from "./AuditTable";
+import { ResourceTable } from "./ResourcesTable";
 
-interface AuditClientProps {
-    audits: any;
+interface ResourcesClientProps {
+    resources: any;
     user: any;
     project: any;
 }
 
-export const AuditClient = ({
-    audits,
+export const ResourcesClient = ({
+    resources,
     user,
     project,
-}: AuditClientProps) => {
-
+}: ResourcesClientProps) => {
 
     const auditModal = useAuditModal();
 
-    if (audits.length === 0){
+    if (resources.length === 0){
         return(
             <EmptyState 
-                title="No audits yet"
-                subtitle="Start auditing project"
-                showButton = {user.role === "AUDITOR"}
+                title="No resources yet"
+                subtitle="Add a resource"
+                showButton = {user.role === "MANAGER"}
                 buttonLabel="Create"
                 onClick={auditModal.onOpen}
             />
@@ -39,20 +38,19 @@ export const AuditClient = ({
 
     return (
         <div className="w-full h-full scrollbar-hide">
-            {user.role === "AUDITOR" ? (
+            {user.role === "MANAGER" ? (
                 <>
                 <div className="h-[90%] overflow-hidden overflow-y-scroll scrollbar-hide">
-                    <AuditTable audits={audits} project={project} user={user}/>
+                    <ResourceTable resources={resources} project={project} user={user}/>
                 </div>
                 </>
                 ) : (
                     <div className="h-full overflow-hidden overflow-y-scroll scrollbar-hide">
-                       <AuditTable audits={audits} project={project} user={user}/>
+                       <ResourceTable resources={resources} project={project} user={user}/>
                     </div>
                 )
             }
             
         </div>
-        
     )
 }

@@ -24,7 +24,7 @@ const translateStatic = {
 
 export const Intro = () => {
     return (
-        <div className="h-auto">
+        <div className="h-auto bg-black">
             <ContainerScroll
                 titleComponent={
                 <>

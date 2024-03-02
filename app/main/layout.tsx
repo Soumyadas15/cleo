@@ -35,7 +35,7 @@ export default async function MainLayout({
   return (
     <html lang="en" >
       <UserProvider>
-        <body className={`${font.className} bg-slate-950 overflow-x-hidden`}>
+        <body className={`${font.className} bg-neutral-900 overflow-x-hidden`}>
         <ThemeProvider
             attribute="class"
             defaultTheme="light"
@@ -48,13 +48,13 @@ export default async function MainLayout({
             <div>
               <div className="h-screen">
                 <div className=" w-full h-full flex items-center justify-between">
-                  <div className="bg-neutral-200 dark:bg-black w-[14rem] h-full flex items-center justify-center pr-1">
+                  <div className="bg-neutral-200 dark:bg-black w-[13.5rem] h-full flex items-center justify-center pr-1">
                     <div className="h-full w-full">
                       <Sidebar user={user}/>
                     </div>
                   </div>
-                  <div className="bg-white dark:bg-slate-950 w-[85%] h-full flex items-center justify-center pl-1">
-                    <div className=" dark:bg-slate-950 h-full w-full">
+                  <div className="bg-white dark:bg-neutral-900 w-[85%] h-full flex items-center justify-center pl-1">
+                    <div className=" dark:bg-neutral-900 h-full w-full">
                       <div className="w-full h-[10%] p-5">
                         <Navbar user={user}/>
                       </div>

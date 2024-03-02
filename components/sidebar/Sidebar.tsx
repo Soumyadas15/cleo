@@ -20,7 +20,7 @@ export const Sidebar = ({
     const pathname = usePathname();
 
     return (
-        <div className="h-full w-full bg-white dark:bg-slate-950 transition p-5">
+        <div className="h-full w-full bg-white dark:bg-neutral-900 transition p-5">
             <div className="h-[40%] w-full gap-12 flex flex-col">
                 <div className="flex items-center gap-2">
                     <Image

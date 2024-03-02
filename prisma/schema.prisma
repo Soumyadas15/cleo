@@ -54,6 +54,9 @@ model Project {
 
   members Member[]
   audits Audit[]
+  resources Resource[]
+  feedbacks Feedback[]
+  meetingMinutes MeetingMinute[]
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -95,4 +98,56 @@ model Audit {
   projectId String
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   
+}
+
+
+
+
+model Resource {
+  id String @id @default(uuid())
+  
+  role String
+  name String
+  startDate DateTime @default(now())
+  endDate DateTime @default(now())
+  comment String @db.Text
+
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+}
+
+
+
+
+
+model Feedback {
+  id String @id @default(uuid())
+  
+  type String
+  date DateTime @default(now())
+  body String @db.Text
+  action String @db.Text
+  closureDate DateTime @default(now())
+
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+}
+
+
+
+
+
+
+model MeetingMinute {
+  id String @id @default(uuid())
+  
+  date DateTime @default(now())
+  duration Int 
+  link String @db.Text
+  comments String @db.Text
+
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }

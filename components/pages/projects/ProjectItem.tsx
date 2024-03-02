@@ -23,7 +23,7 @@ export const ProjectItem = ({
     return (
         <div 
             onClick={handleClick}
-            className="bg-neutral-100 dark:bg-slate-900/40 border-[1px] border-black border-opacity-5 p-2 rounded-[5px] hover:opacity-80 hover:cursor-pointer pl-4 pr-4 h-[10vw] transition"
+            className="bg-neutral-100 dark:bg-neutral-800 border-[1px] border-black border-opacity-5 p-2 rounded-[5px] hover:opacity-80 hover:cursor-pointer pl-4 pr-4 h-[10vw] transition"
             style={{ transform: clicked ? 'scale(0.95)' : 'scale(1)' }}
         >
             <div className="text-lg font-bold text-neutral-700 dark:text-neutral-300">

@@ -3,7 +3,7 @@ import { initialProfile } from "@/lib/initial-profile";
 
 
 interface IParams {
-    auditId?: string;
+    resourceId?: string;
 }
 
 export async function DELETE(request: Request, { params }: { params: IParams }) {
@@ -14,20 +14,20 @@ export async function DELETE(request: Request, { params }: { params: IParams }) 
         return new Response("User not authenticated", { status: 401 });
     }
 
-    if (currentUser.role !== "AUDITOR") {
+    if (currentUser.role !== "MANAGER") {
         return new Response("You don't have the required permissions", { status: 401 });
     }
     
-    const { auditId } = params;
+    const { resourceId } = params;
 
     
-    if (!auditId) {
+    if (!resourceId) {
       return new Response('Missing required fields', { status: 400 });
     }
 
-    await db.audit.delete({
+    await db.resource.delete({
       where: {
-        id: auditId,
+        id: resourceId,
       },
     });
 
