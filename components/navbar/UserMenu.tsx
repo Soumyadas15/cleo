@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Avatar } from "./Avatar";
 import MenuItem from "./MenuItem";
 import { Button } from "../reusable/Button";
+import useCreateModal from "@/hooks/useLoginModal";
 
 
 
@@ -20,6 +21,8 @@ const UserMenu: React.FC<UserMenuProps> = ({
 
   const [isOpen, setIsOpen] = useState(false);
   const [clicked, setClicked] = useState(false);
+
+  const createModal = useCreateModal();
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);

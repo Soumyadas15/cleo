@@ -37,7 +37,7 @@ export const Sidebar = ({
                                 onClick={createModal.onOpen}
                                 label="Add project" 
                                 color="bg-cyan-500" 
-                                className="p-2 rounded-[5px] flex items-center text-sm text-white" 
+                                className="p-2 rounded-[5px] flex items-center text-sm text-white w-full" 
                                 icon={<Plus className="scale-[0.8]"/>}
                             />
                         ) : (
