@@ -19,7 +19,6 @@ const AuditsPage = async (
         <div className="flex flex-col h-full">
             <AuditClient audits={audits} user={user} project={project}/>
         </div>
-        
     )
 }
 export default AuditsPage;

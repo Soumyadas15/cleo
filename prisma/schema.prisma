@@ -179,6 +179,8 @@ model Phase {
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   content Phase_content[]
+
+  createdAt DateTime @default(now())
 }
 
 
@@ -192,4 +194,6 @@ model Phase_content {
 
   phaseId String
   phase Phase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 }

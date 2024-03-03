@@ -298,11 +298,13 @@ const ResourceModal = ({
       secondaryAction={step == STEPS.DESCRIPTION ? undefined : onBack}
       onSubmit={handleSubmit(onSubmit)}
       body={
-        <div className="flex flex-col gap-6">
-          <div className="w-full dark:bg-neutral-800 bg-gray-200 h-[2px] rounded-full">
+        <div className="flex flex-col gap-6 items-center">
+          <div className="w-[90%] dark:bg-neutral-800 bg-gray-200 h-[2px] rounded-full">
             <ProgressBar currentStep={step} totalSteps={Object.keys(STEPS).length / 2} />
           </div>
-          {bodyContent}
+          <div className="w-full">
+            {bodyContent}
+          </div>
         </div>
       }
     />

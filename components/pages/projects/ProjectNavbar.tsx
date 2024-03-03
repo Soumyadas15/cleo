@@ -29,11 +29,13 @@ export const ProjectNavbar = ({
     const updateModal = useUpdateModal();
     const momModal = useMomModal();
 
+    const isPhaseRoute = pathname.startsWith(`/main/projects/${project.id}/phases`);
     const isAuditRoute = pathname.startsWith(`/main/projects/${project.id}/audits`);
     const isResourceRoute = pathname.startsWith(`/main/projects/${project.id}/resources`);
     const isFeedbackRoute = pathname.startsWith(`/main/projects/${project.id}/feedbacks`);
     const isUpdateRoute = pathname.startsWith(`/main/projects/${project.id}/updates`);
     const isMomRoute = pathname.startsWith(`/main/projects/${project.id}/moms`);
+    
 
     const routes = [
         '/phases',
@@ -66,7 +68,7 @@ export const ProjectNavbar = ({
             </div>
             {user.role === "MANAGER" ? (
                 <div>
-                    {pathname.endsWith('/phases') && (
+                    {isPhaseRoute && (
                         <Button 
                             label="Add Phase" 
                             icon={<Plus className="scale-[0.8]"/>}
