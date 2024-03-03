@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 import useSuccessModal from "@/hooks/useSuccessModal";
 import useCreateModal from "@/hooks/useLoginModal";
 import { useModal } from "@/hooks/useModalStore";
+import { ProgressBar } from "../ProgressBar";
 
 enum STEPS {
   DESCRIPTION = 0,
@@ -96,7 +97,7 @@ const CreateModal = ({
 
     return 'Next'
   }, [step]);
-  
+
 
   const secondaryActionLabel = useMemo(() => {
       if(step === STEPS.DESCRIPTION){
@@ -238,11 +239,7 @@ const CreateModal = ({
       body={
         <div className="flex flex-col gap-6">
           <div className="w-full dark:bg-neutral-800 bg-gray-200 h-[2px] rounded-full">
-            <motion.div
-              className="bg-blue-500 h-[2px] rounded-full"
-              style={{ width: `${progress}%` }}
-              animate={{ width: `${progress}%` }}
-            />
+            <ProgressBar currentStep={step} totalSteps={Object.keys(STEPS).length / 2} />
           </div>
           {bodyContent}
         </div>

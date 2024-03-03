@@ -9,7 +9,7 @@ const PhasesPage = async () => {
     const projects = await getProjectsByUserId();
     
     return (  
-        <div className="p-5 h-full w-full">
+        <div className="flex flex-col h-full bg-red-400">
             <EmptyState 
                 title="Work underway"
             />

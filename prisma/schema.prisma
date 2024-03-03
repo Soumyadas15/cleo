@@ -58,6 +58,7 @@ model Project {
   updates Update[]
   feedbacks Feedback[]
   moms Mom[]
+  phases Phase[]
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -166,4 +167,29 @@ model Mom {
 
   projectId String
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+
+
+
+model Phase {
+  id String @id @default(uuid())
+
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  content Phase_content[]
+}
+
+
+model Phase_content {
+  id String @id @default(uuid())
+
+  resources Int
+  role String
+  availability Int
+  duration Int
+
+  phaseId String
+  phase Phase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 }

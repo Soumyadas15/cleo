@@ -32,7 +32,7 @@ export const Sidebar = ({
                     <div className="text-3xl font-bold">Cleo</div>
                 </div>
                 <div className="flex flex-col h-[20%] w-full">
-                    {user.role === "ADMIN" ? (
+                    {user.role === "MANAGER" ? (
                             <Button
                                 onClick={createModal.onOpen}
                                 label="Add project" 

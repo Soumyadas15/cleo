@@ -23,6 +23,7 @@ import { format } from 'date-fns';
 import { Calendar } from "../ui/calendar";
 import useFeedbackModal from "@/hooks/useFeedbackModal";
 import useMomModal from "@/hooks/useMomModal";
+import { ProgressBar } from "../ProgressBar";
 
 enum STEPS {
   DURATION = 0,
@@ -259,11 +260,7 @@ const MomModal = ({
       body={
         <div className="flex flex-col gap-6">
           <div className="w-full dark:bg-neutral-800 bg-gray-200 h-[2px] rounded-full">
-            <motion.div
-              className="bg-blue-500 h-[2px] rounded-full"
-              style={{ width: `${progress}%` }}
-              animate={{ width: `${progress}%` }}
-            />
+            <ProgressBar currentStep={step} totalSteps={Object.keys(STEPS).length / 2} />
           </div>
           {bodyContent}
         </div>

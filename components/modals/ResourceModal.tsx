@@ -24,6 +24,7 @@ import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { format } from 'date-fns';
 import { Calendar } from "../ui/calendar";
+import { ProgressBar } from "../ProgressBar";
 
 enum STEPS {
   DESCRIPTION = 0,
@@ -299,11 +300,7 @@ const ResourceModal = ({
       body={
         <div className="flex flex-col gap-6">
           <div className="w-full dark:bg-neutral-800 bg-gray-200 h-[2px] rounded-full">
-            <motion.div
-              className="bg-blue-500 h-[2px] rounded-full"
-              style={{ width: `${progress}%` }}
-              animate={{ width: `${progress}%` }}
-            />
+            <ProgressBar currentStep={step} totalSteps={Object.keys(STEPS).length / 2} />
           </div>
           {bodyContent}
         </div>
