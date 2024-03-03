@@ -57,7 +57,7 @@ model Project {
   resources Resource[]
   updates Update[]
   feedbacks Feedback[]
-  meetingMinutes MeetingMinute[]
+  moms Mom[]
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -156,7 +156,7 @@ model Update {
 
 
 
-model MeetingMinute {
+model Mom {
   id String @id @default(uuid())
   
   date DateTime @default(now())

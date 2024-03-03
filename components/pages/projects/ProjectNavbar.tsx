@@ -9,6 +9,7 @@ import useResourceModal from "@/hooks/useResourceModal";
 import useFeedbackModal from "@/hooks/useFeedbackModal";
 import useUpdateModal from "@/hooks/useUpdateModal";
 import useEditUpdateModal from "@/hooks/useEditUpdateModa";
+import useMomModal from "@/hooks/useMomModal";
 
 interface ProjectNavbarProps {
     project: any;
@@ -26,11 +27,13 @@ export const ProjectNavbar = ({
     const resourceModal = useResourceModal();
     const feedbackModal = useFeedbackModal();
     const updateModal = useUpdateModal();
+    const momModal = useMomModal();
 
     const isAuditRoute = pathname.startsWith(`/main/projects/${project.id}/audits`);
     const isResourceRoute = pathname.startsWith(`/main/projects/${project.id}/resources`);
     const isFeedbackRoute = pathname.startsWith(`/main/projects/${project.id}/feedbacks`);
     const isUpdateRoute = pathname.startsWith(`/main/projects/${project.id}/updates`);
+    const isMomRoute = pathname.startsWith(`/main/projects/${project.id}/moms`);
 
     const routes = [
         '/phases',
@@ -95,12 +98,12 @@ export const ProjectNavbar = ({
                             onClick={updateModal.onOpen}
                         />
                     )}
-                    {pathname.endsWith('/moms') && (
+                    {isMomRoute && (
                         <Button 
                             label="Add MoM" 
                             icon={<Plus className="scale-[0.8]"/>}
                             className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={auditModal.onOpen}
+                            onClick={momModal.onOpen}
                         />
                     )}
                     
