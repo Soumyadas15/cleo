@@ -7,7 +7,16 @@ import { Avatar } from "./Avatar";
 import MenuItem from "./MenuItem";
 import { Button } from "../reusable/Button";
 import useCreateModal from "@/hooks/useLoginModal";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown"
+import { LogOut, User } from "lucide-react";
 
 
 interface UserMenuProps {
@@ -34,71 +43,42 @@ const UserMenu: React.FC<UserMenuProps> = ({
   return ( 
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
-        
-        <div 
-        onClick={toggleOpen}
-        className="s
-          flex 
-          flex-row 
-          items-center 
-          gap-3 
-          rounded-full 
-          cursor-pointer 
-          transition
-          "
-        style={{ transform: clicked ? 'scale(0.9)' : 'scale(1)' }}
-        >
-          
-          <div className="hidden md:block">
-            <Avatar user={user} />
-          </div>
-        </div>
-      </div>
-      {isOpen && (
-        <div 
-          className="
-            absolute 
-            rounded-xl 
-            shadow-md
-            w-[15vw]
-            p-4
-            bg-neutral-100
-            dark:bg-slate-800
-            overflow-hidden 
-            right-0 
-            top-15 
-            z-[99]
-          "
-        >
-          <div className="flex flex-col cursor-pointer items-center">
-            {user ? (
-              <>
-              <div className=" w-full h-[6rem] flex flex-col items-center justify-between">
-                <div className="flex items-center flex-col">
-                  <div className="text-black dark:text-white font-bold">
-                    {user.name}
-                  </div>
-                  <div className="text-sm">
-                    {user.role}
-                  </div>
-                </div>
-                
-                <Button
-                  label="Logout"
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div 
+              className="hidden md:block hover:cursor-pointer"
+              style={{ transform: clicked ? 'scale(0.9)' : 'scale(1)' }}
+            >
+              <Avatar user={user} />
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-40 mr-6 bg-white rounded-[5px]">
+
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            
+            <DropdownMenuSeparator/>
+
+            <DropdownMenuGroup>
+              <DropdownMenuItem className="rounded-[5px] focus:bg-neutral-200 hover:cursor-pointer">
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </DropdownMenuItem>
+
+              <DropdownMenuSeparator className="border-neutral-300 hover:cursor-pointer"/>
+
+              <DropdownMenuItem 
+                  className="rounded-[5px] focus:bg-neutral-200 hover:cursor-pointer"
                   onClick={() => {router.push('/api/auth/logout')}}
-                  className="p-2 pr-3 pl-3 rounded-[5px] text-sm"
-                />
-              </div>
-                
-              </>
-            ) : (
-              <>
-                
-              </>
-            )}
-          </div>
-        </div>
-      )}
+              >
+                <LogOut className="mr-2 h-4 w-4 text-red-600" />
+                <span className="text-red-600">Logout</span>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+
+
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </div>
    );
 }

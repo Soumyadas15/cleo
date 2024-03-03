@@ -1,6 +1,6 @@
 "use client"
 
-import { Briefcase, Home, List, Plus, Settings, User, UserRoundPlus } from "lucide-react"
+import { Briefcase, Plus, Settings, User, UserRoundPlus } from "lucide-react"
 import { SidebarItem } from "./SidebarItem"
 import { Button } from "../reusable/Button"
 import Image from "next/image"

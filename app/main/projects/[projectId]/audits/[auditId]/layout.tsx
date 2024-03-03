@@ -36,8 +36,6 @@ export default async function AuditLayout({
     return (  
         <div className="overflow-hidden h-[99%]">
             <AuditClient audits={audits} user={user} project={project}/>
-            <DeleteAuditModal audit={audit} project={project} />
-            <EditAuditModal audit={audit}/>
             {children}
         </div>
     );

@@ -61,24 +61,28 @@ const EditResourceModal = ({
     } = useForm<FieldValues>({
         defaultValues: {
             resourceId: resource.id,
-            name: '',
-            role: '',
-            comment: '',
-            startDate: undefined,
-            endDate: undefined,
+            name: resource.name,
+            role: resource.role,
+            comment: resource.comment,
+            startDate: resource.startDate,
+            endDate: resource.endDate,
     }})
 
-    useEffect(() => {
-        if (startDate) {
-        setValue("startDate", startDate);
-        }
-    }, [startDate, setValue]);
+  useEffect(() => {
+      if (resource.startDate) {
+        const resourceStartDate = new Date(resource.startDate);
+        setStartDate(resourceStartDate);
+        setValue("startDate", resourceStartDate);
+      }
+  }, [resource.startDate, setValue]);
 
-    useEffect(() => {
-        if (endDate) {
-        setValue("endDate", endDate);
-        }
-    }, [endDate, setValue]);
+  useEffect(() => {
+      if (resource.endDate) {
+        const feedbackEndDate = new Date(resource.endDate);
+        setEndDate(feedbackEndDate);
+        setValue("endDate", feedbackEndDate);
+      }
+  }, [resource.endDate, setValue]);
 
 
   const onBack = () => {
@@ -243,7 +247,10 @@ const EditResourceModal = ({
                 <Calendar
                 mode="single"
                 selected={startDate}
-                onSelect={setStartDate}
+                onSelect={(date) => {
+                    setStartDate(date);
+                    setValue("startDate", date);
+                }}
                 initialFocus
                 />
             </PopoverContent>
@@ -273,7 +280,10 @@ const EditResourceModal = ({
                 <Calendar
                 mode="single"
                 selected={endDate}
-                onSelect={setEndDate}
+                onSelect={(date) => {
+                    setStartDate(date);
+                    setValue("endDate", date);
+                }}
                 initialFocus
                 />
             </PopoverContent>

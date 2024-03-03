@@ -29,7 +29,7 @@ export default async function ResourceLayout({
     return (  
         <div className="overflow-hidden h-[99%]">
             <FeedbacksClient feedbacks={feedbacks} user={user} project={project}/>
-            <EditFeedbackModal feedback={feedback}/>
+            {/* <EditFeedbackModal feedback={feedback}/> */}
             {children}
         </div>
     );

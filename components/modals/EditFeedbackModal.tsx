@@ -59,24 +59,28 @@ const EditFeedbackModal = ({
     } = useForm<FieldValues>({
         defaultValues: {
             feedbackId: feedback.id,
-            type: '',
-            body: '',
-            action: '',
-            date: undefined,
-            closureDate: undefined,
+            type: feedback.type,
+            body: feedback.body,
+            action: feedback.action,
+            date: feedback.date,
+            closureDate: feedback.closureDate,
     }})
 
-    useEffect(() => {
-        if (date) {
-        setValue("date", date);
-        }
-    }, [date, setValue]);
+  useEffect(() => {
+      if (feedback.date) {
+        const feedbackDate = new Date(feedback.date);
+        setDate(feedbackDate);
+        setValue("date", feedbackDate);
+      }
+  }, [feedback.date, setValue]);
 
-    useEffect(() => {
-        if (closureDate) {
-        setValue("closureDate", closureDate);
-        }
-    }, [closureDate, setValue]);
+  useEffect(() => {
+      if (feedback.closureDate) {
+        const feedbackClosureDate = new Date(feedback.closureDate);
+        setClosureDate(feedbackClosureDate);
+        setValue("closureDate", feedbackClosureDate);
+      }
+  }, [feedback.closureDate, setValue]);
 
 
   const onBack = () => {
@@ -241,7 +245,10 @@ const EditFeedbackModal = ({
                 <Calendar
                 mode="single"
                 selected={date}
-                onSelect={setDate}
+                onSelect={(date) => {
+                    setDate(date);
+                    setValue("date", date);
+                }}
                 initialFocus
                 />
             </PopoverContent>
@@ -271,7 +278,10 @@ const EditFeedbackModal = ({
                 <Calendar
                 mode="single"
                 selected={closureDate}
-                onSelect={setClosureDate}
+                onSelect={(date) => {
+                    setClosureDate(date);
+                    setValue("closureDate", date);
+                }}
                 initialFocus
                 />
             </PopoverContent>

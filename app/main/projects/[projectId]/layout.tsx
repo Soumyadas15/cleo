@@ -3,6 +3,7 @@ import AuditModal from "@/components/modals/AuditModal";
 import EditAuditModal from "@/components/modals/EditAuditModal";
 import FeedbackModal from "@/components/modals/FeedbackModal";
 import ResourceModal from "@/components/modals/ResourceModal";
+import UpdateModal from "@/components/modals/UpdateModal";
 import { ProjectNavbar } from "@/components/pages/projects/ProjectNavbar";
 import Heading from "@/components/reusable/Heading";
 import { initialProfile } from "@/lib/initial-profile";
@@ -27,6 +28,7 @@ export default async function ProjectLayout({
         <AuditModal project={project} user={user}/>
         <ResourceModal project={project} user={user}/>
         <FeedbackModal project={project} user={user}/>
+        <UpdateModal project={project} user={user}/>
         
         <div className="p-5 h-full w-full">
             <div className="h-[5%]">

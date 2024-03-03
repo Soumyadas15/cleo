@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { 
   FieldValues, 
   SubmitHandler, 
@@ -13,9 +13,9 @@ import Heading from "../reusable/Heading";
 import Input from "../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
-import useCreateModal from "@/hooks/useLoginModal";
 import useSuccessModal from "@/hooks/useSuccessModal";
-import createProjectMember from "@/actions/createProjectMember";
+import useCreateModal from "@/hooks/useLoginModal";
+import { useModal } from "@/hooks/useModalStore";
 
 enum STEPS {
   DESCRIPTION = 0,
@@ -33,6 +33,7 @@ const CreateModal = ({
 
   const router = useRouter();
   const createModal = useCreateModal();
+  const { isOpen, onClose, type } = useModal();
   const successModal = useSuccessModal();
   const [currentStage, setCurrentStage] = useState(1);
   const [step, setStep] = useState(STEPS.DESCRIPTION);
@@ -95,6 +96,7 @@ const CreateModal = ({
 
     return 'Next'
   }, [step]);
+  
 
   const secondaryActionLabel = useMemo(() => {
       if(step === STEPS.DESCRIPTION){
@@ -105,9 +107,8 @@ const CreateModal = ({
 
 
   const progress = useMemo(() => {
-    return (step / (Object.keys(STEPS).length / 2 - 1)) * 100; // Adjust for enum length
+    return (step / (Object.keys(STEPS).length / 2 - 1)) * 100;
   }, [step]);
-
 
 
   let bodyContent = (

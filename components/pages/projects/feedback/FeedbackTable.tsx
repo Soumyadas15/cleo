@@ -26,6 +26,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import useEditResourceModal from "@/hooks/useEditResourceModal";
 import useEditFeedbackModal from "@/hooks/useEditFeedbackModal";
+import EditFeedbackModal from "@/components/modals/EditFeedbackModal";
 
 interface FeedbackTableProps {
   project: any;
@@ -55,7 +56,7 @@ export const FeedbackTable = ({
   const [sureToDeleteId, setSureToDeleteId] = useState<string | null>(null);
 
   const clickEdit = (feedback: any) => {
-    router.push(`/main/projects/${project.id}/feedbacks/${feedback.id}`);
+    // router.push(`/main/projects/${project.id}/feedbacks/${feedback.id}`);
     editFeedbackModal.onOpen();
   };
 
@@ -69,7 +70,6 @@ export const FeedbackTable = ({
     try {
       await axios.delete(`/api/feedbacks/${feedback.id}`);
       toast.success("Feedback deleted");
-      router.push(`/main/projects/${project.id}/feedbacks`);
       router.refresh();
     } catch (error: any) {
       toast.error(error.message);
@@ -102,8 +102,9 @@ export const FeedbackTable = ({
       </TableHeader>
       <TableBody>
 
-
         {feedbacks.map((feedback: any, index: number) => (
+          <>
+          <EditFeedbackModal feedback={feedback}/>
           <TableRow key={feedback.id} className="dark:border-slate-600">
 
             <TableCell className="font-medium">{index}</TableCell>
@@ -158,6 +159,7 @@ export const FeedbackTable = ({
               </TableCell>
             )}
           </TableRow>
+          </>
         ))}
       </TableBody>
     </Table>

@@ -40,7 +40,6 @@ export default async function ResourceLayout({
     return (  
         <div className="overflow-hidden h-[99%]">
             <ResourcesClient resources={resources} user={user} project={project}/>
-            <EditResourceModal resource={resource}/>
             {children}
         </div>
     );

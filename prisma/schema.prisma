@@ -55,6 +55,7 @@ model Project {
   members Member[]
   audits Audit[]
   resources Resource[]
+  updates Update[]
   feedbacks Feedback[]
   meetingMinutes MeetingMinute[]
 
@@ -138,6 +139,18 @@ model Feedback {
   
 }
 
+
+model Update {
+  id String @id @default(uuid())
+  
+  date DateTime @default(now())
+  body String @db.Text
+  isEdited Boolean @default(false)
+
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+}
 
 
 

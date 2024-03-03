@@ -25,10 +25,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import EditAuditModal from "@/components/modals/EditAuditModal";
+import EditUpdateModal from "@/components/modals/EditUpdateModal";
+import useEditUpdateModal from "@/hooks/useEditUpdateModa";
 
-interface AuditTableProps {
+interface UpdateTableProps {
   project: any;
-  audits: any;
+  updates: any;
   user: any;
 }
 
@@ -42,15 +44,14 @@ interface AuditTableProps {
  */
 
 
-export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
+export const UpdateTable = ({ project, updates, user }: UpdateTableProps) => {
   const router = useRouter();
-  const editAuditModal = useEditAuditModal();
-  const deleteAuditModal = useDeleteAuditModal();
+  const editUpdateModal = useEditUpdateModal();
   const [isLoading, setIsLoading] = useState(false);
   const [sureToDeleteId, setSureToDeleteId] = useState<string | null>(null);
 
-  const clickEdit = (audit: any) => {
-    editAuditModal.onOpen();
+  const clickEdit = (update: any) => {
+    editUpdateModal.onOpen();
   };
 
   /**
@@ -58,11 +59,11 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
    * @param audit The audit data to delete
    */
 
-  const clickDelete = async (audit: any) => {
+  const clickDelete = async (update: any) => {
     setIsLoading(true);
     try {
-      await axios.delete(`/api/audits/${audit.id}`);
-      toast.success("Deleted audit");
+      await axios.delete(`/api/updates/${update.id}`);
+      toast.success("Deleted update");
       router.refresh();
     } catch (error: any) {
       toast.error(error.message);
@@ -83,7 +84,7 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
           <TableHead className="w-[100px] font-bold">Serial</TableHead>
           <TableHead className="w-[180px] font-bold">Date</TableHead>
           <TableHead className="font-bold w-[45rem]">Body</TableHead>
-          {user.role === "AUDITOR" ? (
+          {user.role === "MANAGER" ? (
             <TableHead className="">Actions</TableHead>
           ) : (
             <div></div>
@@ -91,27 +92,27 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {audits.map((audit: any, index: number) => (
+        {updates.map((update: any, index: number) => (
           <>
-          <EditAuditModal audit={audit}/>
-          <TableRow key={audit.id} className="dark:border-slate-600">
+          <EditUpdateModal update={update}/>
+          <TableRow key={update.id} className="dark:border-slate-600">
 
             <TableCell className="font-medium">{index}</TableCell>
 
-            <TableCell>{format(new Date(audit.date), "MMM do yyyy")}</TableCell>
+            <TableCell>{format(new Date(update.date), "MMM do yyyy")}</TableCell>
 
             <TableCell>
-              {audit.body} 
-              {audit.isEdited ? (
+              {update.body} 
+              {update.isEdited ? (
                  <span className="text-neutral-400 text-[12px] ml-2">(edited)</span>
               ) : (
                 <div></div>
               )}
             </TableCell>
 
-            {user.role === "AUDITOR" && (
+            {user.role === "MANAGER" && (
               <TableCell className="flex items-center justify-start gap-5">
-                {sureToDeleteId === audit.id ? (
+                {sureToDeleteId === update.id ? (
                   <>
                     
                   </>
@@ -121,21 +122,21 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
                         <DropdownMenuTrigger asChild>
                             <MoreHorizontal
                                 className="hover:opacity-50 hover:cursor-pointer transition font-bold"
-                                onClick={() => toggleSureToDelete(audit.id)}
+                                onClick={() => toggleSureToDelete(update.id)}
                             />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-32 z-[9999] bg-white dark:bg-neutral-800 border-none rounded-[5px]">
                             <DropdownMenuGroup>
                                 <DropdownMenuItem 
                                     className="hover:cursor-pointer rounded-[5px] focus:bg-neutral-100 dark:focus:bg-neutral-700"
-                                    onClick={() => {clickEdit(audit)}}
+                                    onClick={() => {clickEdit(update)}}
                                 >
                                     <Pen className="mr-2 h-4 w-4"/>
                                     <span>Edit</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem 
                                     className="hover:cursor-pointer rounded-[5px] focus:bg-neutral-100 dark:focus:bg-neutral-700"
-                                    onClick={() => {clickDelete(audit)}}
+                                    onClick={() => {clickDelete(update)}}
                                 >
                                     <Trash className="mr-2 h-4 w-4 text-red-700 dark:text-red-500" />
                                     <span className="text-red-700 dark:text-red-500">Delete</span>

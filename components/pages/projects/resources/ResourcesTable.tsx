@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import useEditResourceModal from "@/hooks/useEditResourceModal";
+import EditResourceModal from "@/components/modals/EditResourceModal";
 
 interface ResourceTableProps {
   project: any;
@@ -54,7 +55,6 @@ export const ResourceTable = ({
   const [sureToDeleteId, setSureToDeleteId] = useState<string | null>(null);
 
   const clickEdit = (resource: any) => {
-    router.push(`/main/projects/${project.id}/resources/${resource.id}`);
     editResourceModal.onOpen();
   };
 
@@ -67,7 +67,6 @@ export const ResourceTable = ({
     setIsLoading(true);
     try {
       await axios.delete(`/api/resources/${resource.id}`);
-      router.push(`/main/projects/${project.id}/resources`);
       router.refresh();
       toast.success("Resource deleted");
     } catch (error: any) {
@@ -103,6 +102,8 @@ export const ResourceTable = ({
 
 
         {resources.map((resource: any, index: number) => (
+          <>
+          <EditResourceModal resource={resource}/>
           <TableRow key={resource.id} className="dark:border-slate-600">
 
             <TableCell className="font-medium">{index}</TableCell>
@@ -164,6 +165,7 @@ export const ResourceTable = ({
               </TableCell>
             )}
           </TableRow>
+          </>
         ))}
       </TableBody>
     </Table>
