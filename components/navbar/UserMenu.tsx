@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown"
 import { LogOut, User } from "lucide-react";
+import useProfileModal from "@/hooks/useProfileModal";
 
 
 interface UserMenuProps {
@@ -32,6 +33,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const [clicked, setClicked] = useState(false);
 
   const createModal = useCreateModal();
+  const profileModal = useProfileModal();
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
@@ -59,7 +61,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
             <DropdownMenuSeparator/>
 
             <DropdownMenuGroup>
-              <DropdownMenuItem className="rounded-[5px] focus:bg-neutral-200 hover:cursor-pointer">
+              <DropdownMenuItem 
+                className="rounded-[5px] focus:bg-neutral-200 hover:cursor-pointer"
+                onClick={profileModal.onOpen}
+              >
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
               </DropdownMenuItem>
