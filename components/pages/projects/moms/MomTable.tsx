@@ -24,7 +24,6 @@ import { MoreHorizontal, Pen, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import useEditResourceModal from "@/hooks/useEditResourceModal";
 import EditMomModal from "@/components/modals/EditMomModal";
 import useEditMomModal from "@/hooks/useEditMomModal";
 
@@ -110,7 +109,7 @@ export const MomTable = ({
 
             <TableCell>{format(new Date(mom.date), "MMM do yyyy")}</TableCell>
 
-            <TableCell className="font-medium">{mom.duration}</TableCell>
+            <TableCell className="">{mom.duration} mins.</TableCell>
             
 
             <TableCell>{mom.link}</TableCell>

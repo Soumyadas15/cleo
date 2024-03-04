@@ -41,7 +41,15 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button"
+    const Comp = asChild ? Slot : "button";
+
+    const [clicked, setClicked] = React.useState(false);
+
+    const handleClick = () => {
+      setClicked(true);
+      setTimeout(() => setClicked(false), 150);
+    };
+    
     return (
       <Comp
         

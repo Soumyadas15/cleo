@@ -16,7 +16,9 @@ import { Plus, PlusIcon } from "lucide-react";
 import { PhasesList } from "./PhasesList";
 import { Button } from "@/components/reusable/Button";
 import usePhaseContentModal from "@/hooks/usePhaseContentModal";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 interface FeedbacksClientProps {
     phases: any;
@@ -34,22 +36,37 @@ export const PhasesClient = ({
 
     const phaseContentModal = usePhaseContentModal();
     const pathname = usePathname();
-
-    // if (phases.length === 0){
-    //     return(
-    //         <EmptyState 
-    //             title="No Phases yet"
-    //             subtitle="Create a Phase"
-    //             showButton = {user.role === "MANAGER"}
-    //             buttonLabel="Create"
-    //             onClick={feedbackModal.onOpen}
-    //         />
-    //     )
-
-    // }
-
     const isPhasesHome = pathname.endsWith('/phases');
+    const router = useRouter();
 
+    const onAdd = async (project: any) => {
+        const data = { projectId: project.id };
+        console.log(project.id);
+        axios.post('/api/phases', data)
+        .then((response) => {
+            const phase = response.data;
+            const phaseId = phase.id;
+            toast.success('Phase created');
+            router.push(`/main/projects/${project.id}/phases/${phaseId}`);
+        }).catch((error) => {
+            toast.error(error.message);
+        }).finally(() => {
+            router.refresh();
+        });
+    };
+
+
+    if (phases.length === 0){
+        return(
+            <EmptyState 
+                title="No Phases yet"
+                subtitle="Add a Phase"
+                showButton = {user.role === "MANAGER"}
+                buttonLabel="Add"
+                onClick={() => {onAdd(project)}}
+            />
+        )
+    }
 
     return (
         <div className="scrollbar-hide">

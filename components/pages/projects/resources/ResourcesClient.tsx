@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/reusable/Button";
 import { Plus } from "lucide-react";
-import { ResourceTable } from "./ResourcesTable";
+import { ResourceTable } from "./ResourceTable";
 import useResourceModal from "@/hooks/useResourceModal";
 
 interface ResourcesClientProps {

@@ -7,6 +7,7 @@ import {
     DropdownMenuGroup, 
     DropdownMenuItem, 
     DropdownMenuLabel, 
+    DropdownMenuRadioGroup, 
     DropdownMenuSeparator, 
     DropdownMenuTrigger } from "@/components/ui/dropdown";
 import usePhaseContentModal from "@/hooks/usePhaseContentModal";
@@ -28,13 +29,19 @@ export const PhasesList = ({
 
     const router = useRouter();
     const { phaseId } = useParams();
+    const pathname = usePathname();
 
     const [currentPhaseText, setCurrentPhaseText] = useState('No Phases');
+    const [clicked, setClicked] = useState(false);
+    const [position, setPosition] = useState("bottom")
 
-    const phaseContentModal = usePhaseContentModal()
+
 
     useEffect(() => {
-        if (phases.length > 0 && phaseId) {
+        if (pathname.endsWith('/phases') && phases.length > 0){
+            setCurrentPhaseText('Select phase')
+        }
+        else if (phases.length > 0 && phaseId) {
             const currentPhaseIndex = phases.findIndex(phase => phase.id === phaseId);
             if (currentPhaseIndex !== -1) {
                 setCurrentPhaseText(`Phase ${phases.length - currentPhaseIndex}`);
@@ -62,15 +69,25 @@ export const PhasesList = ({
         });
     };
 
-    // Assuming phases are already sorted by createdAt in descending order
-    const currentPhaseNumber = phases.length; // Since the newest phase should be "Phase 1"
+
+    const handleClick = () => {
+        setClicked(true);
+        setTimeout(() => setClicked(false), 150);
+    };
 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="w-[8rem] text-left">
-                    {currentPhaseText}
-                </Button>
+                
+                    <Button 
+                        onClick={handleClick}
+                        variant="outline" 
+                        className={`w-[8rem] transition`}
+                    >
+                        {currentPhaseText}
+                    </Button>
+                
+                
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-42 bg-white rounded-[5px]">
 
@@ -80,9 +97,9 @@ export const PhasesList = ({
                 
                 <DropdownMenuSeparator />
 
-                <DropdownMenuGroup>
+                <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
                     {phases.map((phase, index) => (
-                        <DropdownMenuItem 
+                        <DropdownMenuItem  
                             key={phase.id}
                             className="rounded-[5px] hover:cursor-pointer focus:bg-neutral-200"
                             onClick={() => {
@@ -99,7 +116,7 @@ export const PhasesList = ({
                         <Plus className="mr-2 h-4 w-4" />
                         <span>Add phase</span>
                     </DropdownMenuItem>
-                </DropdownMenuGroup>
+                </DropdownMenuRadioGroup>
 
             </DropdownMenuContent>
         </DropdownMenu>

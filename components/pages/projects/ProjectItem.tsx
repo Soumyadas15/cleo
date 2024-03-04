@@ -17,7 +17,7 @@ export const ProjectItem = ({
     const handleClick = () => {
         setClicked(true);
         setTimeout(() => setClicked(false), 150);
-        router.push(`/main/projects/${project.id}`);
+        router.push(`/main/projects/${project.id}/phases`);
     };
 
     return (

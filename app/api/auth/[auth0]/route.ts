@@ -10,7 +10,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
  */
 export const GET = handleAuth({
     login: handleLogin({
-        returnTo: "/main/home",
+        returnTo: "/main/projects",
     }),
     //@ts-ignore
     callback: async (req: NextApiRequest, res: NextApiResponse) => {

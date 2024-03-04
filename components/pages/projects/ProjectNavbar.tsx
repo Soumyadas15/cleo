@@ -60,7 +60,7 @@ export const ProjectNavbar = ({
                             key={index}
                             label={route.slice(1).charAt(0).toUpperCase() + route.slice(2)}
                             to={`/main/projects/${project.id}${route}`}
-                            isActive={pathname.endsWith(route)}
+                            isActive={pathname.startsWith(`/main/projects/${project.id}${route}`)}
                         />
                     ))}
                 </div>

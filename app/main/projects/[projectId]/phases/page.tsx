@@ -18,6 +18,8 @@ const PhasesPage = async (
     const user = await initialProfile();
     const phases = await getPhases(params);
     
+
+    
     return (  
         <div className="flex flex-col h-full">
             <PhasesClient phases={phases} project={project} user={user}/>

@@ -12,6 +12,7 @@ import EditAuditModal from "@/components/modals/EditAuditModal";
 import PhaseContentModal from "@/components/modals/PhaseContentModal";
 import { ProjectNavbar } from "@/components/pages/projects/ProjectNavbar";
 import { AuditClient } from "@/components/pages/projects/audit/AuditClient";
+import { PhaseContentsClient } from "@/components/pages/projects/phases/PhaseContentsClient";
 import { PhaseContentsTable } from "@/components/pages/projects/phases/PhaseContentsTable";
 import { PhasesClient } from "@/components/pages/projects/phases/PhasesClient";
 import Heading from "@/components/reusable/Heading";
@@ -46,7 +47,7 @@ export default async function PhaseLayout({
             <PhaseContentModal phase={phase} user={user}/>
             <PhasesClient phases={phases} user={user} project={project} phase={phase}/>
             <div className="h-[90%] w-full">
-                <PhaseContentsTable phaseContents={phaseContents} project={project} user={user}/>
+                <PhaseContentsClient phaseContents={phaseContents} project={project} user={user}/>
             </div>
         </div>
     );

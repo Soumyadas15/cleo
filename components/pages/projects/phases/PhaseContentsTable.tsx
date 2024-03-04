@@ -18,14 +18,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown"
 
-import axios from "axios";
-import { format } from "date-fns";
 import { MoreHorizontal, Pen, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import toast from "react-hot-toast";
-import useEditResourceModal from "@/hooks/useEditResourceModal";
-import EditResourceModal from "@/components/modals/EditResourceModal";
 
 interface PhaseContentsTableProps {
   project: any;
@@ -50,13 +45,8 @@ export const PhaseContentsTable = ({
 }: PhaseContentsTableProps) => {
 
   const router = useRouter();
-  const editResourceModal = useEditResourceModal();
   const [isLoading, setIsLoading] = useState(false);
   const [sureToDeleteId, setSureToDeleteId] = useState<string | null>(null);
-
-  const clickEdit = (resource: any) => {
-    editResourceModal.onOpen();
-  };
 
   /**
    * Handler for clicking the delete button of an audit
@@ -101,19 +91,18 @@ export const PhaseContentsTable = ({
 
         {phaseContents.map((phaseContent: any, index: number) => (
           <>
-          <EditResourceModal resource={phaseContent}/>
           <TableRow key={phaseContent.id} className="dark:border-slate-600">
 
             <TableCell className="font-medium">{index}</TableCell>
 
-            <TableCell className="font-medium">{phaseContent.resources}</TableCell>
+            <TableCell className="font-medium">{phaseContent.resources} %</TableCell>
             
 
             <TableCell>{phaseContent.role}</TableCell>
 
-            <TableCell>{format(new Date(phaseContent.availability), "MMM do yyyy")}</TableCell>
+            <TableCell>{phaseContent.availability} %</TableCell>
 
-            <TableCell>{format(new Date(phaseContent.duration), "MMM do yyyy")}</TableCell>
+            <TableCell>{phaseContent.duration} months</TableCell>
 
 
             {user.role === "MANAGER" && (
@@ -135,7 +124,7 @@ export const PhaseContentsTable = ({
                             <DropdownMenuGroup>
                                 <DropdownMenuItem 
                                     className="hover:cursor-pointer rounded-[5px] focus:bg-neutral-100 dark:focus:bg-neutral-700"
-                                    onClick={() => {clickEdit(phaseContent)}}
+                                    onClick={() => {}}
                                 >
                                     <Pen className="mr-2 h-4 w-4"/>
                                     <span>Edit</span>
