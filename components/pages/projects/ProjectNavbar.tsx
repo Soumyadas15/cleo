@@ -18,7 +18,7 @@ interface ProjectNavbarProps {
 
 export const ProjectNavbar = ({
     project,
-    user
+    user,
 }: ProjectNavbarProps) => {
 
     const pathname = usePathname();
@@ -127,7 +127,7 @@ export const ProjectNavbar = ({
                     )}
                     {pathname.endsWith('/escalation') && (
                         <Button 
-                            label="Add escalation matrix" 
+                            label="Add matrix" 
                             icon={<Plus className="scale-[0.8]"/>}
                             className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
                             onClick={auditModal.onOpen}

@@ -12,6 +12,8 @@
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",
     "@prisma/client": "^5.10.2",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@tabler/icons-react": "^2.47.0",
     "axios": "^1.6.7",
@@ -34,9 +36,11 @@
     "react-hot-toast": "^2.4.1",
     "react-icons": "^5.0.1",
     "react-spinners": "^0.13.8",
+    "recharts": "^2.12.2",
     "simplex-noise": "^4.0.1",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
+    "vaul": "^0.9.0",
     "zod": "^3.22.4",
     "zustand": "^4.5.1"
   },

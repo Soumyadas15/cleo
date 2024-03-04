@@ -85,7 +85,8 @@ const Modal: React.FC<ModalProps> = ({
                    z-[2100]
                    outline-none
                    focus:outline-none
-                   bg-neutral-800/70
+                   bg-neutral-900/90
+                   transition
                 '
             >
                 <div

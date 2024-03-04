@@ -110,12 +110,14 @@ export async function PUT(request: Request) {
       return new Response('MoM not found', { status: 404 });
     }
 
+    console.log(mom)
+
     const updatedMom = await db.mom.update({
       where: {
         id: momId,
       },
       data: {
-        duration: duration,
+        duration: intDuration,
         date: date,
         link: link,
         comments: comments,

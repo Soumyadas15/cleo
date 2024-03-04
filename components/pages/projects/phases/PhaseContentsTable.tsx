@@ -21,6 +21,10 @@ import {
 import { MoreHorizontal, Pen, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import EditPhaseContentModal from "@/components/modals/EditPhaseContentModal";
+import useEditPhaseContentModal from "@/hooks/useEditPhaseContentModal";
 
 interface PhaseContentsTableProps {
   project: any;
@@ -47,24 +51,26 @@ export const PhaseContentsTable = ({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [sureToDeleteId, setSureToDeleteId] = useState<string | null>(null);
+  const editPhaseContentModal = useEditPhaseContentModal();
 
   /**
    * Handler for clicking the delete button of an audit
    * @param resource The audit data to delete
    */
 
-  const clickDelete = async (resource: any) => {
-    // setIsLoading(true);
-    // try {
-    //   await axios.delete(`/api/resources/${resource.id}`);
-    //   router.refresh();
-    //   toast.success("Resource deleted");
-    // } catch (error: any) {
-    //   toast.error(error.message);
-    // } finally {
-    //   setIsLoading(false);
-    //   setSureToDeleteId(null);
-    // }
+  const clickDelete = async (phaseContent: any) => {
+    console.log(phaseContent.id);
+    setIsLoading(true);
+    try {
+      await axios.delete(`/api/phases/phase-content/${phaseContent.id}`);
+      router.refresh();
+      toast.success("Phase data deleted");
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+      setSureToDeleteId(null);
+    }
   };
 
   const toggleSureToDelete = (resourceId: string) => {
@@ -91,6 +97,7 @@ export const PhaseContentsTable = ({
 
         {phaseContents.map((phaseContent: any, index: number) => (
           <>
+          <EditPhaseContentModal phaseContent={phaseContent}/>
           <TableRow key={phaseContent.id} className="dark:border-slate-600">
 
             <TableCell className="font-medium">{index}</TableCell>
@@ -124,7 +131,7 @@ export const PhaseContentsTable = ({
                             <DropdownMenuGroup>
                                 <DropdownMenuItem 
                                     className="hover:cursor-pointer rounded-[5px] focus:bg-neutral-100 dark:focus:bg-neutral-700"
-                                    onClick={() => {}}
+                                    onClick={editPhaseContentModal.onOpen}
                                 >
                                     <Pen className="mr-2 h-4 w-4"/>
                                     <span>Edit</span>

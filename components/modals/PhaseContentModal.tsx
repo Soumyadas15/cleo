@@ -109,7 +109,7 @@ const PhaseContentModal = ({
   let bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading
-        title="Resources"
+        title="Number of resources"
         subtitle=""
         center
       />
@@ -204,7 +204,7 @@ const PhaseContentModal = ({
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <Textarea
+          <Input
             id="duration"
             label="Duration (in months)"
             disabled={isLoading}
