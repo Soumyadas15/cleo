@@ -5,11 +5,11 @@ import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { Toaster } from "react-hot-toast";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import CreateModal from "@/components/modals/CreateModal";
+import CreateModal from "@/components/modals/createModals/CreateModal";
 import { Navbar } from "@/components/navbar/Navbar";
 import { initialProfile } from "@/lib/initial-profile";
 import SuccessModal from "@/components/modals/SuccessModal";
-import NameModal from "@/components/modals/NameModal";
+import NameModal from "@/components/modals/createModals/NameModal";
 
 const font = Montserrat({ subsets: ["latin"] });
 

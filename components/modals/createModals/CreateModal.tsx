@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { 
   FieldValues, 
   SubmitHandler, 
@@ -8,34 +8,36 @@ import {
 } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { motion } from 'framer-motion';
-import Modal from "./Modal";
-import Heading from "../reusable/Heading";
-import Input from "../reusable/Input";
+import Modal from "../Modal";
+import Heading from "../../reusable/Heading";
+import Input from "../../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
-import useResourceModal from "@/hooks/useResourceModal";
-import Textarea from "../reusable/Textarea";
-import { ProgressBar } from "../ProgressBar";
-import usePhaseContentModal from "@/hooks/usePhaseContentModal";
-import useEditPhaseContentModal from "@/hooks/useEditPhaseContentModal";
+import useSuccessModal from "@/hooks/useSuccessModal";
+import useCreateModal from "@/hooks/useLoginModal";
+import { useModal } from "@/hooks/useModalStore";
+import { ProgressBar } from "../../ProgressBar";
 
 enum STEPS {
-  RESOURCES = 0,
-  ROLE = 1,
-  AVAILABILITY = 2,
-  DURATION = 3,
+  DESCRIPTION = 0,
+  CLIENTS = 1,
+  MANAGER = 2,
+  AUDITOR = 3,
 }
 
-interface EditPhaseContentModalProps {
-  phaseContent: any
+interface CreateModalProps {
+  user: any;
 }
-const EditPhaseContentModal = ({
-    phaseContent
-}: EditPhaseContentModalProps) => {
+const CreateModal = ({
+  user,
+}: CreateModalProps) => {
 
   const router = useRouter();
-  const editPhaseContentModal = useEditPhaseContentModal();
-  const [step, setStep] = useState(STEPS.RESOURCES);
+  const createModal = useCreateModal();
+  const { isOpen, onClose, type } = useModal();
+  const successModal = useSuccessModal();
+  const [currentStage, setCurrentStage] = useState(1);
+  const [step, setStep] = useState(STEPS.DESCRIPTION);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -48,51 +50,57 @@ const EditPhaseContentModal = ({
         errors,
     },
     reset
-    } = useForm<FieldValues>({
-        defaultValues: {
-            phaseContentId: phaseContent.id,
-            resources: phaseContent.resources,
-            role: phaseContent.role,
-            availability: phaseContent.availability,
-            duration: phaseContent.duration,
-    }})
+} = useForm<FieldValues>({
+    defaultValues: {
+        createdBy: user?.id,
+        name: '',
+        client: '',
+        manager: '',
+        auditor: '',
+    }
+})
 
+  const formToggle = () => {
+    createModal.onClose();
+    successModal.onOpen()
+}
 
   const onBack = () => {
-    setStep((value) => value - 1);
+      setStep((value) => value - 1);
   }
   const onNext = () => {
-    setStep((value) => value + 1);
+      setStep((value) => value + 1);
   }
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    if (step !== STEPS.DURATION){
+    if (step !== STEPS.AUDITOR){
       return onNext();
     }
     setIsLoading(true)
     console.log(data);
-    axios.put('/api/phases/phase-content', data)
+    axios.post('/api/projects', data)
         .then(() => {
             router.refresh();
-            toast.success('Success');
+            toast.success('Done');
         }) .catch((error) => {
             toast.error(error.message);
         }) .finally(() => {
             setIsLoading(false);
-            editPhaseContentModal.onClose()
+            formToggle();
     })
   }
 
   const actionLabel = useMemo(() => {
-    if(step === STEPS.DURATION){
+    if(step === STEPS.AUDITOR){
         return 'Create'
     }
 
     return 'Next'
   }, [step]);
 
+
   const secondaryActionLabel = useMemo(() => {
-      if(step === STEPS.RESOURCES){
+      if(step === STEPS.DESCRIPTION){
           return undefined;
       }
       return 'Back'
@@ -104,24 +112,23 @@ const EditPhaseContentModal = ({
   }, [step]);
 
 
-
   let bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading
-        title="Number of resources"
+        title="Project name"
         subtitle=""
         center
       />
         <motion.div
-            key="resources"
+            key="manager"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <Input
-            id="resources"
-            label="Number of resources"
+            id="name"
+            label="Name"
             disabled={isLoading}
             register={register}  
             errors={errors}
@@ -131,24 +138,24 @@ const EditPhaseContentModal = ({
     </div>
   )
 
-  if (step === STEPS.ROLE){
+  if (step === STEPS.CLIENTS){
     bodyContent = (
       <div className="flex flex-col gap-4">
         <Heading
-          title="Role"
+          title="Add clients"
           subtitle=""
           center
         />
         <motion.div
-            key="Role"
+            key="client"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <Input
-            id="role"
-            label="Role"
+            id="client"
+            label="Client"
             disabled={isLoading}
             register={register}  
             errors={errors}
@@ -160,73 +167,74 @@ const EditPhaseContentModal = ({
     )
   }
 
-  if (step === STEPS.AVAILABILITY){
+  if (step === STEPS.MANAGER){
     bodyContent = (
       <div className="flex flex-col gap-4">
         <Heading
-          title="Availability"
+          title="Project manager"
           subtitle=""
           center
         />
         <motion.div
-            key="availability"
+            key="manager"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <Input
-            id="availability"
-            label="Availability (in percentage)"
+            id="manager"
+            label="Project manager"
             disabled={isLoading}
             register={register}  
             errors={errors}
             required
           />
         </motion.div>
+        
       </div>
     )
   }
 
-    if (step === STEPS.DURATION){
+  if (step === STEPS.AUDITOR){
     bodyContent = (
       <div className="flex flex-col gap-4">
         <Heading
-          title="Duration"
+          title="Auditor"
           subtitle=""
           center
         />
         <motion.div
-            key="duration"
+            key="auditor"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <Input
-            id="duration"
-            label="Duration (in months)"
+            id="auditor"
+            label="Project auditor"
             disabled={isLoading}
             register={register}  
             errors={errors}
             required
           />
         </motion.div>
+        
       </div>
     )
   }
-
 
 
   return (
     <Modal
       disabled={isLoading}
-      isOpen={editPhaseContentModal.isOpen}
-      title="Phase details"
+      isOpen={createModal.isOpen}
+      title="New project"
       actionLabel={actionLabel}
-      onClose={editPhaseContentModal.onClose}
+      onClose={createModal.onClose}
       secondaryActionLabel={secondaryActionLabel}
-      secondaryAction={step == STEPS.RESOURCES ? undefined : onBack}
+      secondaryAction={step == STEPS.DESCRIPTION ? undefined : onBack}
       onSubmit={handleSubmit(onSubmit)}
       body={
         <div className="flex flex-col gap-6 items-center">
@@ -242,4 +250,4 @@ const EditPhaseContentModal = ({
   );
 }
 
-export default EditPhaseContentModal;
+export default CreateModal;

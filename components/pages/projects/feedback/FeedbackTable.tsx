@@ -24,8 +24,8 @@ import { MoreHorizontal, Pen, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import useEditFeedbackModal from "@/hooks/useEditFeedbackModal";
-import EditFeedbackModal from "@/components/modals/EditFeedbackModal";
+import useEditFeedbackModal from "@/hooks/editModalHooks/useEditFeedbackModal";
+import EditFeedbackModal from "@/components/modals/editModals/EditFeedbackModal";
 
 interface FeedbackTableProps {
   project: any;

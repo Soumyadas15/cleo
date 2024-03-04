@@ -7,21 +7,21 @@ import {
   useForm
 } from "react-hook-form";
 import { motion } from 'framer-motion';
-import Modal from "./Modal";
-import Heading from "../reusable/Heading";
-import Textarea from "../reusable/Textarea";
+import Modal from "../Modal";
+import Heading from "../../reusable/Heading";
+import Textarea from "../../reusable/Textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
-import { Button } from "../ui/button";
-import { Calendar } from "../ui/calendar";
+import { Button } from "../../ui/button";
+import { Calendar } from "../../ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import useAuditModal from "@/hooks/useAuditModal";
-import useUpdateModal from "@/hooks/useUpdateModal";
-import useEditUpdateModal from "@/hooks/useEditUpdateModa";
+import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
+import useUpdateModal from "@/hooks/createModalHooks/useUpdateModal";
+import useEditUpdateModal from "@/hooks/editModalHooks/useEditUpdateModa";
 
 interface EditUpdateModalProps {
   update: any;

@@ -8,22 +8,22 @@ import {
 } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { motion } from 'framer-motion';
-import Modal from "./Modal";
-import Heading from "../reusable/Heading";
-import Input from "../reusable/Input";
+import Modal from "../Modal";
+import Heading from "../../reusable/Heading";
+import Input from "../../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
-import useResourceModal from "@/hooks/useResourceModal";
-import Textarea from "../reusable/Textarea";
+import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
+import Textarea from "../../reusable/Textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { cn } from "@/lib/utils";
 import { format } from 'date-fns';
-import { Calendar } from "../ui/calendar";
-import useFeedbackModal from "@/hooks/useFeedbackModal";
-import useMomModal from "@/hooks/useMomModal";
-import { ProgressBar } from "../ProgressBar";
+import { Calendar } from "../../ui/calendar";
+import useFeedbackModal from "@/hooks/createModalHooks/useFeedbackModal";
+import useMomModal from "@/hooks/createModalHooks/useMomModal";
+import { ProgressBar } from "../../ProgressBar";
 
 enum STEPS {
   DURATION = 0,

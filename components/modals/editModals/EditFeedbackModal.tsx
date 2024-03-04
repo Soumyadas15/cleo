@@ -1,5 +1,4 @@
-"use client"
-
+'use client';
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { 
@@ -9,44 +8,43 @@ import {
 } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { motion } from 'framer-motion';
-import Modal from "./Modal";
-import Heading from "../reusable/Heading";
-import Input from "../reusable/Input";
+import Modal from "../Modal";
+import Heading from "../../reusable/Heading";
+import Input from "../../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
-import useResourceModal from "@/hooks/useResourceModal";
-import Textarea from "../reusable/Textarea";
+import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
+import Textarea from "../../reusable/Textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { cn } from "@/lib/utils";
 import { format } from 'date-fns';
-import { Calendar } from "../ui/calendar";
-import useEditResourceModal from "@/hooks/useEditResourceModal";
-import { ProgressBar } from "../ProgressBar";
-
-interface EditResourceModalProps {
-  resource?: any;
-}
+import { Calendar } from "../../ui/calendar";
+import useFeedbackModal from "@/hooks/createModalHooks/useFeedbackModal";
+import useEditFeedbackModal from "@/hooks/editModalHooks/useEditFeedbackModal";
+import { ProgressBar } from "../../ProgressBar";
 
 enum STEPS {
-  DESCRIPTION = 0,
-  ROLE = 1,
-  COMMENT = 2,
+  TYPE = 0,
+  BODY = 1,
+  ACTION = 2,
   DATES = 3,
 }
 
-const EditResourceModal = ({
-  resource,
-}: EditResourceModalProps) => {
-
+interface EditFeedbackModalProps {
+  feedback: any;
+}
+const EditFeedbackModal = ({
+  feedback
+}: EditFeedbackModalProps) => {
 
   const router = useRouter();
-  const editResourceModal = useEditResourceModal();
-  const [step, setStep] = useState(STEPS.DESCRIPTION);
+  const editFeedbackModal = useEditFeedbackModal();
+  const [step, setStep] = useState(STEPS.TYPE);
 
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
+  const [date, setDate] = useState<Date>();
+  const [closureDate, setClosureDate] = useState<Date>();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -61,29 +59,29 @@ const EditResourceModal = ({
     reset
     } = useForm<FieldValues>({
         defaultValues: {
-            resourceId: resource.id,
-            name: resource.name,
-            role: resource.role,
-            comment: resource.comment,
-            startDate: resource.startDate,
-            endDate: resource.endDate,
+            feedbackId: feedback.id,
+            type: feedback.type,
+            body: feedback.body,
+            action: feedback.action,
+            date: feedback.date,
+            closureDate: feedback.closureDate,
     }})
 
   useEffect(() => {
-      if (resource.startDate) {
-        const resourceStartDate = new Date(resource.startDate);
-        setStartDate(resourceStartDate);
-        setValue("startDate", resourceStartDate);
+      if (feedback.date) {
+        const feedbackDate = new Date(feedback.date);
+        setDate(feedbackDate);
+        setValue("date", feedbackDate);
       }
-  }, [resource.startDate, setValue]);
+  }, [feedback.date, setValue]);
 
   useEffect(() => {
-      if (resource.endDate) {
-        const feedbackEndDate = new Date(resource.endDate);
-        setEndDate(feedbackEndDate);
-        setValue("endDate", feedbackEndDate);
+      if (feedback.closureDate) {
+        const feedbackClosureDate = new Date(feedback.closureDate);
+        setClosureDate(feedbackClosureDate);
+        setValue("closureDate", feedbackClosureDate);
       }
-  }, [resource.endDate, setValue]);
+  }, [feedback.closureDate, setValue]);
 
 
   const onBack = () => {
@@ -97,17 +95,17 @@ const EditResourceModal = ({
     if (step !== STEPS.DATES){
       return onNext();
     }
-    setIsLoading(true);
+    setIsLoading(true)
     console.log(data);
-    axios.put('/api/resources', data)
+    axios.put('/api/feedbacks', data)
         .then(() => {
             router.refresh();
-            toast.success('Resource updated');
+            toast.success('Success');
         }) .catch((error) => {
             toast.error(error.message);
         }) .finally(() => {
             setIsLoading(false);
-            editResourceModal.onClose()
+            editFeedbackModal.onClose()
     })
   }
 
@@ -120,7 +118,7 @@ const EditResourceModal = ({
   }, [step]);
 
   const secondaryActionLabel = useMemo(() => {
-      if(step === STEPS.DESCRIPTION){
+      if(step === STEPS.TYPE){
           return undefined;
       }
       return 'Back'
@@ -136,20 +134,20 @@ const EditResourceModal = ({
   let bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading
-        title="Resource name"
+        title="Feedback type"
         subtitle=""
         center
       />
         <motion.div
-            key="name"
+            key="type"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <Input
-            id="name"
-            label="Name"
+            id="type"
+            label="Feedback type"
             disabled={isLoading}
             register={register}  
             errors={errors}
@@ -159,24 +157,24 @@ const EditResourceModal = ({
     </div>
   )
 
-  if (step === STEPS.ROLE){
+  if (step === STEPS.BODY){
     bodyContent = (
       <div className="flex flex-col gap-4">
         <Heading
-          title="Add role"
+          title="Body"
           subtitle=""
           center
         />
         <motion.div
-            key="role"
+            key="body"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <Input
-            id="role"
-            label="Role"
+          <Textarea
+            id="body"
+            label="Detailed feedback"
             disabled={isLoading}
             register={register}  
             errors={errors}
@@ -188,24 +186,24 @@ const EditResourceModal = ({
     )
   }
 
-  if (step === STEPS.COMMENT){
+  if (step === STEPS.ACTION){
     bodyContent = (
       <div className="flex flex-col gap-4">
         <Heading
-          title="Comment"
+          title="Action"
           subtitle=""
           center
         />
         <motion.div
-            key="comment"
+            key="action"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <Textarea
-            id="comment"
-            label="Comment"
+            id="action"
+            label="Action taken"
             disabled={isLoading}
             register={register}  
             errors={errors}
@@ -225,7 +223,7 @@ const EditResourceModal = ({
           center
         />
         <motion.div
-            key="startDate"
+            key="date"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
@@ -237,20 +235,20 @@ const EditResourceModal = ({
                 variant={"outline"}
                 className={cn(
                     "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                    !startDate && "text-muted-foreground"
+                    !date && "text-muted-foreground"
                 )}
                 >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {startDate ? format(startDate, "PPP") : <span>Start date</span>}
+                {date ? format(date, "PPP") : <span>Start date</span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
                 <Calendar
                 mode="single"
-                selected={startDate}
+                selected={date}
                 onSelect={(date) => {
-                    setStartDate(date);
-                    setValue("startDate", date);
+                    setDate(date);
+                    setValue("date", date);
                 }}
                 initialFocus
                 />
@@ -258,7 +256,7 @@ const EditResourceModal = ({
             </Popover>
         </motion.div>
         <motion.div
-            key="endDate"
+            key="closureDate"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
@@ -270,20 +268,20 @@ const EditResourceModal = ({
                 variant={"outline"}
                 className={cn(
                     "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                    !endDate && "text-muted-foreground"
+                    !closureDate && "text-muted-foreground"
                 )}
                 >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {endDate ? format(endDate, "PPP") : <span>End date</span>}
+                {closureDate ? format(closureDate, "PPP") : <span>End date</span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
                 <Calendar
                 mode="single"
-                selected={endDate}
+                selected={closureDate}
                 onSelect={(date) => {
-                    setStartDate(date);
-                    setValue("endDate", date);
+                    setClosureDate(date);
+                    setValue("closureDate", date);
                 }}
                 initialFocus
                 />
@@ -294,15 +292,17 @@ const EditResourceModal = ({
     )
   }
 
+
+
   return (
     <Modal
       disabled={isLoading}
-      isOpen={editResourceModal.isOpen}
-      title="Edit resource"
+      isOpen={editFeedbackModal.isOpen}
+      title="Edit feedback"
       actionLabel={actionLabel}
-      onClose={editResourceModal.onClose}
+      onClose={editFeedbackModal.onClose}
       secondaryActionLabel={secondaryActionLabel}
-      secondaryAction={step == STEPS.DESCRIPTION ? undefined : onBack}
+      secondaryAction={step == STEPS.TYPE ? undefined : onBack}
       onSubmit={handleSubmit(onSubmit)}
       body={
         <div className="flex flex-col gap-6 items-center">
@@ -316,6 +316,6 @@ const EditResourceModal = ({
       }
     />
   );
-};
+}
 
-export default EditResourceModal;
+export default EditFeedbackModal;

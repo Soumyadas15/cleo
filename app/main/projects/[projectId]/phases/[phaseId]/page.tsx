@@ -7,7 +7,7 @@ import EmptyState from "@/components/pages/EmptyState";
 import { ProjectClient } from "@/components/pages/projects/ProjectClient";
 import { AuditClient } from "@/components/pages/projects/audit/AuditClient";
 import { Button } from "@/components/reusable/Button";
-import usePhaseContentModal from "@/hooks/usePhaseContentModal";
+import usePhaseContentModal from "@/hooks/createModalHooks/usePhaseContentModal";
 import { initialProfile } from "@/lib/initial-profile";
 
 

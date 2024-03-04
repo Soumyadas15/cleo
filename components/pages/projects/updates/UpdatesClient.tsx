@@ -1,13 +1,13 @@
 "use client"
 
-import useAuditModal from "@/hooks/useAuditModal";
+import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import EmptyState from "../../EmptyState";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/reusable/Button";
 import { Plus } from "lucide-react";
 import { UpdateTable } from "./UpdatesTable";
-import useUpdateModal from "@/hooks/useUpdateModal";
+import useUpdateModal from "@/hooks/createModalHooks/useUpdateModal";
 
 interface UpdatesClienttProps {
     updates: any;

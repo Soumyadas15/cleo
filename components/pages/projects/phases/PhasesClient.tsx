@@ -15,7 +15,7 @@ import {
 import { Plus, PlusIcon } from "lucide-react";
 import { PhasesList } from "./PhasesList";
 import { Button } from "@/components/reusable/Button";
-import usePhaseContentModal from "@/hooks/usePhaseContentModal";
+import usePhaseContentModal from "@/hooks/createModalHooks/usePhaseContentModal";
 import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";

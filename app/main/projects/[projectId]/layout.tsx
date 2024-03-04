@@ -1,10 +1,10 @@
 import getProjectById from "@/actions/getProjects/getProjectById";
-import AuditModal from "@/components/modals/AuditModal";
-import EditAuditModal from "@/components/modals/EditAuditModal";
-import FeedbackModal from "@/components/modals/FeedbackModal";
-import MomModal from "@/components/modals/MomModal";
-import ResourceModal from "@/components/modals/ResourceModal";
-import UpdateModal from "@/components/modals/UpdateModal";
+import AuditModal from "@/components/modals/createModals/AuditModal";
+import EditAuditModal from "@/components/modals/editModals/EditAuditModal";
+import FeedbackModal from "@/components/modals/createModals/FeedbackModal";
+import MomModal from "@/components/modals/createModals/MomModal";
+import ResourceModal from "@/components/modals/createModals/ResourceModal";
+import UpdateModal from "@/components/modals/createModals/UpdateModal";
 import { ProjectNavbar } from "@/components/pages/projects/ProjectNavbar";
 import Heading from "@/components/reusable/Heading";
 import { initialProfile } from "@/lib/initial-profile";

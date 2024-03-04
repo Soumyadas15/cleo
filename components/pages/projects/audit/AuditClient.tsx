@@ -1,6 +1,6 @@
 "use client"
 
-import useAuditModal from "@/hooks/useAuditModal";
+import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import EmptyState from "../../EmptyState";
 import { useEffect, useState } from "react";
 import axios from "axios";

@@ -24,8 +24,8 @@ import { MoreHorizontal, Pen, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import EditMomModal from "@/components/modals/EditMomModal";
-import useEditMomModal from "@/hooks/useEditMomModal";
+import EditMomModal from "@/components/modals/editModals/EditMomModal";
+import useEditMomModal from "@/hooks/editModalHooks/useEditMomModal";
 
 interface MomTableProps {
   project: any;

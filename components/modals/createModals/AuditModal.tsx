@@ -7,35 +7,34 @@ import {
   useForm
 } from "react-hook-form";
 import { motion } from 'framer-motion';
-import Modal from "./Modal";
-import Heading from "../reusable/Heading";
-import Textarea from "../reusable/Textarea";
+import Modal from "../Modal";
+import Heading from "../../reusable/Heading";
+import Textarea from "../../reusable/Textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
-import { Button } from "../ui/button";
-import { Calendar } from "../ui/calendar";
+import { Button } from "../../ui/button";
+import { Calendar } from "../../ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import useAuditModal from "@/hooks/useAuditModal";
-import useUpdateModal from "@/hooks/useUpdateModal";
+import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 
-interface UpdateModalProps {
+interface AuditModalProps {
   project: any;
   user: any;
 }
 
-const UpdateModal = ({
+const AuditModal = ({
   project,
   user,
-}: UpdateModalProps) => {
+}: AuditModalProps) => {
 
 
   const [date, setDate] = useState<Date>();
   const router = useRouter();
-  const updateModal = useUpdateModal();
+  const auditModal = useAuditModal();
   const [isLoading, setIsLoading] = useState(false);
 
 
@@ -48,8 +47,9 @@ const UpdateModal = ({
   } = useForm<FieldValues>({
     defaultValues: {
       projectId: project?.id,
+      auditedBy: user?.id,
       date: undefined,
-      body: '',
+      content: '',
     }
   });
 
@@ -60,8 +60,7 @@ const UpdateModal = ({
   }, [date, setValue]);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    setIsLoading(true);
-    axios.post('/api/updates', data)
+    axios.post('/api/audits', data)
         .then(() => {
             router.refresh();
             toast.success('Done');
@@ -69,13 +68,13 @@ const UpdateModal = ({
             toast.error(error.message);
         }) .finally(() => {
             setIsLoading(false);
-            updateModal.onClose();
+            auditModal.onClose();
     })
   };
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
-      <Heading title="Add an update" subtitle="" center />
+      <Heading title="Audit details" subtitle="" center />
       <motion.div
         key="date"
         initial={{ opacity: 0, x: "-50%" }}
@@ -93,7 +92,7 @@ const UpdateModal = ({
               )}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? format(date, "PPP") : <span>Date</span>}
+              {date ? format(date, "PPP") : <span>Pick a date</span>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
@@ -107,15 +106,15 @@ const UpdateModal = ({
         </Popover>
       </motion.div>
       <motion.div
-        key="body"
+        key="content"
         initial={{ opacity: 0, x: "-50%" }}
         animate={{ opacity: 1, x: "0%" }}
         exit={{ opacity: 0, x: "100%" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
         <Textarea
-          id="body"
-          label="Details"
+          id="content"
+          label="Content"
           register={register}
           errors={errors}
           required
@@ -127,16 +126,16 @@ const UpdateModal = ({
   return (
     <Modal
       disabled={isLoading}
-      isOpen={updateModal.isOpen}
-      title="Project update"
+      isOpen={auditModal.isOpen}
+      title="Project audit"
       actionLabel="Done"
-      onClose={updateModal.onClose}
+      onClose={auditModal.onClose}
       secondaryActionLabel="Cancel"
-      secondaryAction={updateModal.onClose}
+      secondaryAction={auditModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
     />
   );
 };
 
-export default UpdateModal;
+export default AuditModal;

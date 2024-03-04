@@ -7,10 +7,10 @@ import {
   useForm
 } from "react-hook-form";
 import { motion } from 'framer-motion';
-import Modal from "./Modal";
-import Heading from "../reusable/Heading";
-import Input from "../reusable/Input";
-import useNameModal from "@/hooks/useNameModal";
+import Modal from "../Modal";
+import Heading from "../../reusable/Heading";
+import Input from "../../reusable/Input";
+import useNameModal from "@/hooks/createModalHooks/useNameModal";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -62,6 +62,7 @@ const NameModal = ({
         toast.error("Name cannot be an email");
         return
     }
+    setIsLoading(true)
     axios.post('/api/user', data)
         .then(() => {
             router.refresh();

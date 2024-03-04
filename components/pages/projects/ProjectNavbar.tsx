@@ -1,15 +1,17 @@
 "use client"
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ProjectNavbarItem } from "./ProjectNavbarItem";
-import useAuditModal from "@/hooks/useAuditModal";
+import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import { Button } from "@/components/reusable/Button";
 import { Plus } from "lucide-react";
-import useResourceModal from "@/hooks/useResourceModal";
-import useFeedbackModal from "@/hooks/useFeedbackModal";
-import useUpdateModal from "@/hooks/useUpdateModal";
-import useEditUpdateModal from "@/hooks/useEditUpdateModa";
-import useMomModal from "@/hooks/useMomModal";
+import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
+import useFeedbackModal from "@/hooks/createModalHooks/useFeedbackModal";
+import useUpdateModal from "@/hooks/createModalHooks/useUpdateModal";
+import useEditUpdateModal from "@/hooks/editModalHooks/useEditUpdateModa";
+import useMomModal from "@/hooks/createModalHooks/useMomModal";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 interface ProjectNavbarProps {
     project: any;
@@ -22,6 +24,7 @@ export const ProjectNavbar = ({
 }: ProjectNavbarProps) => {
 
     const pathname = usePathname();
+    const router = useRouter();
     
     const auditModal = useAuditModal();
     const resourceModal = useResourceModal();
@@ -36,6 +39,22 @@ export const ProjectNavbar = ({
     const isUpdateRoute = pathname.startsWith(`/main/projects/${project.id}/updates`);
     const isMomRoute = pathname.startsWith(`/main/projects/${project.id}/moms`);
     
+
+    const onAddPhase = async (project: any) => {
+        const data = { projectId: project.id };
+        console.log(project.id);
+        axios.post('/api/phases', data)
+        .then((response) => {
+            const phase = response.data;
+            const phaseId = phase.id;
+            toast.success('Phase created');
+            router.push(`/main/projects/${project.id}/phases/${phaseId}`);
+        }).catch((error) => {
+            toast.error(error.message);
+        }).finally(() => {
+            router.refresh();
+        });
+    };
 
     const routes = [
         '/phases',
@@ -73,7 +92,7 @@ export const ProjectNavbar = ({
                             label="Add Phase" 
                             icon={<Plus className="scale-[0.8]"/>}
                             className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={auditModal.onOpen}
+                            onClick={() => {onAddPhase(project)}}
                         />
                     )}
                     {isResourceRoute && (

@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
-import useEditResourceModal from "@/hooks/useEditResourceModal";
-import EditResourceModal from "@/components/modals/EditResourceModal";
+import useEditResourceModal from "@/hooks/editModalHooks/useEditResourceModal";
+import EditResourceModal from "@/components/modals/editModals/EditResourceModal";
 import {
   Table,
   TableBody,

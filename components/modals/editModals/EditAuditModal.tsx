@@ -7,13 +7,13 @@ import {
   useForm
 } from "react-hook-form";
 import { motion } from 'framer-motion';
-import Modal from "./Modal";
-import Heading from "../reusable/Heading";
-import Textarea from "../reusable/Textarea";
+import Modal from "../Modal";
+import Heading from "../../reusable/Heading";
+import Textarea from "../../reusable/Textarea";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import useEditAuditModal from "@/hooks/useEditAuditModal";
+import useEditAuditModal from "@/hooks/editModalHooks/useEditAuditModal";
 
 interface EditAuditModalProps {
   audit?: any;

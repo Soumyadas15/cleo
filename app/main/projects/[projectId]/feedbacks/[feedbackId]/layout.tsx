@@ -1,7 +1,7 @@
 import getFeedbackById from "@/actions/getFeedbacks/getFeedbackById";
 import getFeedbacks from "@/actions/getFeedbacks/getFeedbacks";
 import getProjectByFeedbackId from "@/actions/getProjects/getProjectByFeedbackId";
-import EditFeedbackModal from "@/components/modals/EditFeedbackModal";
+import EditFeedbackModal from "@/components/modals/editModals/EditFeedbackModal";
 import { FeedbacksClient } from "@/components/pages/projects/feedback/FeedbackClient";
 import { initialProfile } from "@/lib/initial-profile";
 

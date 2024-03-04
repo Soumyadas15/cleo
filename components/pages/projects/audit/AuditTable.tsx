@@ -15,16 +15,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown"
 
-import useAuditModal from "@/hooks/useAuditModal";
+import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import useDeleteAuditModal from "@/hooks/useDeleteAuditModal";
-import useEditAuditModal from "@/hooks/useEditAuditModal";
+import useEditAuditModal from "@/hooks/editModalHooks/useEditAuditModal";
 import axios from "axios";
 import { format } from "date-fns";
 import { MoreHorizontal, Pen, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import EditAuditModal from "@/components/modals/EditAuditModal";
+import EditAuditModal from "@/components/modals/editModals/EditAuditModal";
 
 interface AuditTableProps {
   project: any;

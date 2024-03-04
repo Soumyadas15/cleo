@@ -1,9 +1,9 @@
 "use client"
 
-import useAuditModal from "@/hooks/useAuditModal";
+import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import EmptyState from "../../EmptyState";
 import { FeedbackTable } from "./FeedbackTable";
-import useFeedbackModal from "@/hooks/useFeedbackModal";
+import useFeedbackModal from "@/hooks/createModalHooks/useFeedbackModal";
 
 interface FeedbacksClientProps {
     feedbacks: any;

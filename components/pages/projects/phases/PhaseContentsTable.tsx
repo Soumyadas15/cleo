@@ -23,8 +23,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import EditPhaseContentModal from "@/components/modals/EditPhaseContentModal";
-import useEditPhaseContentModal from "@/hooks/useEditPhaseContentModal";
+import EditPhaseContentModal from "@/components/modals/editModals/EditPhaseContentModal";
+import useEditPhaseContentModal from "@/hooks/editModalHooks/useEditPhaseContentModal";
 
 interface PhaseContentsTableProps {
   project: any;

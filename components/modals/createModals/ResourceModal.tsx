@@ -8,43 +8,46 @@ import {
 } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { motion } from 'framer-motion';
-import Modal from "./Modal";
-import Heading from "../reusable/Heading";
-import Input from "../reusable/Input";
+import Modal from "../Modal";
+import Heading from "../../reusable/Heading";
+import Input from "../../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
-import useResourceModal from "@/hooks/useResourceModal";
-import Textarea from "../reusable/Textarea";
+import useCreateModal from "@/hooks/useLoginModal";
+import useSuccessModal from "@/hooks/useSuccessModal";
+import createProjectMember from "@/actions/createProjectMember";
+import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
+import Textarea from "../../reusable/Textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { cn } from "@/lib/utils";
 import { format } from 'date-fns';
-import { Calendar } from "../ui/calendar";
-import useFeedbackModal from "@/hooks/useFeedbackModal";
-import useEditFeedbackModal from "@/hooks/useEditFeedbackModal";
-import { ProgressBar } from "../ProgressBar";
+import { Calendar } from "../../ui/calendar";
+import { ProgressBar } from "../../ProgressBar";
 
 enum STEPS {
-  TYPE = 0,
-  BODY = 1,
-  ACTION = 2,
+  DESCRIPTION = 0,
+  ROLE = 1,
+  COMMENT = 2,
   DATES = 3,
 }
 
-interface EditFeedbackModalProps {
-  feedback: any;
+interface ResourceModalProps {
+  user: any;
+  project: any
 }
-const EditFeedbackModal = ({
-  feedback
-}: EditFeedbackModalProps) => {
+const ResourceModal = ({
+  user,
+  project
+}: ResourceModalProps) => {
 
   const router = useRouter();
-  const editFeedbackModal = useEditFeedbackModal();
-  const [step, setStep] = useState(STEPS.TYPE);
+  const resourceModal = useResourceModal();
+  const [step, setStep] = useState(STEPS.DESCRIPTION);
 
-  const [date, setDate] = useState<Date>();
-  const [closureDate, setClosureDate] = useState<Date>();
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -59,29 +62,25 @@ const EditFeedbackModal = ({
     reset
     } = useForm<FieldValues>({
         defaultValues: {
-            feedbackId: feedback.id,
-            type: feedback.type,
-            body: feedback.body,
-            action: feedback.action,
-            date: feedback.date,
-            closureDate: feedback.closureDate,
+            projectId: project.id,
+            name: '',
+            role: '',
+            comment: '',
+            startDate: undefined,
+            endDate: undefined,
     }})
 
-  useEffect(() => {
-      if (feedback.date) {
-        const feedbackDate = new Date(feedback.date);
-        setDate(feedbackDate);
-        setValue("date", feedbackDate);
-      }
-  }, [feedback.date, setValue]);
+    useEffect(() => {
+        if (startDate) {
+        setValue("startDate", startDate);
+        }
+    }, [startDate, setValue]);
 
-  useEffect(() => {
-      if (feedback.closureDate) {
-        const feedbackClosureDate = new Date(feedback.closureDate);
-        setClosureDate(feedbackClosureDate);
-        setValue("closureDate", feedbackClosureDate);
-      }
-  }, [feedback.closureDate, setValue]);
+    useEffect(() => {
+        if (endDate) {
+        setValue("endDate", endDate);
+        }
+    }, [endDate, setValue]);
 
 
   const onBack = () => {
@@ -97,15 +96,15 @@ const EditFeedbackModal = ({
     }
     setIsLoading(true)
     console.log(data);
-    axios.put('/api/feedbacks', data)
+    axios.post('/api/resources', data)
         .then(() => {
             router.refresh();
-            toast.success('Success');
+            toast.success('Resource added');
         }) .catch((error) => {
             toast.error(error.message);
         }) .finally(() => {
             setIsLoading(false);
-            editFeedbackModal.onClose()
+            resourceModal.onClose()
     })
   }
 
@@ -118,7 +117,7 @@ const EditFeedbackModal = ({
   }, [step]);
 
   const secondaryActionLabel = useMemo(() => {
-      if(step === STEPS.TYPE){
+      if(step === STEPS.DESCRIPTION){
           return undefined;
       }
       return 'Back'
@@ -134,20 +133,20 @@ const EditFeedbackModal = ({
   let bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading
-        title="Feedback type"
+        title="Resource name"
         subtitle=""
         center
       />
         <motion.div
-            key="type"
+            key="name"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <Input
-            id="type"
-            label="Feedback type"
+            id="name"
+            label="Name"
             disabled={isLoading}
             register={register}  
             errors={errors}
@@ -157,24 +156,24 @@ const EditFeedbackModal = ({
     </div>
   )
 
-  if (step === STEPS.BODY){
+  if (step === STEPS.ROLE){
     bodyContent = (
       <div className="flex flex-col gap-4">
         <Heading
-          title="Body"
+          title="Add role"
           subtitle=""
           center
         />
         <motion.div
-            key="body"
+            key="role"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <Textarea
-            id="body"
-            label="Detailed feedback"
+          <Input
+            id="role"
+            label="Role"
             disabled={isLoading}
             register={register}  
             errors={errors}
@@ -186,24 +185,24 @@ const EditFeedbackModal = ({
     )
   }
 
-  if (step === STEPS.ACTION){
+  if (step === STEPS.COMMENT){
     bodyContent = (
       <div className="flex flex-col gap-4">
         <Heading
-          title="Action"
+          title="Comment"
           subtitle=""
           center
         />
         <motion.div
-            key="action"
+            key="comment"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <Textarea
-            id="action"
-            label="Action taken"
+            id="comment"
+            label="Comment"
             disabled={isLoading}
             register={register}  
             errors={errors}
@@ -223,7 +222,7 @@ const EditFeedbackModal = ({
           center
         />
         <motion.div
-            key="date"
+            key="startDate"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
@@ -235,28 +234,25 @@ const EditFeedbackModal = ({
                 variant={"outline"}
                 className={cn(
                     "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                    !date && "text-muted-foreground"
+                    !startDate && "text-muted-foreground"
                 )}
                 >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? format(date, "PPP") : <span>Start date</span>}
+                {startDate ? format(startDate, "PPP") : <span>Start date</span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
                 <Calendar
                 mode="single"
-                selected={date}
-                onSelect={(date) => {
-                    setDate(date);
-                    setValue("date", date);
-                }}
+                selected={startDate}
+                onSelect={setStartDate}
                 initialFocus
                 />
             </PopoverContent>
             </Popover>
         </motion.div>
         <motion.div
-            key="closureDate"
+            key="endDate"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
@@ -268,21 +264,18 @@ const EditFeedbackModal = ({
                 variant={"outline"}
                 className={cn(
                     "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                    !closureDate && "text-muted-foreground"
+                    !endDate && "text-muted-foreground"
                 )}
                 >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {closureDate ? format(closureDate, "PPP") : <span>End date</span>}
+                {endDate ? format(endDate, "PPP") : <span>End date</span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
                 <Calendar
                 mode="single"
-                selected={closureDate}
-                onSelect={(date) => {
-                    setClosureDate(date);
-                    setValue("closureDate", date);
-                }}
+                selected={endDate}
+                onSelect={setEndDate}
                 initialFocus
                 />
             </PopoverContent>
@@ -297,12 +290,12 @@ const EditFeedbackModal = ({
   return (
     <Modal
       disabled={isLoading}
-      isOpen={editFeedbackModal.isOpen}
-      title="Edit feedback"
+      isOpen={resourceModal.isOpen}
+      title="Add resource"
       actionLabel={actionLabel}
-      onClose={editFeedbackModal.onClose}
+      onClose={resourceModal.onClose}
       secondaryActionLabel={secondaryActionLabel}
-      secondaryAction={step == STEPS.TYPE ? undefined : onBack}
+      secondaryAction={step == STEPS.DESCRIPTION ? undefined : onBack}
       onSubmit={handleSubmit(onSubmit)}
       body={
         <div className="flex flex-col gap-6 items-center">
@@ -318,4 +311,4 @@ const EditFeedbackModal = ({
   );
 }
 
-export default EditFeedbackModal;
+export default ResourceModal;
