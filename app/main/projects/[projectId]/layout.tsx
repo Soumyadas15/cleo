@@ -32,7 +32,7 @@ export default async function ProjectLayout({
         <UpdateModal project={project} user={user}/>
         <MomModal project={project} user={user}/>
 
-        <div className="p-5 h-full w-full">
+        <div className="p-5 h-full w-[85%]">
             <div className="h-[5%]">
                 <Heading title={`${project?.name}`}/>
             </div>

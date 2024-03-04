@@ -48,7 +48,7 @@ export default async function MainLayout({
             <div>
               <div className="h-screen">
                 <div className=" w-full h-full flex items-center justify-between">
-                  <div className="bg-neutral-200 dark:bg-black w-[13.5rem] h-full flex items-center justify-center pr-1">
+                  <div className="bg-neutral-200 dark:bg-black w-[15%] h-full flex items-center justify-center pr-1">
                     <div className="h-full w-full">
                       <Sidebar user={user}/>
                     </div>
