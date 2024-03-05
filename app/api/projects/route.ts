@@ -18,6 +18,8 @@ export async function POST(request: Request) {
         const body = await request.json();
         const { createdBy, name, manager, client, auditor } = body;
 
+        console.log(body)
+
         if (!createdBy || !name || !manager || !client || !auditor) {
             return new Response("Missing required fields", { status: 400 });
         }
@@ -35,6 +37,9 @@ export async function POST(request: Request) {
         const projectAuditor = await getUserByEmail(auditor);
 
         
+        if (!projectAuditor || !projectClient || !projectClient) {
+            return new Response("Users not found", { status: 400 });
+        }
         
         await db.member.create({
             //@ts-ignore
@@ -44,6 +49,8 @@ export async function POST(request: Request) {
                 projectId: project.id,
             }
         });
+
+        
 
         await db.member.create({
             //@ts-ignore
@@ -75,7 +82,7 @@ export async function POST(request: Request) {
         })
 
 
-        return new Response(JSON.stringify(project), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        return new Response(JSON.stringify(currentUser), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
     } catch (error) {
         if (error instanceof Error) {

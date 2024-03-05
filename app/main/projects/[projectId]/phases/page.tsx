@@ -19,8 +19,9 @@ const PhasesPage = async (
     
     return (  
         <div className="flex flex-col h-full">
+            
             <PhasesClient phases={phases} project={project} user={user}/>
-            <PhasesHome/>
+            {/* <PhasesHome/> */}
         </div>
     );
 }

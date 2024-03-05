@@ -11,6 +11,7 @@ import { initialProfile } from "@/lib/initial-profile";
 import SuccessModal from "@/components/modals/SuccessModal";
 import NameModal from "@/components/modals/createModals/NameModal";
 import { ProfileModal } from "@/components/modals/ProfileModal";
+import { EmployeesModal } from "@/components/modals/EmployeesModal";
 
 const font = Montserrat({ subsets: ["latin"] });
 
@@ -46,6 +47,7 @@ export default async function MainLayout({
             <SuccessModal/>
             <NameModal user={user}/>
             <ProfileModal user={user}/>
+            <EmployeesModal user={user}/>
             <Toaster/>
             <div>
               <div className="h-screen">

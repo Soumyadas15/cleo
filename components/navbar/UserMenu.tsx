@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dropdown"
 import { LogOut, User } from "lucide-react";
 import useProfileModal from "@/hooks/useProfileModal";
+import useEmployeesModal from "@/hooks/useEmployeesModal";
 
 
 interface UserMenuProps {
@@ -34,6 +35,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
 
   const createModal = useCreateModal();
   const profileModal = useProfileModal();
+  const employeesModal = useEmployeesModal();
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
@@ -66,8 +68,21 @@ const UserMenu: React.FC<UserMenuProps> = ({
                 onClick={profileModal.onOpen}
               >
                 <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
+                <span>My Profile</span>
               </DropdownMenuItem>
+
+              {/* {user.role === "ADMIN" ? (
+                <DropdownMenuItem 
+                  className="rounded-[5px] focus:bg-neutral-200 hover:cursor-pointer"
+                  onClick={employeesModal.onOpen}
+                >
+                  <User className="mr-2 h-4 w-4" />
+                  <span>My Employees</span>
+                </DropdownMenuItem>
+
+                ) : (
+                  <div></div>
+              )} */}
 
               <DropdownMenuSeparator className="border-neutral-300 hover:cursor-pointer"/>
 

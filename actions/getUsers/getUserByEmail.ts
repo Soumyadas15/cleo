@@ -5,7 +5,7 @@ import { db } from '@/lib/db';
 export default async function getUserByEmail(email: string) {
     try {
 
-        const user = await db.user.findUnique({
+        const user = await db.user.findFirst({
             //@ts-ignore
             where: {
                 email: email,

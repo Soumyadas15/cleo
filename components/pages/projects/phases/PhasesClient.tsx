@@ -72,6 +72,7 @@ export const PhasesClient = ({
         <div className="scrollbar-hide">
             <div className="flex items-center w-full justify-between">
                 <PhasesList phases={phases} project={project}/>
+                
                 {!isPhasesHome ? (
                         <Button
                             label="Add content"
