@@ -5,6 +5,8 @@ import { getUserProfileData } from "./profile-service";
 export const initialProfile = async () => {
 
     const user = await getUserProfileData();
+    
+    console.log(user)
 
     const profile = await db.user.findUnique({
         where: {

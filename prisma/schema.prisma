@@ -28,7 +28,7 @@ model User {
   userId String @unique
   name String
   imageUrl String @db.Text
-  email String @unique
+  email String @db.Text
   role UserRole? @default(CLIENT)
 
   createdAt DateTime @default(now())
