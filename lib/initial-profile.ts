@@ -1,42 +1,37 @@
 import { db } from "@/lib/db";
-import { getSession } from "@auth0/nextjs-auth0";
 import { getUserProfileData } from "./profile-service";
 
 export const initialProfile = async () => {
+  const user = await getUserProfileData();
 
-    const user = await getUserProfileData();
+  let userEmail;
+  if (isEmail(user.nickname)) {
+    userEmail = user.nickname;
+  } else {
+    userEmail = user.name;
+  }
 
-    const profile = await db.user.findUnique({
-        where: {
-            userId: user.sub
-        }
-    })
 
-    if (profile) {
-        return profile;
-    }
+  const profile = await db.user.upsert({
+    where: {
+      userId: user.sub,
+    },
+    update: {
+      name: user.name,
+      imageUrl: user.picture,
+      email: userEmail,
+    },
+    create: {
+      userId: user.sub,
+      name: user.name,
+      imageUrl: user.picture,
+      email: userEmail,
+    },
+  });
 
-    let userEmail;
-    if (isEmail(user.nickname)){
-        userEmail = user.nickname;
-    }
-    else{
-        userEmail = user.name;
-    }
-
-    const newProfile = await db.user.create({
-        data: {
-            userId: user.sub,
-            name: user.name,
-            imageUrl: user.picture,
-            email: userEmail
-        }
-    })
-
-    return newProfile;
-}
-
+  return profile;
+};
 
 const isEmail = (email: string) => {
-    return /\S+@\S+\.\S+/.test(email);
-}
+  return /\S+@\S+\.\S+/.test(email);
+};
