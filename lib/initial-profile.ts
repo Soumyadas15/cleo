@@ -4,6 +4,16 @@ import { getUserProfileData } from "./profile-service";
 export const initialProfile = async () => {
   const user = await getUserProfileData();
 
+  const existingProfile = await db.user.findUnique({
+    where: {
+        userId: user.sub
+    }
+  })
+
+  if (existingProfile) {
+    return existingProfile;
+  }
+
   let userEmail;
   if (isEmail(user.nickname)) {
     userEmail = user.nickname;
