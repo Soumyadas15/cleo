@@ -16,8 +16,8 @@ jobs:
       - name: Docker Login
         uses: docker/login-action@v3
         with:
-          username: "jainilp12"
-          password: "dckr_pat_9hr3Icx6IZ_qtyY6fFFXyIJDkUc"
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and Push
         env:
