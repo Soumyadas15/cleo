@@ -22,11 +22,11 @@ services:
     volumes:
       - $HOME/postgresdatabase:/var/lib/postgresql/data
 
-  nextjsapp:
+  nextapp:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: jainilp12/nextapp:1.0
+    image: jainilp12/nextapp:2.0
     expose:
       - ${SERVER_PORT}
     ports:
