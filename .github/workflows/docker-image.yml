@@ -51,8 +51,8 @@ jobs:
           echo "AUTH0_CLIENT_SECRET=${{ secrets.AUTH0_CLIENT_SECRET }}" >> .env
           echo "LOCAL_DATABASE_URL=${{ secrets.LOCAL_DATABASE_URL }}" >> .env
           echo "REMOTE_DATABASE_URL=${{ secrets.REMOTE_DATABASE_URL }}" >> .env
-          sudo docker compose build
-          sudo docker compose push
+          sudo docker-compose build
+          sudo docker-compose push
 
       - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.7
