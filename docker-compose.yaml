@@ -26,7 +26,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: jainilp12/nextjsapp:1.0
+    image: jainilp12/nextapp:1.0
     expose:
       - ${SERVER_PORT}
     ports:
