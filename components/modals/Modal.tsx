@@ -193,7 +193,7 @@ const Modal: React.FC<ModalProps> = ({
                                     disabled = {disabled}
                                     label = {secondaryActionLabel}
                                     onClick={handleSecondaryAction}
-                                    className='p-[8.5px] rounded-[5px]'
+                                    className='p-[0.6rem] rounded-[5px]'
                                 />
                                 )}
                                 {actionLabel ? (

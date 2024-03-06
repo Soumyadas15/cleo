@@ -45,7 +45,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
 
 
   return ( 
-    <div className="relative">
+    <div className="relative"> 
       <div className="flex flex-row items-center gap-3">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -56,7 +56,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
               <Avatar user={user} />
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-40 mr-6 bg-white rounded-[5px]">
+          <DropdownMenuContent className="w-40 left-5 bg-white dark:border-none dark:bg-neutral-800 rounded-[5px]">
 
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             
@@ -64,7 +64,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
 
             <DropdownMenuGroup>
               <DropdownMenuItem 
-                className="rounded-[5px] focus:bg-neutral-200 hover:cursor-pointer"
+                className="rounded-[5px] focus:bg-neutral-200 dark:focus:bg-neutral-700 hover:cursor-pointer"
                 onClick={profileModal.onOpen}
               >
                 <User className="mr-2 h-4 w-4" />
@@ -87,7 +87,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
               <DropdownMenuSeparator className="border-neutral-300 hover:cursor-pointer"/>
 
               <DropdownMenuItem 
-                  className="rounded-[5px] focus:bg-neutral-200 hover:cursor-pointer"
+                  className="rounded-[5px] focus:bg-neutral-200 dark:focus:bg-neutral-700 hover:cursor-pointer"
                   onClick={() => {router.push('/api/auth/logout')}}
               >
                 <LogOut className="mr-2 h-4 w-4 text-red-600" />

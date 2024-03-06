@@ -14,7 +14,7 @@ export const ProgressBar = ({
 
   return (
     <div className="relative w-full mb-6">
-      <div className="w-full bg-gray-200 h-[1.5px] rounded-full overflow-hidden">
+      <div className="w-full bg-gray-200 dark:bg-neutral-700 h-[1.5px] rounded-full overflow-hidden">
         <motion.div
           className="bg-blue-500 h-2 rounded-full"
           initial={{ width: 0 }}
@@ -52,7 +52,7 @@ export const ProgressBar = ({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-neutral-500 text-sm flex items-center justify-center bg-neutral-200 p-3 rounded-full"
+                className="text-neutral-500 text-sm flex dark:text-neutral-300 items-center justify-center bg-neutral-200 dark:bg-neutral-700 p-3 rounded-full"
                 transition={{ duration: 0.1 }} 
                 style={{ height: '16px', width: '16px' }} 
               >

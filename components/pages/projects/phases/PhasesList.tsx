@@ -28,6 +28,7 @@ export const PhasesList = ({
 }: PhasesListProps) => {
 
     const router = useRouter();
+    //@ts-ignore
     const { phaseId } = useParams();
     const pathname = usePathname();
 
@@ -38,6 +39,7 @@ export const PhasesList = ({
 
 
     useEffect(() => {
+        //@ts-ignore
         if (pathname.endsWith('/phases') && phases.length > 0){
             setCurrentPhaseText('Select phase')
         }
@@ -89,7 +91,7 @@ export const PhasesList = ({
                 
                 
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-42 bg-white rounded-[5px]">
+            <DropdownMenuContent className="w-42 bg-white dark:bg-neutral-800 dark:border-none rounded-[5px]">
 
                 <DropdownMenuLabel>
                     Phases
@@ -101,7 +103,7 @@ export const PhasesList = ({
                     {phases.map((phase, index) => (
                         <DropdownMenuItem  
                             key={phase.id}
-                            className="rounded-[5px] hover:cursor-pointer focus:bg-neutral-200"
+                            className="rounded-[5px] hover:cursor-pointer focus:bg-neutral-200 dark:focus:bg-neutral-700"
                             onClick={() => {
                                 router.push(`/main/projects/${project.id}/phases/${phase.id}`)
                             }}

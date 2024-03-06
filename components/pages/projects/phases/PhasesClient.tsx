@@ -36,7 +36,7 @@ export const PhasesClient = ({
 
     const phaseContentModal = usePhaseContentModal();
     const pathname = usePathname();
-    const isPhasesHome = pathname.endsWith('/phases');
+    const isPhasesHome = pathname?.endsWith('/phases');
     const router = useRouter();
 
     const onAdd = async (project: any) => {

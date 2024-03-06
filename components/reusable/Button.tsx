@@ -53,7 +53,7 @@ export const Button = ({
                     ${disabled ? "opacity-75 cursor-not-allowed" : "opacity-100 hover:opacity-90 hover:cursor-pointer font-semibold"}
                     ${className}
                     ${outline ? '' : 'bg-black dark:bg-white'}
-                    ${outline ? 'border-black border-[2px] dark:border-white' : 'border-black dark:border-white'}
+                    ${outline ? 'border-black border-[1px] dark:border-neutral-600' : 'border-black border-none dark:border-neutral-600'}
                     ${outline ? 'text-black dark:text-white' : 'text-white dark:text-black'}`}
             >
                 {icon && <span className="mr-2">{icon}</span>}
