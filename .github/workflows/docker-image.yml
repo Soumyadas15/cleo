@@ -2,20 +2,61 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
 
 jobs:
   build:
-    - name: Checkout code
-      uses: actions/checkout@v3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker Checkout
+        uses: actions/checkout@v3
 
-    - name: Docker Login
-      uses: docker/login-action@v1
-      with:
-        username:
-        password:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker compose build
-  
-  
+      - name: Docker Login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push
+        env:
+          SERVER_PORT: ${{ secrets.SERVER_PORT }}
+        run: |
+          docker compose build
+          docker compose push
+
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.AWS_KEYPAIR }}
+          source: "docker-compose.yaml"
+          target: "/home/ubuntu/"
+
+      - name: SSH to AWS Instance and Pull Image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.AWS_KEYPAIR }}
+          script: |
+            touch .env
+            echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
+            echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
+            echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
+            echo "NEXT_PORT=${{ secrets.NEXT_PORT }}" >> .env
+            echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+            echo "HOME=${{ secrets.HOME }}" >> .env
+            echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
+            echo "AUTH0_SECRET=${{ secrets.AUTH0_SECRET }}" >> .env
+            echo "AUTH0_BASE_URL=${{ secrets.AUTH0_BASE_URL }}" >> .env
+            echo "AUTH0_ISSUER_BASE_URL=${{ secrets.AUTH0_ISSUER_BASE_URL }}" >> .env
+            echo "AUTH0_CLIENT_ID=${{ secrets.AUTH0_CLIENT_ID }}" >> .env
+            echo "AUTH0_CLIENT_SECRET=${{ secrets.AUTH0_CLIENT_SECRET }}" >> .env
+            echo "LOCAL_DATABASE_URL=${{ secrets.LOCAL_DATABASE_URL }}" >> .env
+            echo "REMOTE_DATABASE_URL=${{ secrets.REMOTE_DATABASE_URL }}" >> .env
+            sudo docker compose pull
+            sudo docker compose down || true
+            sudo docker compose up -d
