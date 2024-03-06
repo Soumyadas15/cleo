@@ -36,8 +36,8 @@ jobs:
           LOCAL_DATABASE_URL: ${{ secrets.LOCAL_DATABASE_URL }}
           REMOTE_DATABASE_URL: ${{ secrets.REMOTE_DATABASE_URL }}
         run: |
-          docker compose build
-          docker compose push
+          sudo docker compose build
+          sudo docker compose push
 
       - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.7
