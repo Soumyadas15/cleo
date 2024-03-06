@@ -12,23 +12,29 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
     networks:
-      - internalnet
+      - nextinternalnet
     volumes:
-      - C:/Users/promact/postgresdatabase:/var/lib/postgresql/data
+      - $HOME/postgresdatabase:/var/lib/postgresql/data
 
   nextjsapp:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: nextjsapp:1.0
+    image: jainilp12/nextjsapp:1.0
     expose:
       - ${SERVER_PORT}
     ports:
-      - 3000:${SERVER_PORT}
+      - 80:${SERVER_PORT}
     command: >
-      sh -c "npx prisma db push
-            npm run dev"
+      sh -c "
+      npm run start"
+
     environment:
       DATABASE_URL: ${REMOTE_DATABASE_URL}
       AUTH0_SECRET: ${AUTH0_SECRET}
@@ -36,11 +42,13 @@ services:
       AUTH0_ISSUER_BASE_URL: ${AUTH0_ISSUER_BASE_URL}
       AUTH0_CLIENT_ID: ${AUTH0_CLIENT_ID}
       AUTH0_CLIENT_SECRET: ${AUTH0_CLIENT_SECRET}
+
     depends_on:
-      - postgresdb
+      postgresdb:
+        condition: service_healthy
     networks:
-      - internalnet
+      - nextinternalnet
 
 networks:
-  internalnet:
+  nextinternalnet:
     driver: bridge
