@@ -13,7 +13,7 @@ const ProjectPage = async (
     const project = await getProjectById(params)
 
     return (  
-        <div className="w-full h-full"></div>
+        <div className="w-full h-full scrollbar-hide"></div>
     );
 }
 export default ProjectPage;

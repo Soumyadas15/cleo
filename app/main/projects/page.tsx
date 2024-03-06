@@ -8,7 +8,7 @@ const ProjectsPage = async () => {
     const projects = await getProjectsByUserId();
     
     return (  
-        <div className="p-5 h-full w-full">
+        <div className="p-5 h-full w-full scrollbar-hide">
             <ProjectClient projects={projects} user={user}/>
         </div>
     );

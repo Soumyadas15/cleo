@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { 
   FieldValues, 
   SubmitHandler, 
@@ -17,6 +17,8 @@ import useSuccessModal from "@/hooks/useSuccessModal";
 import useCreateModal from "@/hooks/useLoginModal";
 import { useModal } from "@/hooks/useModalStore";
 import { ProgressBar } from "../../ProgressBar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown";
+import { Button } from "@/components/ui/button";
 
 enum STEPS {
   DESCRIPTION = 0,
@@ -27,19 +29,25 @@ enum STEPS {
 
 interface CreateModalProps {
   user: any;
+  managers: any;
+  auditors: any;
+  clients: any;
 }
 const CreateModal = ({
   user,
+  managers,
+  auditors,
+  clients
 }: CreateModalProps) => {
 
   const router = useRouter();
   const createModal = useCreateModal();
-  const { isOpen, onClose, type } = useModal();
   const successModal = useSuccessModal();
-  const [currentStage, setCurrentStage] = useState(1);
   const [step, setStep] = useState(STEPS.DESCRIPTION);
-
   const [isLoading, setIsLoading] = useState(false);
+  const [selectManager, setSelectManager] = useState("Select manager")
+  const [selectAuditor, setSelectAuditor] = useState("Select auditor");
+  const [selectClient, setSelectClient] = useState("Select client");
 
   const {
     register,
@@ -106,6 +114,21 @@ const CreateModal = ({
       return 'Back'
   }, [step]);
 
+  const handleManagerSelect = (manager: any) => {
+    setSelectManager(manager.name);
+    setValue('manager', manager.email);
+  }
+
+  const handleAuditorSelect = (auditor: any) => {
+    setSelectAuditor(auditor.name);
+    setValue('auditor', auditor.email);
+  }
+
+  const handleClientSelect = (client: any) => {
+    setSelectClient(client.name);
+    setValue('client', client.email);
+  }
+
 
   const progress = useMemo(() => {
     return (step / (Object.keys(STEPS).length / 2 - 1)) * 100;
@@ -152,15 +175,28 @@ const CreateModal = ({
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="w-full"
         >
-          <Input
-            id="client"
-            label="Client"
-            disabled={isLoading}
-            register={register}  
-            errors={errors}
-            required
-          />
+          <DropdownMenu>
+            <DropdownMenuTrigger className="w-full h-[4rem] ">
+              <Button variant="outline" className="w-full h-full border-neutral-300 flex justify-start">
+                {selectClient}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-[29rem] rounded-[5px] max-h-[10rem] overflow-y-scroll scrollbar-hide z-[9999] bg-white">
+              <DropdownMenuGroup>
+                {clients.map((client : any, index : any) => (
+                    <DropdownMenuItem  
+                        key={client.id}
+                        className="rounded-[5px] hover:cursor-pointer focus:bg-neutral-200"
+                        onClick={() => {handleClientSelect(client)}}
+                    >
+                        <span>{client.name}</span>
+                    </DropdownMenuItem>
+                ))}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </motion.div>
         
       </div>
@@ -181,15 +217,28 @@ const CreateModal = ({
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="w-full"
         >
-          <Input
-            id="manager"
-            label="Project manager"
-            disabled={isLoading}
-            register={register}  
-            errors={errors}
-            required
-          />
+          <DropdownMenu>
+            <DropdownMenuTrigger className="w-full h-[4rem] ">
+              <Button variant="outline" className="w-full h-full border-neutral-300 flex justify-start">
+                {selectManager}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-[29rem] rounded-[5px] max-h-[10rem] overflow-y-scroll scrollbar-hide z-[9999] bg-white">
+              <DropdownMenuGroup>
+                {managers.map((manager : any, index : any) => (
+                    <DropdownMenuItem  
+                        key={manager.id}
+                        className="rounded-[5px] hover:cursor-pointer focus:bg-neutral-200"
+                        onClick={() => {handleManagerSelect(manager)}}
+                    >
+                        <span>{manager.name}</span>
+                    </DropdownMenuItem>
+                ))}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </motion.div>
         
       </div>
@@ -210,15 +259,28 @@ const CreateModal = ({
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="w-full"
         >
-          <Input
-            id="auditor"
-            label="Project auditor"
-            disabled={isLoading}
-            register={register}  
-            errors={errors}
-            required
-          />
+          <DropdownMenu>
+            <DropdownMenuTrigger className="w-full h-[4rem] ">
+              <Button variant="outline" className="w-full h-full border-neutral-300 flex justify-start">
+                {selectAuditor}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-[29rem] rounded-[5px] max-h-[10rem] overflow-y-scroll scrollbar-hide z-[9999] bg-white">
+              <DropdownMenuGroup>
+                {auditors.map((auditor : any, index : any) => (
+                    <DropdownMenuItem  
+                        key={auditor.id}
+                        className="rounded-[5px] hover:cursor-pointer focus:bg-neutral-200"
+                        onClick={() => {handleAuditorSelect(auditor)}}
+                    >
+                        <span>{auditor.name}</span>
+                    </DropdownMenuItem>
+                ))}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </motion.div>
         
       </div>

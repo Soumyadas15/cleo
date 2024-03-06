@@ -12,6 +12,7 @@ import SuccessModal from "@/components/modals/SuccessModal";
 import NameModal from "@/components/modals/createModals/NameModal";
 import { ProfileModal } from "@/components/modals/ProfileModal";
 import { EmployeesModal } from "@/components/modals/EmployeesModal";
+import { getAuditors, getClients, getManagers } from "@/actions/getUsers/getUserByEmail";
 
 const font = Montserrat({ subsets: ["latin"] });
 
@@ -34,6 +35,11 @@ export default async function MainLayout({
 
   const user = await initialProfile();
 
+  const managers = await getManagers();
+  const auditors = await getAuditors();
+  const clients = await getClients();
+
+
   return (
     <html lang="en" >
       <UserProvider>
@@ -43,11 +49,16 @@ export default async function MainLayout({
             defaultTheme="light"
             disableTransitionOnChange
           >
-            <CreateModal user={user}/>
+
+
+            <CreateModal user={user} managers={managers} auditors={auditors} clients={clients}/>
             <SuccessModal/>
             <NameModal user={user}/>
             <ProfileModal user={user}/>
             <EmployeesModal user={user}/>
+
+
+
             <Toaster/>
             <div>
               <div className="h-screen">

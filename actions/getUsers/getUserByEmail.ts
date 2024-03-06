@@ -29,3 +29,72 @@ export default async function getUserByEmail(email: string) {
         }
     }
 }
+
+export async function getManagers(){
+    try {
+        const managers = await db.user.findMany({
+            where: {
+                role: "MANAGER"
+            }
+        })
+
+        if (!managers){
+            return [];
+        }
+
+        return managers;
+
+    } catch (error) {
+        if (error instanceof Error) {
+            throw error;
+        } else {
+            throw new Error('An unknown error occurred');
+        }
+    }
+}
+
+export async function getClients(){
+    try {
+        const clients = await db.user.findMany({
+            where: {
+                role: "CLIENT"
+            }
+        })
+
+        if (!clients){
+            return [];
+        }
+
+        return clients;
+        
+    } catch (error) {
+        if (error instanceof Error) {
+            throw error;
+        } else {
+            throw new Error('An unknown error occurred');
+        }
+    }
+}
+
+export async function getAuditors(){
+    try {
+        const auditors = await db.user.findMany({
+            where: {
+                role: "AUDITOR"
+            }
+        })
+
+        if (!auditors){
+            return [];
+        }
+
+        return auditors;
+        
+    } catch (error) {
+        if (error instanceof Error) {
+            throw error;
+        } else {
+            throw new Error('An unknown error occurred');
+        }
+    }
+}
