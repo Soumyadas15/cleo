@@ -1,17 +1,18 @@
-"use server"
-
-
-/**
- * Returns a list of projects for the currently authenticated user.
- *
- * @returns {Project[]} an array of projects
-*/
-
 import { db } from '@/lib/db';
-import { initialProfile } from '@/lib/initial-profile';
+import { initialProfile } from '@/lib/initial-profile'; // Adjust the import statement to match the correct path
+import getUserById from '../getUsers/getUserById';
 
+interface Project {
+    id: string;
+    name: string;
+    createdAt: Date;
+    updatedAt: Date;
+    userId: string;
+    projectManagerId: string | null;
+    auditorId: string | null;
+}
 
-export default async function getProjects() {
+export default async function getProjectsWithNames() {
     try {
         const user = await initialProfile();
 
@@ -19,7 +20,7 @@ export default async function getProjects() {
             return [];
         }
 
-        let projects;
+        let projects: Project[] = [];
 
         if (user.role === 'ADMIN') {
             // Fetch all projects created by the admin user
@@ -44,7 +45,25 @@ export default async function getProjects() {
             });
         }
 
-        return projects;
+        // Iterate through each project to get user and auditor names
+        const projectsWithNames = await Promise.all(projects.map(async (project) => {
+            const manager = await getUserById({ userId: project.projectManagerId! });
+            const auditor = await getUserById({ userId: project.auditorId! });
+
+            return {
+                id: project.id,
+                name: project.name,
+                userId: project.userId,
+                auditorId: project.auditorId,
+                auditorName: auditor ? auditor.name : null,
+                managerId: project.projectManagerId,
+                managerName: manager ? manager.name : null,
+                createdAt: project.createdAt.toISOString(),
+                updatedAt: project.updatedAt.toISOString(),
+            };
+        }));
+
+        return projectsWithNames;
         
     } catch (error) {
         if (error instanceof Error) {

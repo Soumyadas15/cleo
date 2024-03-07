@@ -23,7 +23,7 @@ export const Navbar = ({
             
             <input
                 placeholder="search"
-                className="w-[30rem] p-2 rounded-[5px] !outline-none pl-3 bg-neutral-100 dark:bg-white/5"
+                className="w-[50vw] md:w-[30rem] p-2 rounded-[5px] !outline-none pl-3 bg-neutral-100 dark:bg-white/5"
             />
             <div className="flex items-center gap-2">
                 <ModeToggle/>

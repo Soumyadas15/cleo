@@ -84,8 +84,8 @@ export const ResourceTable = ({
       {editResourceId && (
         <EditResourceModal resource={resources.find((res: any) => res.id === editResourceId)} />
       )}
-      <Table className="">
-        <TableHeader className="bg-neutral-200 dark:bg-neutral-800">
+      <Table className="scrollbar-hide">
+        <TableHeader className="bg-neutral-200 border-none dark:bg-neutral-800">
           <TableRow>
             <TableHead className="w-[100px] font-bold">Serial</TableHead>
             <TableHead className="w-[150px] font-bold">Name</TableHead>
