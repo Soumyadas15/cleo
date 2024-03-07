@@ -4,7 +4,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { format } from 'date-fns';
-import { Calendar } from "lucide-react";
+import { Calendar, Trash, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -23,6 +23,11 @@ export const ProjectItem = ({
         setClicked(true);
         setTimeout(() => setClicked(false), 150);
         router.push(`/main/projects/${project.id}/phases`);
+    };
+
+    const handleDeleteClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.stopPropagation();
+        alert("Ok");
     };
 
     return (
@@ -66,13 +71,14 @@ export const ProjectItem = ({
                 <CardFooter>
                     <div className=" w-full flex justify-between">
                         <div className="font-semibold text-[12px] flex items-center gap-1">
-                            <div className="h-2 w-2 rounded-full bg-neutral-700 dark:bg-neutral-100" ></div>
-                            {project.managerName}
-                        </div>
-                        <div className="font-semibold text-[12px] flex items-center gap-1">
                             <Calendar size={12}/>
                             {format(new Date(project.createdAt), 'MMMM dd, yyyy')}
                         </div>
+                        {/* <Trash2 
+                            className="text-red-600 hover:text-red-700 transition" 
+                            //@ts-ignore
+                            onClick={handleDeleteClick}
+                        /> */}
                     </div>
                 </CardFooter>
             </Card>
