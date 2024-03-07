@@ -52,7 +52,7 @@ export const Sidebar = ({
                         to="main/projects"
                         icon={ <Briefcase/>}
                         highlight="text-red-600"
-                        isActive = {pathname.startsWith('/main/projects')}
+                        isActive = {pathname?.startsWith('/main/projects')}
                         
                     />
                     <SidebarItem 
@@ -60,21 +60,21 @@ export const Sidebar = ({
                         to="main/managers"
                         icon={ <User/>}
                         highlight="text-green-600"
-                        isActive = {pathname.startsWith('/main/managers')}
+                        isActive = {pathname?.startsWith('/main/managers')}
                     />
                     <SidebarItem 
                         label="Employees"  
                         to="main/employees"
                         icon={ <UserRoundPlus/>}
                         highlight="text-green-600"
-                        isActive = {pathname.startsWith('/main/employees')}
+                        isActive = {pathname?.startsWith('/main/employees')}
                     />
                     <SidebarItem 
                         label="Settings"  
                         to="main/settings"
                         icon={ <Settings/>}
                         highlight="text-green-600"
-                        isActive = {pathname.startsWith('/main/settings')}
+                        isActive = {pathname?.startsWith('/main/settings')}
                     />
                 </div>
                 

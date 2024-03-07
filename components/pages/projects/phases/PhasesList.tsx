@@ -40,7 +40,7 @@ export const PhasesList = ({
 
     useEffect(() => {
         //@ts-ignore
-        if (pathname.endsWith('/phases') && phases.length > 0){
+        if (pathname?.endsWith('/phases') && phases.length > 0){
             setCurrentPhaseText('Select phase')
         }
         else if (phases.length > 0 && phaseId) {

@@ -32,12 +32,12 @@ export const ProjectNavbar = ({
     const updateModal = useUpdateModal();
     const momModal = useMomModal();
 
-    const isPhaseRoute = pathname.startsWith(`/main/projects/${project.id}/phases`);
-    const isAuditRoute = pathname.startsWith(`/main/projects/${project.id}/audits`);
-    const isResourceRoute = pathname.startsWith(`/main/projects/${project.id}/resources`);
-    const isFeedbackRoute = pathname.startsWith(`/main/projects/${project.id}/feedbacks`);
-    const isUpdateRoute = pathname.startsWith(`/main/projects/${project.id}/updates`);
-    const isMomRoute = pathname.startsWith(`/main/projects/${project.id}/moms`);
+    const isPhaseRoute = pathname?.startsWith(`/main/projects/${project.id}/phases`);
+    const isAuditRoute = pathname?.startsWith(`/main/projects/${project.id}/audits`);
+    const isResourceRoute = pathname?.startsWith(`/main/projects/${project.id}/resources`);
+    const isFeedbackRoute = pathname?.startsWith(`/main/projects/${project.id}/feedbacks`);
+    const isUpdateRoute = pathname?.startsWith(`/main/projects/${project.id}/updates`);
+    const isMomRoute = pathname?.startsWith(`/main/projects/${project.id}/moms`);
     
 
     const onAddPhase = async (project: any) => {
@@ -79,7 +79,7 @@ export const ProjectNavbar = ({
                             key={index}
                             label={route.slice(1).charAt(0).toUpperCase() + route.slice(2)}
                             to={`/main/projects/${project.id}${route}`}
-                            isActive={pathname.startsWith(`/main/projects/${project.id}${route}`)}
+                            isActive={pathname?.startsWith(`/main/projects/${project.id}${route}`)}
                         />
                     ))}
                 </div>
@@ -128,7 +128,7 @@ export const ProjectNavbar = ({
                         />
                     )}
                     
-                    {pathname.endsWith('/scope') && (
+                    {pathname?.endsWith('/scope') && (
                         <Button 
                             label="Add scope" 
                             icon={<Plus className="scale-[0.8]"/>}
@@ -136,7 +136,7 @@ export const ProjectNavbar = ({
                             onClick={auditModal.onOpen}
                         />
                     )}
-                    {pathname.endsWith('/stakeholders') && (
+                    {pathname?.endsWith('/stakeholders') && (
                         <Button 
                             label="Add stakeholder" 
                             icon={<Plus className="scale-[0.8]"/>}
@@ -144,7 +144,7 @@ export const ProjectNavbar = ({
                             onClick={auditModal.onOpen}
                         />
                     )}
-                    {pathname.endsWith('/escalation') && (
+                    {pathname?.endsWith('/escalation') && (
                         <Button 
                             label="Add matrix" 
                             icon={<Plus className="scale-[0.8]"/>}
@@ -152,7 +152,7 @@ export const ProjectNavbar = ({
                             onClick={auditModal.onOpen}
                         />
                     )}
-                    {pathname.endsWith('/risks') && (
+                    {pathname?.endsWith('/risks') && (
                         <Button 
                             label="Add risk" 
                             icon={<Plus className="scale-[0.8]"/>}
@@ -160,7 +160,7 @@ export const ProjectNavbar = ({
                             onClick={auditModal.onOpen}
                         />
                     )}
-                    {pathname.endsWith('/milestones') && (
+                    {pathname?.endsWith('/milestones') && (
                         <Button 
                             label="Add milestone" 
                             icon={<Plus className="scale-[0.8]"/>}
