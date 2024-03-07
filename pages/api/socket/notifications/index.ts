@@ -21,8 +21,6 @@ export default async function handler(
 
     const { createdBy, name, manager, client, auditor } = req.body;
 
-    
-
    
   } catch (error) {
     console.log("[MESSAGES_POST]", error);

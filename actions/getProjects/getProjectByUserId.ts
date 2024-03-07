@@ -27,6 +27,9 @@ export default async function getProjectsWithNames() {
             projects = await db.project.findMany({
                 where: {
                     userId: user.id
+                },
+                orderBy: {
+                    createdAt: 'desc',
                 }
             });
         } else if (user.role === 'MANAGER') {
@@ -34,6 +37,9 @@ export default async function getProjectsWithNames() {
             projects = await db.project.findMany({
                 where: {
                     projectManagerId: user.id
+                },
+                orderBy: {
+                    createdAt: 'desc',
                 }
             });
         } else if (user.role === 'AUDITOR') {
@@ -41,6 +47,9 @@ export default async function getProjectsWithNames() {
             projects = await db.project.findMany({
                 where: {
                     auditorId: user.id
+                },
+                orderBy: {
+                    createdAt: 'desc',
                 }
             });
         }
