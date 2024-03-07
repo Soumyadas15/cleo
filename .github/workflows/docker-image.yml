@@ -71,7 +71,7 @@ jobs:
             echo "AUTH0_CLIENT_SECRET=${{ secrets.AUTH0_CLIENT_SECRET }}" >> .env
             echo "LOCAL_DATABASE_URL=${{ secrets.LOCAL_DATABASE_URL }}" >> .env
             echo "REMOTE_DATABASE_URL=${{ secrets.REMOTE_DATABASE_URL }}" >> .env
-            sudo docker compose down || true
+            sudo docker compose down --rmi all --volumes || true
             sudo docker compose pull
             sudo docker compose down || true
             sudo docker compose up -d
