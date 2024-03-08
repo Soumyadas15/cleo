@@ -85,7 +85,7 @@ export const ProjectNavbar = ({
                 </div>
                 
             </div>
-            {user.role === "MANAGER" ? (
+            {(user.role === "MANAGER" || user.role === "ADMIN") ? (
                 <div>
                     {isPhaseRoute && (
                         <Button 

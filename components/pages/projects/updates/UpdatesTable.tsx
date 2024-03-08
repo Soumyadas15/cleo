@@ -84,7 +84,7 @@ export const UpdateTable = ({ project, updates, user }: UpdateTableProps) => {
           <TableHead className="w-[100px] font-bold">Serial</TableHead>
           <TableHead className="w-[180px] font-bold">Date</TableHead>
           <TableHead className="font-bold w-[45rem]">Body</TableHead>
-          {user.role === "MANAGER" ? (
+          {(user.role === "MANAGER" || user.role === "ADMIN") ? (
             <TableHead className="">Actions</TableHead>
           ) : (
             <div></div>
@@ -110,7 +110,7 @@ export const UpdateTable = ({ project, updates, user }: UpdateTableProps) => {
               )}
             </TableCell>
 
-            {user.role === "MANAGER" && (
+            {(user.role === "MANAGER" || user.role === "ADMIN") && (
               <TableCell className="flex items-center justify-start gap-5">
                 {sureToDeleteId === update.id ? (
                   <>

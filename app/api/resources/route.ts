@@ -10,6 +10,10 @@ export async function POST(request: Request) {
       return new Response('User not found', { status: 404 });
     }
 
+    if (!(currentUser.role === "ADMIN" || currentUser.role === "MANAGER")) {
+      return new Response('You dont have the necessary permissions', { status: 404 });
+    }
+
     const body = await request.json();
     const { projectId, name, role, comment, startDate, endDate } = body;
 
@@ -76,6 +80,16 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
+    const currentUser = await initialProfile();
+
+    if (!currentUser) {
+      return new Response('User not found', { status: 404 });
+    }
+
+    if (!(currentUser.role === "ADMIN" || currentUser.role === "MANAGER")) {
+      return new Response('You dont have the necessary permissions', { status: 404 });
+    }
+    
     const body = await request.json();
     const { resourceId, name, role, comment, startDate, endDate } = body;
 

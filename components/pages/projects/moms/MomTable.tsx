@@ -90,7 +90,7 @@ export const MomTable = ({
           <TableHead className="w-[150px] font-bold">Duration</TableHead>
           <TableHead className="w-[200px] font-bold">Link</TableHead>
           <TableHead className="font-bold w-[45rem]">Comments</TableHead>
-          {user.role === "MANAGER" ? (
+          {(user.role === "MANAGER" || user.role === "ADMIN") ? (
             <TableHead className="w-[130px]">Actions</TableHead>
           ) : (
             <div></div>
@@ -123,7 +123,7 @@ export const MomTable = ({
               )}
             </TableCell>
 
-            {user.role === "MANAGER" && (
+            {(user.role === "MANAGER" || user.role === "ADMIN") && (
               <TableCell className="flex items-center justify-start gap-5">
                 {sureToDeleteId === mom.id ? (
                   <>

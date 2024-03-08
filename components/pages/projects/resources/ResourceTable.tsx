@@ -93,7 +93,7 @@ export const ResourceTable = ({
             <TableHead className="w-[200px] font-bold">Start Date</TableHead>
             <TableHead className="w-[200px] font-bold">End Date</TableHead>
             <TableHead className="font-bold w-[45rem]">Comment</TableHead>
-            {user.role === "MANAGER" ? (
+            {(user.role === "MANAGER" || user.role === "ADMIN") ? (
               <TableHead className="w-[130px]">Actions</TableHead>
             ) : (
               <div></div>
@@ -122,7 +122,7 @@ export const ResourceTable = ({
                   <div></div>
                 )}
               </TableCell>
-              {user.role === "MANAGER" && (
+              {(user.role === "MANAGER" || user.role === "ADMIN") && (
                 <TableCell className="flex items-center justify-start gap-5">
                   {sureToDeleteId === resource.id ? (
                     <>

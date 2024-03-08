@@ -92,7 +92,7 @@ export const FeedbackTable = ({
           <TableHead className="w-[150px] font-bold">Action taken</TableHead>
           <TableHead className="w-[200px] font-bold">Start Date</TableHead>
           <TableHead className="w-[200px] font-bold">End Date</TableHead>
-          {user.role === "MANAGER" ? (
+          {(user.role === "MANAGER" || user.role === "ADMIN") ? (
             <TableHead className="w-[130px]">Actions</TableHead>
           ) : (
             <div></div>
@@ -119,7 +119,7 @@ export const FeedbackTable = ({
 
             <TableCell>{format(new Date(feedback.closureDate), "MMM do yyyy")}</TableCell>
 
-            {user.role === "MANAGER" && (
+            {(user.role === "MANAGER" || user.role === "ADMIN") && (
               <TableCell className="flex items-center justify-start gap-5">
                 {sureToDeleteId === feedback.id ? (
                   <>

@@ -70,10 +70,10 @@ export const PhasesClient = ({
 
     return (
         <div className="scrollbar-hide">
-            <div className="flex items-center w-full justify-between">
-                <PhasesList phases={phases} project={project}/>
+            <div className="flex items-center w-full gap-5">
+                <PhasesList phases={phases} project={project} user={user}/>
                 
-                {!isPhasesHome ? (
+                {(!isPhasesHome && (user.role === "ADMIN" || user.role === "MANAGER"))? (
                         <Button
                             label="Add content"
                             icon={ <PlusIcon/> }

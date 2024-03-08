@@ -10,6 +10,10 @@ export async function POST(request: Request) {
             return new Response('User not found', { status: 404 });
         }
 
+        if (!(currentUser.role === "ADMIN" || currentUser.role === "MANAGER")) {
+            return new Response('You dont have', { status: 404 });
+        }
+
         const body = await request.json();
         const { projectId } = body;
 

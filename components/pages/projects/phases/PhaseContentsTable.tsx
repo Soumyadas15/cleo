@@ -86,7 +86,7 @@ export const PhaseContentsTable = ({
           <TableHead className="w-[150px] font-bold">Role</TableHead>
           <TableHead className="w-[200px] font-bold">Availability</TableHead>
           <TableHead className="w-[200px] font-bold">Duration</TableHead>
-          {user.role === "MANAGER" ? (
+          {(user.role === "MANAGER" || user.role === "ADMIN") ? (
             <TableHead className="w-[130px]">Actions</TableHead>
           ) : (
             <div></div>
@@ -112,7 +112,7 @@ export const PhaseContentsTable = ({
             <TableCell>{phaseContent.duration} months</TableCell>
 
 
-            {user.role === "MANAGER" && (
+            {(user.role === "MANAGER" || user.role === "ADMIN") && (
               <TableCell className="flex items-center justify-start gap-5">
                 {sureToDeleteId === phaseContent.id ? (
                   <>

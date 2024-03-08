@@ -4,13 +4,11 @@ import { Button } from "@/components/ui/button";
 import { 
     DropdownMenu, 
     DropdownMenuContent, 
-    DropdownMenuGroup, 
     DropdownMenuItem, 
     DropdownMenuLabel, 
     DropdownMenuRadioGroup, 
     DropdownMenuSeparator, 
     DropdownMenuTrigger } from "@/components/ui/dropdown";
-import usePhaseContentModal from "@/hooks/createModalHooks/usePhaseContentModal";
 import axios from "axios";
 import { Plus } from "lucide-react";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -20,11 +18,13 @@ import toast from "react-hot-toast";
 interface PhasesListProps {
     phases: any[];
     project: any;
+    user:any;
 }
 
 export const PhasesList = ({
     phases,
-    project
+    project,
+    user
 }: PhasesListProps) => {
 
     const router = useRouter();
@@ -111,15 +111,18 @@ export const PhasesList = ({
                             <span>{`Phase ${phases.length - index}`}</span>
                         </DropdownMenuItem>
                     ))}
-                    <DropdownMenuItem 
+                    {(user.role === "ADMIN" || user.role === "MANAGER") ? (
+                        <DropdownMenuItem 
                         className="rounded-[5px] hover:cursor-pointer focus:bg-neutral-200"
                         onClick={() => onAdd(project)}
-                    >
-                        <Plus className="mr-2 h-4 w-4" />
-                        <span>Add phase</span>
-                    </DropdownMenuItem>
+                        >
+                            <Plus className="mr-2 h-4 w-4" />
+                            <span>Add phase</span>
+                        </DropdownMenuItem>
+                    ) : (
+                        <></>
+                    )}
                 </DropdownMenuRadioGroup>
-
             </DropdownMenuContent>
         </DropdownMenu>
     );

@@ -10,13 +10,15 @@ export async function DELETE(request: Request, { params }: { params: IParams }) 
   try {
 
     const currentUser = await initialProfile();
+
     if (!currentUser) {
-        return new Response("User not authenticated", { status: 401 });
+      return new Response('User not found', { status: 404 });
     }
 
-    if (currentUser.role !== "MANAGER") {
-        return new Response("You don't have the required permissions", { status: 401 });
+    if (!(currentUser.role === "ADMIN" || currentUser.role === "MANAGER")) {
+      return new Response('You dont have the necessary permissions', { status: 404 });
     }
+
     
     const { updateId } = params;
 

@@ -10,6 +10,10 @@ export async function POST(request: Request) {
       return new Response('User not found', { status: 404 });
     }
 
+    if (!(currentUser.role === "ADMIN" || currentUser.role === "MANAGER")) {
+      return new Response('You dont have the necessary permissions', { status: 404 });
+    }
+
     const content = await request.json();
     const { projectId, duration, date, link, comments } = content;
 
@@ -87,8 +91,8 @@ export async function PUT(request: Request) {
       return new Response('User not found', { status: 404 });
     }
 
-    if (currentUser.role !== "MANAGER") {
-      return new Response('You dont have the required permissions', { status: 404 });
+    if (!(currentUser.role === "ADMIN" || currentUser.role === "MANAGER")) {
+      return new Response('You dont have the necessary permissions', { status: 404 });
     }
 
     const content = await request.json();
