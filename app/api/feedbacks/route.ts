@@ -2,6 +2,15 @@ import { db } from "@/lib/db";
 import { initialProfile } from "@/lib/initial-profile";
 
 
+/**
+ * Creates a new feedback entry in the database.
+ * Only users with the "ADMIN" or "MANAGER" role can create feedback.
+ *
+ * @param request - the incoming request
+ * @returns a response containing the created feedback, or an error message
+*/
+
+
 export async function POST(request: Request) {
   try {
     const currentUser = await initialProfile();
@@ -53,30 +62,15 @@ export async function POST(request: Request) {
   }
 }
 
-// export async function GET(request: Request) {
-//     try {
-//         const queryParams = new URL(request.url).searchParams;
-//         const projectId = queryParams.get('projectId');
-  
-//         if (!projectId) {
-//             return new Response('Missing projectId query parameter', { status: 400 });
-//         } 
-    
-//       const audits = await db.audit.findMany({
-//         where: {
-//           projectId: projectId,
-//         },
-//       });
-  
-//       return new Response(JSON.stringify(audits), { status: 200, headers: { 'Content-Type': 'application/json' } });
-//     } catch (error) {
-//       if (error instanceof Error) {
-//           return new Response(error.message, { status: 500 });
-//       } else {
-//           return new Response('An unknown error occurred', { status: 500 });
-//       }
-//     }
-// }
+
+/**
+ * Updates feedback entry in the database.
+ * Only users with the "ADMIN" or "MANAGER" role can update feedback.
+ *
+ * @param request - the incoming request
+ * @returns a response containing the created feedback, or an error message
+*/
+
 
 export async function PUT(request: Request) {
   try {
@@ -90,7 +84,7 @@ export async function PUT(request: Request) {
     if (!(currentUser.role === "ADMIN" || currentUser.role === "MANAGER")) {
       return new Response('You dont have the necessary permissions', { status: 404 });
     }
-    
+
     const content = await request.json();
     const { feedbackId, type, body, action, date, closureDate } = content;
     

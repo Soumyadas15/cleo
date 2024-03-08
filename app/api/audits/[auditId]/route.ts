@@ -2,6 +2,14 @@ import { db } from "@/lib/db";
 import { initialProfile } from "@/lib/initial-profile";
 
 
+/**
+ * Deletes an audit record from the database.
+ * Only auditors can delete audit records.
+ *
+ * @param auditId - The ID of the audit record to delete.
+ * @returns A response indicating whether the deletion was successful.
+ */
+
 interface IParams {
     auditId?: string;
 }

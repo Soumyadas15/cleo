@@ -2,6 +2,15 @@ import { db } from "@/lib/db";
 import { initialProfile } from "@/lib/initial-profile";
 
 
+
+/**
+ * Handles POST requests to the /api/audit endpoint.
+ *
+ * @param request - the incoming HTTP request
+ * @returns a response containing the created audit, or an error response
+*/
+
+
 export async function POST(request: Request) {
   try {
     const currentUser = await initialProfile();
@@ -46,6 +55,15 @@ export async function POST(request: Request) {
   }
 }
 
+/**
+ * Handles GET requests to the /api/audit endpoint.
+ *
+ * @param request - the incoming HTTP request
+ * @returns a response containing a list of audits, or an error response
+*/
+
+
+
 export async function GET(request: Request) {
     try {
         const queryParams = new URL(request.url).searchParams;
@@ -70,6 +88,15 @@ export async function GET(request: Request) {
       }
     }
 }
+
+
+/**
+ * Handles PUT requests to the /api/audit endpoint.
+ *
+ * @param request - the incoming HTTP request
+ * @returns a response containing the updated audit, or an error response
+*/
+
 
 export async function PUT(request: Request) {
   try {

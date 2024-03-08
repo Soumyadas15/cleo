@@ -2,6 +2,15 @@ import { db } from "@/lib/db";
 import { initialProfile } from "@/lib/initial-profile";
 
 
+
+/**
+ * Deletes a feedback entry in the database.
+ * Only users with the "ADMIN" or "MANAGER" role can create feedback.
+ *
+ * @param request - the incoming request
+ * @returns a response containing the created feedback, or an error message
+*/
+
 interface IParams {
     feedbackId?: string;
 }

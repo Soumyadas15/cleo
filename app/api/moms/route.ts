@@ -2,6 +2,15 @@ import { db } from "@/lib/db";
 import { initialProfile } from "@/lib/initial-profile";
 
 
+/**
+ * Creates an MoM.
+ * Only users with the "ADMIN" or "MANAGER" role can update MoMs.
+ *
+ * @param request - the incoming request
+ * @returns a response indicating the status and content of the updated MoM
+*/
+
+
 export async function POST(request: Request) {
   try {
     const currentUser = await initialProfile();
@@ -34,8 +43,6 @@ export async function POST(request: Request) {
         return new Response('Project not found', { status: 400 });
     }
 
-    console.log(intDuration)
-
     const mom = await db.mom.create({
         data: {
             date: date,
@@ -57,30 +64,15 @@ export async function POST(request: Request) {
   }
 }
 
-// export async function GET(request: Request) {
-//     try {
-//         const queryParams = new URL(request.url).searchParams;
-//         const projectId = queryParams.get('projectId');
-  
-//         if (!projectId) {
-//             return new Response('Missing projectId query parameter', { status: 400 });
-//         } 
-    
-//       const audits = await db.audit.findMany({
-//         where: {
-//           projectId: projectId,
-//         },
-//       });
-  
-//       return new Response(JSON.stringify(audits), { status: 200, headers: { 'Content-Type': 'application/json' } });
-//     } catch (error) {
-//       if (error instanceof Error) {
-//           return new Response(error.message, { status: 500 });
-//       } else {
-//           return new Response('An unknown error occurred', { status: 500 });
-//       }
-//     }
-// }
+
+/**
+ * Updates an existing MoM.
+ * Only users with the "ADMIN" or "MANAGER" role can update MoMs.
+ *
+ * @param request - the incoming request
+ * @returns a response indicating the status and content of the updated MoM
+*/
+
 
 export async function PUT(request: Request) {
   try {
@@ -114,7 +106,6 @@ export async function PUT(request: Request) {
       return new Response('MoM not found', { status: 404 });
     }
 
-    console.log(mom)
 
     const updatedMom = await db.mom.update({
       where: {

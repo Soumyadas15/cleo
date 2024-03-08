@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { ProjectNavbarItem } from "./ProjectNavbarItem";
 import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import { Button } from "@/components/reusable/Button";
-import { Plus } from "lucide-react";
+import { ArrowRightIcon, Plus } from "lucide-react";
 import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
 import useFeedbackModal from "@/hooks/createModalHooks/useFeedbackModal";
 import useUpdateModal from "@/hooks/createModalHooks/useUpdateModal";
@@ -12,6 +12,7 @@ import useEditUpdateModal from "@/hooks/editModalHooks/useEditUpdateModa";
 import useMomModal from "@/hooks/createModalHooks/useMomModal";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 interface ProjectNavbarProps {
     project: any;
@@ -23,8 +24,15 @@ export const ProjectNavbar = ({
     user,
 }: ProjectNavbarProps) => {
 
+    const [navbarPosition, setNavbarPosition] = useState('justify-start');
+
+    const toggleNavbar = () => {
+        setNavbarPosition(navbarPosition === 'justify-start' ? 'justify-end' : 'justify-start');
+    }
+
     const pathname = usePathname();
     const router = useRouter();
+    
     
     const auditModal = useAuditModal();
     const resourceModal = useResourceModal();
@@ -71,19 +79,23 @@ export const ProjectNavbar = ({
     ];
 
     return (
-        <div className="w-full h-[2rem] flex items-center justify-between gap-5 mt-3 ">
-            <div className="w-[80%] h-full flex items-center justify-between gap-5 overflow-hidden overflow-x-scroll scrollbar-hide">
-                <div className="flex items-center gap-10">
-                    {routes.map((route, index) => (
-                        <ProjectNavbarItem
-                            key={index}
-                            label={route.slice(1).charAt(0).toUpperCase() + route.slice(2)}
-                            to={`/main/projects/${project.id}${route}`}
-                            isActive={pathname?.startsWith(`/main/projects/${project.id}${route}`)}
-                        />
-                    ))}
+        <div className="w-full h-[2rem] flex  items-center justify-between gap-5  mt-3 ">
+            <div className="w-[80%] h-full  flex items-center justify-between">
+                <div className={`w-[95%] h-full  flex items-center ${navbarPosition} transition  gap-5 overflow-hidden overflow-x-scroll scrollbar-hide`}>
+                    <div className="flex items-center gap-10">
+                        {routes.map((route, index) => (
+                            <ProjectNavbarItem
+                                key={index}
+                                label={route.slice(1).charAt(0).toUpperCase() + route.slice(2)}
+                                to={`/main/projects/${project.id}${route}`}
+                                isActive={pathname?.startsWith(`/main/projects/${project.id}${route}`)}
+                            />
+                        ))}
+                    </div>
+                </div> 
+                <div>
+                    <ArrowRightIcon size={20} className="font-bold hover:cursor-pointer hover:opacity-75" onClick={toggleNavbar}/>
                 </div>
-                
             </div>
             {(user.role === "MANAGER" || user.role === "ADMIN") ? (
                 <div>
