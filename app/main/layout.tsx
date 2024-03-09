@@ -13,6 +13,9 @@ import NameModal from "@/components/modals/createModals/NameModal";
 import { ProfileModal } from "@/components/modals/ProfileModal";
 import { EmployeesModal } from "@/components/modals/EmployeesModal";
 import { getAuditors, getClients, getManagers } from "@/actions/getUsers/getUserByEmail";
+import { SocketProvider } from "@/providers/SocketProvider";
+import getNotifications from "@/actions/getNotifications/getNotificationByUserId";
+import getUnreadNotifications from "@/actions/getNotifications/getUnreadNotifications";
 
 const font = Montserrat({ subsets: ["latin"] });
 
@@ -38,6 +41,8 @@ export default async function MainLayout({
   const managers = await getManagers();
   const auditors = await getAuditors();
   const clients = await getClients();
+  const notifications = await getNotifications();
+  const notificationCount = await getUnreadNotifications();
 
 
   return (
@@ -49,38 +54,39 @@ export default async function MainLayout({
             defaultTheme="light"
             disableTransitionOnChange
           >
+            <SocketProvider>
 
+              <CreateModal user={user} managers={managers} auditors={auditors} clients={clients}/>
+              <SuccessModal/>
+              <NameModal user={user}/>
+              <ProfileModal user={user}/>
+              <EmployeesModal user={user}/>
 
-            <CreateModal user={user} managers={managers} auditors={auditors} clients={clients}/>
-            <SuccessModal/>
-            <NameModal user={user}/>
-            <ProfileModal user={user}/>
-            <EmployeesModal user={user}/>
-
-
-
-            <Toaster/>
-            <div>
-              <div className="h-screen">
-                <div className=" w-full h-full flex items-center justify-between">
-                  <div className="bg-neutral-200 dark:bg-black md:w-[15%] h-full flex items-center justify-center pr-1">
-                    <div className="h-full w-full">
-                      <Sidebar user={user}/>
-                    </div>
-                  </div>
-                  <div className="bg-white dark:bg-neutral-900 w-full md:w-[85%] h-full flex items-center justify-center pl-1">
-                    <div className=" dark:bg-neutral-900 h-full w-full">
-                      <div className="w-full h-[10%] p-5">
-                        <Navbar user={user}/>
+              <Toaster/>
+              <div>
+                <div className="h-screen">
+                  <div className=" w-full h-full flex items-center justify-between">
+                    <div className="bg-neutral-200 dark:bg-black md:w-[15%] h-full flex items-center justify-center pr-1">
+                      <div className="h-full w-full">
+                        <Sidebar user={user}/>
                       </div>
-                      <div className="w-full h-[90%] ">
-                        {children}
+                    </div>
+                    <div className="bg-white dark:bg-neutral-900 w-full md:w-[85%] h-full flex items-center justify-center pl-1">
+                      <div className=" dark:bg-neutral-900 h-full w-full">
+                        <div className="w-full h-[10%] p-5">
+                          <Navbar user={user} notifications={notifications} count={notificationCount}/>
+                        </div>
+                        <div className="w-full h-[90%] ">
+                          {children}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+
+            </SocketProvider>
+
           </ThemeProvider>
         </body>
       </UserProvider>

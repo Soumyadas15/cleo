@@ -17,24 +17,6 @@ export const ProjectClient = ({
 }: ProjectClientProps) => {
 
     const createModal = useCreateModal();
-
-    // useEffect(() => {
-    //     const fetchProjects = async () => {
-    //       try {
-    //         const response = await axios.get(`http://127.0.0.1:3001/projects?userId=${user.id}`);
-    //         setProjects(response.data);
-    //       } catch (error) {
-    //         console.error('Error fetching projects:', error);
-    //       }
-    //     };
-    
-    //     fetchProjects();
-    
-    //     const intervalId = setInterval(fetchProjects, 100); // Refresh every 100 ms
-    
-    //     return () => clearInterval(intervalId); // Cleanup on component unmount
-    //   }, [user]);
-
     const [heading, setHeading] = useState('');
 
     useEffect(() => {
@@ -46,7 +28,6 @@ export const ProjectClient = ({
         } else if (userRole === 'MANAGER' || userRole === 'AUDITOR') {
             newHeading = 'Projects assigned to you';
         } else {
-            // Default title if the user role doesn't match any condition
             newHeading = 'Projects';
         }
 
@@ -55,7 +36,7 @@ export const ProjectClient = ({
 
 
     return (
-        <div className="w-full h-full ">
+        <div className="w-full h-full">
             <div className="w-full h-[8%]">
                 <Heading 
                     title={`${heading}`}
@@ -66,7 +47,7 @@ export const ProjectClient = ({
                     <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-2">
                         {projects.map((project: any, index: number) => (
                             <div key={index} className="flex flex-col mt-2">
-                                <ProjectItem project={project}/>
+                                <ProjectItem project={project} user={user}/>
                             </div>
                         ))}
                     </div>

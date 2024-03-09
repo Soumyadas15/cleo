@@ -13,13 +13,12 @@ export default async function handler(
   }
 
   try {
-    const currentUser = await initialProfile();
     
-    if (!currentUser) {
-      return res.status(401).json({ error: "User not authenticated" });
-    }
+    // const { createdBy, name, manager, client, auditor } = req.body;
 
-    const { createdBy, name, manager, client, auditor } = req.body;
+    res?.socket?.server?.io?.emit("ok");
+
+    return res.status(200).json({ message: "Notification sent" });
 
    
   } catch (error) {

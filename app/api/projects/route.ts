@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
     try{
 
+
         const currentUser = await initialProfile();
         if (!currentUser) {
             return new Response("User not authenticated", { status: 401 });
@@ -78,6 +79,24 @@ export async function POST(request: Request) {
             data: {
                 projectManagerId: projectManager?.id,
                 auditorId: projectAuditor?.id,
+            }
+        })
+
+        const managerNotification = await db.notification.create({
+            //@ts-ignore
+            data: {
+                text: `${currentUser.name} added you as a project manager in ${name}`,
+                userId: projectManager?.id,
+                projectId: project.id,
+            }
+        })
+
+        const auditorNotification = await db.notification.create({
+            //@ts-ignore
+            data: {
+                text: `${currentUser.name} added you as an auditor in ${name}`,
+                userId: projectAuditor?.id,
+                projectId: project.id,
             }
         })
 

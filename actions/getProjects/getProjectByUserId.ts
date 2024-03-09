@@ -2,7 +2,7 @@ import { db } from '@/lib/db';
 import { initialProfile } from '@/lib/initial-profile'; // Adjust the import statement to match the correct path
 import getUserById from '../getUsers/getUserById';
 
-export default async function getProjectsWithNames() {
+export default async function getProjectsByUsertId() {
     try {
         const user = await initialProfile();
 

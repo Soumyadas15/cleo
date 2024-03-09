@@ -36,6 +36,7 @@ model User {
 
   projects Project[]
   members Member[]
+  notifications Notification[]
 
   managedProjects Project[] @relation("ProjectManager")
   auditedProjects Project[] @relation("Auditor")
@@ -59,6 +60,7 @@ model Project {
   feedbacks Feedback[]
   moms Mom[]
   phases Phase[]
+  notifications Notification[]
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -198,3 +200,17 @@ model Phase_content {
   createdAt DateTime @default(now())
 }
 
+model Notification {
+  id String @id @default(uuid())
+
+  text String?
+
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  isRead Boolean @default(false)
+}
