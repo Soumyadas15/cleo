@@ -32,15 +32,15 @@ export default async function ProjectLayout({
         <UpdateModal project={project} user={user}/>
         <MomModal project={project} user={user}/>
 
-        <div className="p-5 h-full w-full scrollbar-hide">
-            <div className="h-[5%]">
+        <div className="p-5 h-full w-full flex flex-col justify-between scrollbar-hide">
+            <div className="h-[5%] flex items-center">
                 <Heading title={`${project?.name}`}/>
             </div>
-            <div className="h-[5%]">
+            <div className="h-[5%] flex items-center">
                 <ProjectNavbar project={project} user={user}/>
             </div>
             
-            <div className="w-full h-[88%] pt-5 overflow-hidden overflow-y-scroll scrollbar-hide">
+            <div className="w-full h-[90%] flex justify-start pt-5 overflow-hidden overflow-y-scroll scrollbar-hide">
                 {children}
             </div>
             

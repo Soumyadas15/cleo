@@ -25,13 +25,16 @@ export const ResourcesClient = ({
 
     if (resources.length === 0){
         return(
-            <EmptyState 
-                title="No resources yet"
-                subtitle="Add a resource"
-                showButton = {user.role === "MANAGER"}
-                buttonLabel="Create"
-                onClick={resourceModal.onOpen}
-            />
+            <div className="w-full h-full">
+                <EmptyState 
+                    title="No resources yet"
+                    subtitle="Add a resource"
+                    showButton = {user.role === "MANAGER"}
+                    buttonLabel="Create"
+                    onClick={resourceModal.onOpen}
+                />
+            </div>
+            
         )
 
     }
@@ -39,9 +42,9 @@ export const ResourcesClient = ({
 
     return (
         <div className="w-full h-full scrollbar-hide">
-            {user.role === "MANAGER" ? (
+            {(user.role === "MANAGER" || user.role === "ADMIN") ? (
                 <>
-                <div className="h-[90%] overflow-hidden overflow-y-scroll scrollbar-hide">
+                <div className="h-full overflow-hidden overflow-y-scroll scrollbar-hide">
                     <ResourceTable resources={resources} project={project} user={user}/>
                 </div>
                 </>

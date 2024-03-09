@@ -42,7 +42,7 @@ export const MomsClient = ({
         <div className="w-full h-full scrollbar-hide">
             {user.role === "MANAGER" ? (
                 <>
-                <div className="h-[90%] overflow-hidden overflow-y-scroll scrollbar-hide">
+                <div className="h-full overflow-hidden overflow-y-scroll scrollbar-hide">
                     <MomTable moms={moms} project={project} user={user}/>
                 </div>
                 </>

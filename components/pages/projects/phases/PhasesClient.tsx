@@ -70,7 +70,7 @@ export const PhasesClient = ({
 
     return (
         <div className="scrollbar-hide">
-            <div className="flex items-center w-full gap-5">
+            <div className="flex items-center w-full">
                 <PhasesList phases={phases} project={project} user={user}/>
                 
                 {(!isPhasesHome && (user.role === "ADMIN" || user.role === "MANAGER"))? (

@@ -21,7 +21,7 @@ const ResourcesPage = async (
     
     
     return (  
-        <div className="flex flex-col h-full scrollbar-hide">
+        <div className="flex flex-col h-full w-full scrollbar-hide">
             <ResourcesClient resources={resources} user={user} project={project}/>
         </div>
     );
