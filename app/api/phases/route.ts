@@ -11,7 +11,7 @@ export async function POST(request: Request) {
         }
 
         if (!(currentUser.role === "ADMIN" || currentUser.role === "MANAGER")) {
-            return new Response('You dont have', { status: 404 });
+            return new Response('You dont have the required permissions', { status: 404 });
         }
 
         const body = await request.json();
