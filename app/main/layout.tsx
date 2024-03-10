@@ -16,6 +16,13 @@ import { getAuditors, getClients, getManagers } from "@/actions/getUsers/getUser
 import { SocketProvider } from "@/providers/SocketProvider";
 import getNotifications from "@/actions/getNotifications/getNotificationByUserId";
 import getUnreadNotifications from "@/actions/getNotifications/getUnreadNotifications";
+import { getLocalData } from "@/lib/localData";
+
+import data from "@/json/avatarConfig.json";
+import { AvatarStateProvider } from "../context/avatarState";
+import { MainComponent } from "@/components/avatarCreator/MainComponent";
+
+
 
 const font = Montserrat({ subsets: ["latin"] });
 
@@ -45,9 +52,11 @@ export default async function MainLayout({
   const notificationCount = await getUnreadNotifications();
 
 
+
   return (
     <html lang="en" >
       <UserProvider>
+        
         <body className={`${font.className} bg-neutral-900 overflow-x-hidden`}>
         <ThemeProvider
             attribute="class"
@@ -59,7 +68,8 @@ export default async function MainLayout({
               <CreateModal user={user} managers={managers} auditors={auditors} clients={clients}/>
               <SuccessModal/>
               <NameModal user={user}/>
-              <ProfileModal user={user}/>
+              
+              {/* <MainComponent localData={localData}/> */}
               <EmployeesModal user={user}/>
 
               <Toaster/>
@@ -89,6 +99,7 @@ export default async function MainLayout({
 
           </ThemeProvider>
         </body>
+        
       </UserProvider>
     </html>
   );

@@ -55,6 +55,7 @@ export const Button = ({
                     ${outline ? '' : 'bg-black dark:bg-white'}
                     ${outline ? 'border-black border-[1px] dark:border-neutral-600' : 'border-black border-none dark:border-neutral-600'}
                     ${outline ? 'text-black dark:text-white' : 'text-white dark:text-black'}`}
+                
             >
                 {icon && <span className="mr-2">{icon}</span>}
                 {label}

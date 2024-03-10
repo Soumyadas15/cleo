@@ -17,7 +17,7 @@ export const Avatar = ({
     return (
         <div className="flex items-center p-2 gap-2">
             <Image 
-                src={'/avatar.png'}
+                src={user.imageUrl}
                 alt="user"
                 height={42}
                 width={42}

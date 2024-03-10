@@ -11,23 +11,25 @@ export async function POST(request: Request) {
             return new Response("User not authenticated", { status: 401 });
         }
 
-        const body = await request.json();
-        const { userId, name } = body;
+        console.log("Ok")
 
-        if (!userId || !name) {
-            return new Response("Missing required fields", { status: 400 });
-        }
+        // const body = await request.json();
+        // const { userId, name } = body;
 
-        const user = await db.user.update({
-            where: {
-                id: userId,
-            },
-            data: { 
-                name: name 
-            },
-        })
+        // if (!userId || !name) {
+        //     return new Response("Missing required fields", { status: 400 });
+        // }
 
-        return new Response(JSON.stringify(user), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        // const user = await db.user.update({
+        //     where: {
+        //         id: userId,
+        //     },
+        //     data: { 
+        //         name: name 
+        //     },
+        // })
+
+        return new Response(JSON.stringify(currentUser), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
     } catch (error) {
         if (error instanceof Error) {

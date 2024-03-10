@@ -4,7 +4,8 @@ const nextConfig = {
         domains: [
             "s.gravatar.com",
             "pbs.twimg.com",
-            "apis.live.net"
+            "apis.live.net",
+            "res.cloudinary.com"
         ]
     },
 };

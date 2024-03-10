@@ -71,19 +71,6 @@ const UserMenu: React.FC<UserMenuProps> = ({
                 <span>My Profile</span>
               </DropdownMenuItem>
 
-              {/* {user.role === "ADMIN" ? (
-                <DropdownMenuItem 
-                  className="rounded-[5px] focus:bg-neutral-200 hover:cursor-pointer"
-                  onClick={employeesModal.onOpen}
-                >
-                  <User className="mr-2 h-4 w-4" />
-                  <span>My Employees</span>
-                </DropdownMenuItem>
-
-                ) : (
-                  <div></div>
-              )} */}
-
               <DropdownMenuSeparator className="border-neutral-300 hover:cursor-pointer"/>
 
               <DropdownMenuItem 
