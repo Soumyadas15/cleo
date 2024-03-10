@@ -10,17 +10,11 @@ import { Navbar } from "@/components/navbar/Navbar";
 import { initialProfile } from "@/lib/initial-profile";
 import SuccessModal from "@/components/modals/SuccessModal";
 import NameModal from "@/components/modals/createModals/NameModal";
-import { ProfileModal } from "@/components/modals/ProfileModal";
 import { EmployeesModal } from "@/components/modals/EmployeesModal";
 import { getAuditors, getClients, getManagers } from "@/actions/getUsers/getUserByEmail";
 import { SocketProvider } from "@/providers/SocketProvider";
 import getNotifications from "@/actions/getNotifications/getNotificationByUserId";
 import getUnreadNotifications from "@/actions/getNotifications/getUnreadNotifications";
-import { getLocalData } from "@/lib/localData";
-
-import data from "@/json/avatarConfig.json";
-import { AvatarStateProvider } from "../context/avatarState";
-import { MainComponent } from "@/components/avatarCreator/MainComponent";
 
 
 

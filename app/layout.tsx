@@ -6,7 +6,7 @@ import { getLocalData } from "@/lib/localData";
 
 const font = Montserrat({ subsets: ["latin"] });
 
-import data from "@/json/avatarConfig.json";
+import data from "@/public/json/avatarConfig.json";
 import { AvatarStateProvider } from "./context/avatarState";
 import { ProfileModal } from "@/components/modals/ProfileModal";
 import { initialProfile } from "@/lib/initial-profile";
