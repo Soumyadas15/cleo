@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import CreateModal from "@/components/modals/createModals/CreateModal";
 import { Navbar } from "@/components/navbar/Navbar";
 import { initialProfile } from "@/lib/initial-profile";
+import data from "@/public/json/avatarConfig.json"
 import SuccessModal from "@/components/modals/SuccessModal";
 import NameModal from "@/components/modals/createModals/NameModal";
 import { EmployeesModal } from "@/components/modals/EmployeesModal";
@@ -15,8 +16,10 @@ import { getAuditors, getClients, getManagers } from "@/actions/getUsers/getUser
 import { SocketProvider } from "@/providers/SocketProvider";
 import getNotifications from "@/actions/getNotifications/getNotificationByUserId";
 import getUnreadNotifications from "@/actions/getNotifications/getUnreadNotifications";
+import { getLocalData } from "@/lib/localData";
+import { ProfileModal } from "@/components/modals/ProfileModal";
 
-
+export type JSONData = typeof data;
 
 const font = Montserrat({ subsets: ["latin"] });
 
@@ -37,6 +40,7 @@ export default async function MainLayout({
   children: React.ReactNode;
 }>) {
 
+  const localData = await getLocalData();
   const user = await initialProfile();
 
   const managers = await getManagers();
@@ -62,7 +66,7 @@ export default async function MainLayout({
               <CreateModal user={user} managers={managers} auditors={auditors} clients={clients}/>
               <SuccessModal/>
               <NameModal user={user}/>
-              
+              <ProfileModal user={user} localData={localData}/>
               {/* <MainComponent localData={localData}/> */}
               <EmployeesModal user={user}/>
 

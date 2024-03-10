@@ -6,7 +6,8 @@ const nextConfig = {
             "pbs.twimg.com",
             "apis.live.net",
             "res.cloudinary.com"
-        ]
+        ],
+        unoptimized: true,
     },
 };
 

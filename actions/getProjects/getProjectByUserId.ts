@@ -11,31 +11,37 @@ export default async function getProjectsByUsertId() {
         }
 
         let projects;
-
+        
+        //@ts-ignore
         if (user.role === 'ADMIN') {
             // Fetch all projects created by the admin user
             projects = await db.project.findMany({
                 where: {
+                    //@ts-ignore
                     userId: user.id
                 },
                 orderBy: {
                     createdAt: 'desc',
                 }
             });
+        //@ts-ignore
         } else if (user.role === 'MANAGER') {
             // Fetch projects where the user is a project manager
             projects = await db.project.findMany({
                 where: {
+                     //@ts-ignore
                     projectManagerId: user.id
                 },
                 orderBy: {
                     createdAt: 'desc',
                 }
             });
+             //@ts-ignore
         } else if (user.role === 'AUDITOR') {
             // Fetch projects where the user is an auditor
             projects = await db.project.findMany({
                 where: {
+                     //@ts-ignore
                     auditorId: user.id
                 },
                 orderBy: {

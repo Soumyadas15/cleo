@@ -22,6 +22,7 @@ export async function DELETE(request: Request, { params }: { params: IParams }) 
     if (!currentUser) {
         return new Response("User not authenticated", { status: 401 });
     }
+    //@ts-ignore
     if (!(currentUser.role === "ADMIN" || currentUser.role === "MANAGER")) {
       return new Response('You dont have the necessary permissions', { status: 404 });
    }

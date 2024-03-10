@@ -12,6 +12,7 @@ export default async function getUnreadNotifications() {
 
         const unreadCount = await db.notification.count({
             where: {
+                //@ts-ignore
                 userId: user.id,
                 isRead: false,
             }

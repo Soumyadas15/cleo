@@ -11,7 +11,7 @@ import { AvatarStateProvider } from "./context/avatarState";
 import { ProfileModal } from "@/components/modals/ProfileModal";
 import { initialProfile } from "@/lib/initial-profile";
 
-export type JSONData = typeof data;
+
 
 export const metadata: Metadata = {
   title: "Cleo",
@@ -30,14 +30,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const localData: JSONData = await getLocalData();
-  const user = await initialProfile();
+
 
   return (
     <html lang="en"  suppressHydrationWarning>
       <UserProvider>
         <AvatarStateProvider>
-          <ProfileModal localData={localData} user={user}/>
+          
           <body className={`${font.className} bg-black overflow-x-hidden scrollbar-hide`}>
             {children}
           </body>

@@ -12,7 +12,8 @@ export default async function getNotifications() {
 
         const notifications = await db.notification.findMany({
             where: {
-                userId: user.id,
+                //@ts-ignore
+                userId: user.id
             }
         })
 

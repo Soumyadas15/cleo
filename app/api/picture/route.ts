@@ -20,6 +20,7 @@ export async function PUT(request: Request) {
 
         const user = await db.user.update({
             where: {
+                //@ts-ignore
                 id: currentUser.id,
             },
             data: { 

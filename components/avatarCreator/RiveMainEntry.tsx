@@ -5,7 +5,7 @@ import RiveAvatar from "@/components/avatarCreator/RiveAvatarComponent";
 import RiveIconsContainer from "@/components/avatarCreator/RiveIconsContainer";
 import { AvatarStateContext } from "@/app/context/avatarState";
 import RiveOptionsContainer from "@/components/avatarCreator/RiveOptionsContainer";
-import { JSONData } from "@/app/layout";
+import { JSONData } from "@/app/main/layout";
 import { Button } from "../reusable/Button";
 import toast from "react-hot-toast";
 import axios from "axios";
