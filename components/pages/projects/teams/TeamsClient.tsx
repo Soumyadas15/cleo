@@ -13,41 +13,41 @@ import {
     
 
 import { Plus, PlusIcon } from "lucide-react";
-import { PhasesList } from "./PhasesList";
+import { TeamsList } from "./TeamsList";
 import { Button } from "@/components/reusable/Button";
 import usePhaseContentModal from "@/hooks/createModalHooks/usePhaseContentModal";
 import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-interface FeedbacksClientProps {
-    phases: any;
+interface TeamsClientProps {
+    teams: any;
     user: any;
     project: any;
-    phase?: any;
+    team?: any;
 }
 
-export const PhasesClient = ({
-    phases,
+export const TeamsClient = ({
+    teams,
     user,
     project,
-    phase
-}: FeedbacksClientProps) => {
+    team
+}: TeamsClientProps) => {
 
     const phaseContentModal = usePhaseContentModal();
     const pathname = usePathname();
-    const isPhasesHome = pathname?.endsWith('/phases');
+    const isTeamsHome = pathname?.endsWith('/teams');
     const router = useRouter();
 
     const onAdd = async (project: any) => {
         const data = { projectId: project.id };
         console.log(project.id);
-        axios.post('/api/phases', data)
+        axios.post('/api/teams', data)
         .then((response) => {
             const phase = response.data;
             const phaseId = phase.id;
-            toast.success('Phase created');
-            router.push(`/main/projects/${project.id}/phases/${phaseId}`);
+            toast.success('Team phase created');
+            router.push(`/main/projects/${project.id}/teams/${phaseId}`);
         }).catch((error) => {
             toast.error(error.message);
         }).finally(() => {
@@ -56,11 +56,11 @@ export const PhasesClient = ({
     };
 
 
-    if (phases.length === 0){
+    if (teams.length === 0){
         return(
             <EmptyState 
-                title="No Phases yet"
-                subtitle="Add a Phase"
+                title="No teams yet"
+                subtitle="Add a Team"
                 showButton = {user.role === "MANAGER"}
                 buttonLabel="Add"
                 onClick={() => {onAdd(project)}}
@@ -70,12 +70,12 @@ export const PhasesClient = ({
 
     return (
         <div className="scrollbar-hide">
-            <div className="flex items-center w-full">
-                <PhasesList phases={phases} project={project} user={user}/>
+            <div className="flex items-center w-full gap-2">
+                <TeamsList teams={teams} project={project} user={user}/>
                 
-                {(!isPhasesHome && (user.role === "ADMIN" || user.role === "MANAGER"))? (
+                {(!isTeamsHome && (user.role === "ADMIN" || user.role === "MANAGER"))? (
                         <Button
-                            label="Add content"
+                            label="Add team"
                             icon={ <PlusIcon/> }
                             className="bg-red-500 pr-3 pl-3 p-2 flex items-center rounded-[5px] text-sm"
                             onClick={phaseContentModal.onOpen}

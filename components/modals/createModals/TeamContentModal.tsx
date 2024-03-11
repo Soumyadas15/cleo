@@ -13,10 +13,9 @@ import Heading from "../../reusable/Heading";
 import Input from "../../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
-import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
 import Textarea from "../../reusable/Textarea";
 import { ProgressBar } from "../../ProgressBar";
-import usePhaseContentModal from "@/hooks/createModalHooks/usePhaseContentModal";
+import useTeamContentModal from "@/hooks/createModalHooks/usePhaseContentModal";
 
 enum STEPS {
   RESOURCES = 0,
@@ -25,17 +24,17 @@ enum STEPS {
   DURATION = 3,
 }
 
-interface PhaseContentModalProps {
+interface TeamContentModalProps {
   user: any;
-  phase: any
+  team: any
 }
-const PhaseContentModal = ({
+const TeamContentModal = ({
   user,
-  phase
-}: PhaseContentModalProps) => {
+  team
+}: TeamContentModalProps) => {
 
   const router = useRouter();
-  const phaseContentModal = usePhaseContentModal();
+  const teamContentModal = useTeamContentModal();
   const [step, setStep] = useState(STEPS.RESOURCES);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +50,7 @@ const PhaseContentModal = ({
     reset
     } = useForm<FieldValues>({
         defaultValues: {
-            phaseId: phase.id,
+            teamId: team.id,
             resources: '',
             role: '',
             availability: '',
@@ -72,7 +71,7 @@ const PhaseContentModal = ({
     }
     setIsLoading(true)
     console.log(data);
-    axios.post('/api/phases/phase-content', data)
+    axios.post('/api/teams/team-content', data)
         .then(() => {
             router.refresh();
             toast.success('Success');
@@ -80,7 +79,7 @@ const PhaseContentModal = ({
             toast.error(error.message);
         }) .finally(() => {
             setIsLoading(false);
-            phaseContentModal.onClose()
+            teamContentModal.onClose()
     })
   }
 
@@ -222,10 +221,10 @@ const PhaseContentModal = ({
   return (
     <Modal
       disabled={isLoading}
-      isOpen={phaseContentModal.isOpen}
-      title="Phase details"
+      isOpen={teamContentModal.isOpen}
+      title="Team details"
       actionLabel={actionLabel}
-      onClose={phaseContentModal.onClose}
+      onClose={teamContentModal.onClose}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step == STEPS.RESOURCES ? undefined : onBack}
       onSubmit={handleSubmit(onSubmit)}
@@ -243,4 +242,4 @@ const PhaseContentModal = ({
   );
 }
 
-export default PhaseContentModal;
+export default TeamContentModal;

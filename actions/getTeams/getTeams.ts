@@ -7,7 +7,7 @@ interface IParams {
     projectId?: string;
 }
 
-export default async function getPhases(params: IParams){
+export default async function getTeams(params: IParams){
     try{
         const currentUser = await initialProfile();
         const { projectId } = params; 
@@ -16,7 +16,7 @@ export default async function getPhases(params: IParams){
             return new Response('User not found', { status: 404 });
         }
 
-        const phases = await db.phase.findMany({
+        const teams = await db.team.findMany({
             where: {
                 projectId: projectId
             },
@@ -25,7 +25,7 @@ export default async function getPhases(params: IParams){
             }
         });
 
-        return phases;
+        return teams;
 
     } catch(error) {
         if (error instanceof Error) {

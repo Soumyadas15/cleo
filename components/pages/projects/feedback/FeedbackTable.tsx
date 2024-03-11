@@ -53,9 +53,10 @@ export const FeedbackTable = ({
   const editFeedbackModal = useEditFeedbackModal();
   const [isLoading, setIsLoading] = useState(false);
   const [sureToDeleteId, setSureToDeleteId] = useState<string | null>(null);
+  const [editFeedbackId, setEditFeedbackId] = useState<string | null>(null);
 
   const clickEdit = (feedback: any) => {
-    // router.push(`/main/projects/${project.id}/feedbacks/${feedback.id}`);
+    setEditFeedbackId(feedback.id);
     editFeedbackModal.onOpen();
   };
 
@@ -82,7 +83,16 @@ export const FeedbackTable = ({
     setSureToDeleteId(sureToDeleteId === feedbackId ? null : feedbackId);
   };
 
+  const closeEditModal = () => {
+    setEditFeedbackId(null);
+    editFeedbackModal.onClose();
+  }
+
   return (
+    <>
+    {editFeedbackId && (
+        <EditFeedbackModal feedback={feedbacks.find((res: any) => res.id === editFeedbackId)} onClose={closeEditModal}/>
+    )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">
         <TableRow>
@@ -103,7 +113,6 @@ export const FeedbackTable = ({
 
         {feedbacks.map((feedback: any, index: number) => (
           <>
-          <EditFeedbackModal feedback={feedback}/>
           <TableRow key={feedback.id} className="dark:border-slate-600">
 
             <TableCell className="font-medium">{index}</TableCell>
@@ -162,5 +171,6 @@ export const FeedbackTable = ({
         ))}
       </TableBody>
     </Table>
+    </>
   );
 };

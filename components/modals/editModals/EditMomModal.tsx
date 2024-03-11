@@ -33,9 +33,11 @@ enum STEPS {
 
 interface EditMomModalProps {
   mom: any;
+  onClose: () => void;
 }
 const EditMomModal = ({
   mom,
+  onClose
 }: EditMomModalProps) => {
 
   const router = useRouter();
@@ -64,6 +66,17 @@ const EditMomModal = ({
             link: mom.link,
             comments: mom.comments,
     }})
+
+    useEffect(() => {
+      reset({
+        momId: mom.id,
+        duration: mom.duration,
+        date: mom.date,
+        link: mom.link,
+        comments: mom.comments,
+      });
+  }, [mom, reset]);
+
 
     useEffect(() => {
         if (mom.date) {
@@ -95,7 +108,8 @@ const EditMomModal = ({
             toast.error(error.message);
         }) .finally(() => {
             setIsLoading(false);
-            editMomModal.onClose()
+            editMomModal.onClose();
+            onClose();
     })
   }
 

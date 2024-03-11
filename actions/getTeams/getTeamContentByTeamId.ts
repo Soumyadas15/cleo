@@ -3,23 +3,23 @@
 import { db } from '@/lib/db';
 
 interface IParams {
-    phaseId?: string;
+    teamId?: string;
 }
 
-export default async function getPhaseContentByPhaseIds(params: IParams) {
+export default async function getTeamContentByTeamId(params: IParams) {
     try {
-        const { phaseId } = params;
+        const { teamId } = params;
 
-        const phaseContents = await db.phase_content.findMany({
+        const teamContents = await db.team_content.findMany({
             where: {
-                phaseId: phaseId
+                teamId: teamId
             }
         })
-        if (!phaseContents) {
+        if (!teamContents) {
             return null;
         }
 
-        return phaseContents;
+        return teamContents;
 
     } catch (error) {
         if (error instanceof Error) {

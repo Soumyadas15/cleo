@@ -9,23 +9,23 @@ import { Plus } from "lucide-react";
 import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
 import useMomModal from "@/hooks/createModalHooks/useMomModal";
 import usePhaseContentModal from "@/hooks/createModalHooks/usePhaseContentModal";
-import { PhaseContentsTable } from "./PhaseContentsTable";
+import { TeamContentsTable } from "./TeamContentsTable";
 
-interface PhaseContentsClientProps {
-    phaseContents: any;
+interface TeamContentsClientProps {
+    teamContents: any;
     user: any;
     project: any;
 }
 
-export const PhaseContentsClient = ({
-    phaseContents,
+export const TeamContentsClient = ({
+    teamContents,
     user,
     project,
-}: PhaseContentsClientProps) => {
+}: TeamContentsClientProps) => {
 
     const phaseContentModal = usePhaseContentModal();
 
-    if (phaseContents.length === 0){
+    if (teamContents.length === 0){
         return(
             <EmptyState 
                 title="This phase is empty"
@@ -44,12 +44,12 @@ export const PhaseContentsClient = ({
             {user.role === "MANAGER" ? (
                 <>
                 <div className="h-full overflow-hidden overflow-y-scroll scrollbar-hide">
-                    <PhaseContentsTable phaseContents={phaseContents} project={project} user={user}/>
+                    <TeamContentsTable teamContents={teamContents} project={project} user={user}/>
                 </div>
                 </>
                 ) : (
                     <div className="h-full overflow-hidden overflow-y-scroll scrollbar-hide">
-                        <PhaseContentsTable phaseContents={phaseContents} project={project} user={user}/>
+                        <TeamContentsTable teamContents={teamContents} project={project} user={user}/>
                     </div>
                 )
             }

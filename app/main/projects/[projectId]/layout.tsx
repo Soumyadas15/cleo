@@ -1,6 +1,5 @@
 import getProjectById from "@/actions/getProjects/getProjectById";
 import AuditModal from "@/components/modals/createModals/AuditModal";
-import EditAuditModal from "@/components/modals/editModals/EditAuditModal";
 import FeedbackModal from "@/components/modals/createModals/FeedbackModal";
 import MomModal from "@/components/modals/createModals/MomModal";
 import ResourceModal from "@/components/modals/createModals/ResourceModal";
@@ -8,6 +7,7 @@ import UpdateModal from "@/components/modals/createModals/UpdateModal";
 import { ProjectNavbar } from "@/components/pages/projects/ProjectNavbar";
 import Heading from "@/components/reusable/Heading";
 import { initialProfile } from "@/lib/initial-profile";
+import StakeholderModal from "@/components/modals/createModals/StakeholderModal";
 
 interface IParams {
     projectId?: string;
@@ -31,6 +31,7 @@ export default async function ProjectLayout({
         <FeedbackModal project={project} user={user}/>
         <UpdateModal project={project} user={user}/>
         <MomModal project={project} user={user}/>
+        <StakeholderModal project={project} user={user}/>
 
         <div className="p-5 h-full w-full flex flex-col justify-between scrollbar-hide">
             <div className="h-[5%] flex items-center">

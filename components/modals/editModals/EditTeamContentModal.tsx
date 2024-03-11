@@ -16,8 +16,7 @@ import toast from "react-hot-toast";
 import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
 import Textarea from "../../reusable/Textarea";
 import { ProgressBar } from "../../ProgressBar";
-import usePhaseContentModal from "@/hooks/createModalHooks/usePhaseContentModal";
-import useEditPhaseContentModal from "@/hooks/editModalHooks/useEditPhaseContentModal";
+import useEditTeamContentModal from "@/hooks/editModalHooks/useEditTeamContentModal";
 
 enum STEPS {
   RESOURCES = 0,
@@ -26,15 +25,17 @@ enum STEPS {
   DURATION = 3,
 }
 
-interface EditPhaseContentModalProps {
-  phaseContent: any
+interface EditTeamContentModalProps {
+  teamContent: any;
+  onClose: () => void
 }
-const EditPhaseContentModal = ({
-    phaseContent
-}: EditPhaseContentModalProps) => {
+const EditTeamContentModal = ({
+    teamContent,
+    onClose
+}: EditTeamContentModalProps) => {
 
   const router = useRouter();
-  const editPhaseContentModal = useEditPhaseContentModal();
+  const editTeamContentModal = useEditTeamContentModal();
   const [step, setStep] = useState(STEPS.RESOURCES);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -50,12 +51,22 @@ const EditPhaseContentModal = ({
     reset
     } = useForm<FieldValues>({
         defaultValues: {
-            phaseContentId: phaseContent.id,
-            resources: phaseContent.resources,
-            role: phaseContent.role,
-            availability: phaseContent.availability,
-            duration: phaseContent.duration,
+            teamContentId: teamContent.id,
+            resources: teamContent.resources,
+            role: teamContent.role,
+            availability: teamContent.availability,
+            duration: teamContent.duration,
     }})
+
+  useEffect(() => {
+      reset({
+        teamContentId: teamContent.id,
+        resources: teamContent.resources,
+        role: teamContent.role,
+        availability: teamContent.availability,
+        duration: teamContent.duration,
+      });
+  }, [teamContent, reset]);
 
 
   const onBack = () => {
@@ -71,7 +82,7 @@ const EditPhaseContentModal = ({
     }
     setIsLoading(true)
     console.log(data);
-    axios.put('/api/phases/phase-content', data)
+    axios.put('/api/teams/team-content', data)
         .then(() => {
             router.refresh();
             toast.success('Success');
@@ -79,7 +90,8 @@ const EditPhaseContentModal = ({
             toast.error(error.message);
         }) .finally(() => {
             setIsLoading(false);
-            editPhaseContentModal.onClose()
+            editTeamContentModal.onClose();
+            onClose()
     })
   }
 
@@ -221,10 +233,10 @@ const EditPhaseContentModal = ({
   return (
     <Modal
       disabled={isLoading}
-      isOpen={editPhaseContentModal.isOpen}
-      title="Phase details"
+      isOpen={editTeamContentModal.isOpen}
+      title="Team details"
       actionLabel={actionLabel}
-      onClose={editPhaseContentModal.onClose}
+      onClose={editTeamContentModal.onClose}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step == STEPS.RESOURCES ? undefined : onBack}
       onSubmit={handleSubmit(onSubmit)}
@@ -242,4 +254,4 @@ const EditPhaseContentModal = ({
   );
 }
 
-export default EditPhaseContentModal;
+export default EditTeamContentModal;

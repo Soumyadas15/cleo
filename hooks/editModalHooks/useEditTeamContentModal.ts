@@ -1,16 +1,16 @@
 import { create } from 'zustand';
 
-interface EditPhaseContentModalStore {
+interface EditTeamContentModalStore {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
 }
 
-const useEditPhaseContentModal = create<EditPhaseContentModalStore>((set) => ({
+const useEditTeamContentModal = create<EditTeamContentModalStore>((set) => ({
   isOpen: false,
   onOpen: () => set({ isOpen: true }),
   onClose: () => set({ isOpen: false })
 }));
 
 
-export default useEditPhaseContentModal;
+export default useEditTeamContentModal;

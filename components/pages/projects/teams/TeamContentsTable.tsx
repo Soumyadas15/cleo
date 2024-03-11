@@ -23,12 +23,14 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import EditPhaseContentModal from "@/components/modals/editModals/EditPhaseContentModal";
-import useEditPhaseContentModal from "@/hooks/editModalHooks/useEditPhaseContentModal";
+import EditPhaseContentModal from "@/components/modals/editModals/EditTeamContentModal";
+import useEditPhaseContentModal from "@/hooks/editModalHooks/useEditTeamContentModal";
+import EditTeamContentModal from "@/components/modals/editModals/EditTeamContentModal";
+import useEditTeamContentModal from "@/hooks/editModalHooks/useEditTeamContentModal";
 
-interface PhaseContentsTableProps {
+interface TeamContentsTableProps {
   project: any;
-  phaseContents: any;
+  teamContents: any;
   user: any;
 }
 
@@ -42,27 +44,27 @@ interface PhaseContentsTableProps {
  */
 
 
-export const PhaseContentsTable = ({ 
+export const TeamContentsTable = ({ 
     project, 
-    phaseContents, 
+    teamContents, 
     user 
-}: PhaseContentsTableProps) => {
+}: TeamContentsTableProps) => {
 
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const [sureToDeleteId, setSureToDeleteId] = useState<string | null>(null);
-  const editPhaseContentModal = useEditPhaseContentModal();
+    const router = useRouter();
+    const editTeamContentModal = useEditTeamContentModal();
+    const [isLoading, setIsLoading] = useState(false);
+    const [sureToDeleteId, setSureToDeleteId] = useState<string | null>(null);
+    const [editTeamContentId, setEditTeamContentId] = useState<string | null>(null);
 
-  /**
-   * Handler for clicking the delete button of an audit
-   * @param resource The audit data to delete
-   */
+    const clickEdit = (teamContent: any) => {
+        setEditTeamContentId(teamContent.id);
+        editTeamContentModal.onOpen();
+    };
 
-  const clickDelete = async (phaseContent: any) => {
-    console.log(phaseContent.id);
+  const clickDelete = async (teamContent: any) => {
     setIsLoading(true);
     try {
-      await axios.delete(`/api/phases/phase-content/${phaseContent.id}`);
+      await axios.delete(`/api/teams/team-content/${teamContent.id}`);
       router.refresh();
       toast.success("Phase data deleted");
     } catch (error: any) {
@@ -73,11 +75,20 @@ export const PhaseContentsTable = ({
     }
   };
 
-  const toggleSureToDelete = (resourceId: string) => {
-    setSureToDeleteId(sureToDeleteId === resourceId ? null : resourceId);
-  };
+  const toggleSureToDelete = (teamContentId: string) => {
+    setSureToDeleteId(sureToDeleteId === teamContentId ? null : teamContentId);
+};
+
+const closeEditModal = () => {
+    setEditTeamContentId(null);
+    editTeamContentModal.onClose();
+};
 
   return (
+    <>
+    {editTeamContentId && (
+        <EditTeamContentModal teamContent={teamContents.find((res: any) => res.id === editTeamContentId)} onClose={closeEditModal} />
+    )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">
         <TableRow>
@@ -95,26 +106,25 @@ export const PhaseContentsTable = ({
       </TableHeader>
       <TableBody>
 
-        {phaseContents.map((phaseContent: any, index: number) => (
+        {teamContents.map((teamContent: any, index: number) => (
           <>
-          <EditPhaseContentModal phaseContent={phaseContent}/>
-          <TableRow key={phaseContent.id} className="dark:border-slate-600">
+          <TableRow key={teamContent.id} className="dark:border-slate-600">
 
             <TableCell className="font-medium">{index}</TableCell>
 
-            <TableCell className="font-medium">{phaseContent.resources} %</TableCell>
+            <TableCell className="font-medium">{teamContent.resources} %</TableCell>
             
 
-            <TableCell>{phaseContent.role}</TableCell>
+            <TableCell>{teamContent.role}</TableCell>
 
-            <TableCell>{phaseContent.availability} %</TableCell>
+            <TableCell>{teamContent.availability} %</TableCell>
 
-            <TableCell>{phaseContent.duration} months</TableCell>
+            <TableCell>{teamContent.duration} months</TableCell>
 
 
             {(user.role === "MANAGER" || user.role === "ADMIN") && (
               <TableCell className="flex items-center justify-start gap-5">
-                {sureToDeleteId === phaseContent.id ? (
+                {sureToDeleteId === teamContent.id ? (
                   <>
                     
                   </>
@@ -124,21 +134,21 @@ export const PhaseContentsTable = ({
                         <DropdownMenuTrigger asChild>
                             <MoreHorizontal
                                 className="hover:opacity-50 hover:cursor-pointer transition font-bold"
-                                onClick={() => toggleSureToDelete(phaseContent.id)}
+                                onClick={() => toggleSureToDelete(teamContent.id)}
                             />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-32 z-[9999] bg-white dark:bg-neutral-800 border-none rounded-[5px]">
                             <DropdownMenuGroup>
                                 <DropdownMenuItem 
                                     className="hover:cursor-pointer rounded-[5px] focus:bg-neutral-100 dark:focus:bg-neutral-700"
-                                    onClick={editPhaseContentModal.onOpen}
+                                    onClick={() => {clickEdit(teamContent)}}
                                 >
                                     <Pen className="mr-2 h-4 w-4"/>
                                     <span>Edit</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem 
                                     className="hover:cursor-pointer rounded-[5px] focus:bg-neutral-100 dark:focus:bg-neutral-700"
-                                    onClick={() => {clickDelete(phaseContent)}}
+                                    onClick={() => {clickDelete(teamContent)}}
                                 >
                                     <Trash className="mr-2 h-4 w-4 text-red-700 dark:text-500" />
                                     <span className="text-red-700 dark:text-red-500">Delete</span>
@@ -154,6 +164,7 @@ export const PhaseContentsTable = ({
           </>
         ))}
       </TableBody>
-    </Table>
+    </Table>    
+    </>
   );
 };

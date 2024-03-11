@@ -15,24 +15,24 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-interface PhasesListProps {
-    phases: any[];
+interface TeamsListProps {
+    teams: any[];
     project: any;
     user:any;
 }
 
-export const PhasesList = ({
-    phases,
+export const TeamsList = ({
+    teams,
     project,
     user
-}: PhasesListProps) => {
+}: TeamsListProps) => {
 
     const router = useRouter();
     //@ts-ignore
     const { phaseId } = useParams();
     const pathname = usePathname();
 
-    const [currentPhaseText, setCurrentPhaseText] = useState('No Phases');
+    const [currentPhaseText, setCurrentPhaseText] = useState('No teams');
     const [clicked, setClicked] = useState(false);
     const [position, setPosition] = useState("bottom")
 
@@ -40,30 +40,30 @@ export const PhasesList = ({
 
     useEffect(() => {
         //@ts-ignore
-        if (pathname?.endsWith('/phases') && phases.length > 0){
+        if (pathname?.endsWith('/teams') && teams.length > 0){
             setCurrentPhaseText('Select phase')
         }
-        else if (phases.length > 0 && phaseId) {
-            const currentPhaseIndex = phases.findIndex(phase => phase.id === phaseId);
+        else if (teams.length > 0 && phaseId) {
+            const currentPhaseIndex = teams.findIndex(phase => phase.id === phaseId);
             if (currentPhaseIndex !== -1) {
-                setCurrentPhaseText(`Phase ${phases.length - currentPhaseIndex}`);
+                setCurrentPhaseText(`Phase ${teams.length - currentPhaseIndex}`);
             } else {
-                setCurrentPhaseText(`Phase ${phases.length}`);
+                setCurrentPhaseText(`Phase ${teams.length}`);
             }
-        } else if (phases.length > 0) {
-            setCurrentPhaseText(`Phase ${phases.length}`);
+        } else if (teams.length > 0) {
+            setCurrentPhaseText(`Phase ${teams.length}`);
         }
-    }, [phases, phaseId]);
+    }, [teams, phaseId]);
 
     const onAdd = async (project: any) => {
         const data = { projectId: project.id };
         console.log(project.id);
-        axios.post('/api/phases', data)
+        axios.post('/api/teams', data)
         .then((response) => {
             const phase = response.data;
             const phaseId = phase.id;
-            toast.success('Phase created');
-            router.push(`/main/projects/${project.id}/phases/${phaseId}`);
+            toast.success('team phase created');
+            router.push(`/main/projects/${project.id}/teams/${phaseId}`);
         }).catch((error) => {
             toast.error(error.message);
         }).finally(() => {
@@ -94,21 +94,21 @@ export const PhasesList = ({
             <DropdownMenuContent className="w-42 bg-white dark:bg-neutral-800 dark:border-none rounded-[5px]">
 
                 <DropdownMenuLabel>
-                    Phases
+                    teams
                 </DropdownMenuLabel>
                 
                 <DropdownMenuSeparator />
 
                 <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-                    {phases.map((phase, index) => (
+                    {teams.map((phase, index) => (
                         <DropdownMenuItem  
                             key={phase.id}
                             className="rounded-[5px] hover:cursor-pointer focus:bg-neutral-200 dark:focus:bg-neutral-700"
                             onClick={() => {
-                                router.push(`/main/projects/${project.id}/phases/${phase.id}`)
+                                router.push(`/main/projects/${project.id}/teams/${phase.id}`)
                             }}
                         >
-                            <span>{`Phase ${phases.length - index}`}</span>
+                            <span>{`Phase ${teams.length - index}`}</span>
                         </DropdownMenuItem>
                     ))}
                     {(user.role === "ADMIN" || user.role === "MANAGER") ? (

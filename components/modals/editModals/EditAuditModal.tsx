@@ -14,13 +14,16 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import useEditAuditModal from "@/hooks/editModalHooks/useEditAuditModal";
+import { Audit } from "@prisma/client";
 
 interface EditAuditModalProps {
-  audit?: any;
+  audit: Audit;
+  onClose: () => void;
 }
 
 const EditAuditModal = ({
   audit,
+  onClose
 }: EditAuditModalProps) => {
 
 
@@ -39,9 +42,16 @@ const EditAuditModal = ({
   } = useForm<FieldValues>({
     defaultValues: {
       auditId: audit.id,
-      content: '',
+      content: audit.body,
     }
   });
+
+  useEffect(() => {
+    reset({
+      auditId: audit.id,
+      content: audit.body,
+    });
+}, [audit, reset]);
 
   useEffect(() => {
     if (date) {
@@ -59,6 +69,7 @@ const EditAuditModal = ({
         }) .finally(() => {
             setIsLoading(false);
             editAuditModal.onClose();
+            onClose();
     })
   };
 

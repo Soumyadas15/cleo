@@ -15,16 +15,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown"
 
-import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
-import useDeleteAuditModal from "@/hooks/useDeleteAuditModal";
-import useEditAuditModal from "@/hooks/editModalHooks/useEditAuditModal";
 import axios from "axios";
 import { format } from "date-fns";
 import { MoreHorizontal, Pen, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import EditAuditModal from "@/components/modals/editModals/EditAuditModal";
 import EditUpdateModal from "@/components/modals/editModals/EditUpdateModal";
 import useEditUpdateModal from "@/hooks/editModalHooks/useEditUpdateModa";
 
@@ -49,8 +45,10 @@ export const UpdateTable = ({ project, updates, user }: UpdateTableProps) => {
   const editUpdateModal = useEditUpdateModal();
   const [isLoading, setIsLoading] = useState(false);
   const [sureToDeleteId, setSureToDeleteId] = useState<string | null>(null);
+  const [editUpdateId, setEditUpdateId] = useState<string | null>(null);
 
   const clickEdit = (update: any) => {
+    setEditUpdateId(update.id);
     editUpdateModal.onOpen();
   };
 
@@ -77,7 +75,16 @@ export const UpdateTable = ({ project, updates, user }: UpdateTableProps) => {
     setSureToDeleteId(sureToDeleteId === auditId ? null : auditId);
   };
 
+  const closeEditModal = () => {
+    setEditUpdateId(null);
+    editUpdateModal.onClose();
+  }
+
   return (
+    <>
+    {editUpdateId && (
+          <EditUpdateModal update={updates.find((res: any) => res.id === editUpdateId)} onClose={closeEditModal} />
+    )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">
         <TableRow>
@@ -94,7 +101,6 @@ export const UpdateTable = ({ project, updates, user }: UpdateTableProps) => {
       <TableBody>
         {updates.map((update: any, index: number) => (
           <>
-          <EditUpdateModal update={update}/>
           <TableRow key={update.id} className="dark:border-slate-600">
 
             <TableCell className="font-medium">{index}</TableCell>
@@ -154,5 +160,6 @@ export const UpdateTable = ({ project, updates, user }: UpdateTableProps) => {
         ))}
       </TableBody>
     </Table>
+    </>
   );
 };

@@ -1,4 +1,4 @@
-export default async function PhasesLayout({
+export default async function TeamsLayout({
     children,
   }: Readonly<{
     children: React.ReactNode;

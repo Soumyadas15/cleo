@@ -48,8 +48,10 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
   const deleteAuditModal = useDeleteAuditModal();
   const [isLoading, setIsLoading] = useState(false);
   const [sureToDeleteId, setSureToDeleteId] = useState<string | null>(null);
+  const [editAuditId, setEditAuditId] = useState<string | null>(null);
 
   const clickEdit = (audit: any) => {
+    setEditAuditId(audit.id);
     editAuditModal.onOpen();
   };
 
@@ -76,7 +78,16 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
     setSureToDeleteId(sureToDeleteId === auditId ? null : auditId);
   };
 
+  const closeEditModal = () => {
+    setEditAuditId(null);
+    editAuditModal.onClose();
+  }
+
   return (
+    <>
+    {editAuditId && (
+        <EditAuditModal audit={audits.find((res: any) => res.id === editAuditId)} onClose={closeEditModal}/>
+    )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">
         <TableRow>
@@ -93,7 +104,6 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
       <TableBody>
         {audits.map((audit: any, index: number) => (
           <>
-          <EditAuditModal audit={audit}/>
           <TableRow key={audit.id} className="dark:border-slate-600">
 
             <TableCell className="font-medium">{index}</TableCell>
@@ -153,5 +163,6 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
         ))}
       </TableBody>
     </Table>
+    </>
   );
 };

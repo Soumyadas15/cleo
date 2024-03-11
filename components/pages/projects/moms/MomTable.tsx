@@ -53,8 +53,10 @@ export const MomTable = ({
   const editMomModal = useEditMomModal();
   const [isLoading, setIsLoading] = useState(false);
   const [sureToDeleteId, setSureToDeleteId] = useState<string | null>(null);
+  const [editMomId, setEditMomId] = useState<string | null>(null);
 
   const clickEdit = (mom: any) => {
+    setEditMomId(mom.id);
     editMomModal.onOpen();
   };
 
@@ -81,7 +83,16 @@ export const MomTable = ({
     setSureToDeleteId(sureToDeleteId === resourceId ? null : resourceId);
   };
 
+  const closeEditModal = () => {
+    setEditMomId(null);
+    editMomModal.onClose();
+  }
+
   return (
+    <>
+    {editMomId && (
+        <EditMomModal mom={moms.find((res: any) => res.id === editMomId)} onClose={closeEditModal}/>
+      )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">
         <TableRow>
@@ -102,7 +113,7 @@ export const MomTable = ({
 
         {moms.map((mom: any, index: number) => (
           <>
-          <EditMomModal mom={mom}/>
+          
           <TableRow key={mom.id} className="dark:border-slate-600">
 
             <TableCell className="font-medium">{index}</TableCell>
@@ -166,5 +177,6 @@ export const MomTable = ({
         ))}
       </TableBody>
     </Table>
+    </>
   );
 };

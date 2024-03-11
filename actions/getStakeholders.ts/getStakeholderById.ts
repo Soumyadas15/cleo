@@ -3,23 +3,23 @@
 import { db } from '@/lib/db';
 
 interface IParams {
-    phaseId?: string;
+    stakeholderId?: string;
 }
 
-export default async function getPhaseById(params: IParams) {
+export default async function getStakeholderById(params: IParams) {
     try {
-        const { phaseId } = params;
+        const { stakeholderId } = params;
 
-        const phase = await db.phase.findUnique({
+        const stakeholder = await db.stakeholder.findUnique({
             where: {
-                id: phaseId
+                id: stakeholderId
             }
         })
-        if (!phase) {
+        if (!stakeholder) {
             return null;
         }
 
-        return phase;
+        return stakeholder;
 
     } catch (error) {
         if (error instanceof Error) {

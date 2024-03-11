@@ -20,6 +20,19 @@ enum UserRole {
   AUDITOR
 }
 
+enum RiskTypes {
+  FINANCIAL
+  OPERATIONAL
+  TECHNICAL
+  HR
+  EXTERNAL
+}
+
+enum MeasureLevels {
+  HIGH
+  MEDIUM
+  LOW
+}
 
 
 
@@ -60,7 +73,10 @@ model Project {
   feedbacks Feedback[]
   moms Mom[]
   phases Phase[]
+  teams Team[]
   notifications Notification[]
+  stakeholders Stakeholder[]
+  risks Risk[]
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -213,4 +229,61 @@ model Notification {
 
   createdAt DateTime @default(now())
   isRead Boolean @default(false)
+}
+
+
+model Stakeholder {
+  id String @id @default(uuid())
+
+  title String
+  name String
+  contact String
+
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model Risk {
+  id String @id @default(uuid())
+
+  type RiskTypes
+  description String @db.Text
+  severity MeasureLevels
+  impact MeasureLevels
+  remedialSteps String @db.Text
+  status String @db.Text
+  closureDate DateTime @default(now())
+
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model Team {
+  id String @id @default(uuid())
+
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  content Team_content[]
+
+  createdAt DateTime @default(now())
+}
+
+
+model Team_content {
+  id String @id @default(uuid())
+
+  resources Int
+  role String
+  availability Int
+  duration Int
+
+  teamId String
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 }

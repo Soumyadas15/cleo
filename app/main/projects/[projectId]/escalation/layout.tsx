@@ -5,7 +5,7 @@ export default async function EscalationLayout({
   }>) {
 
     return (  
-        <div>
+        <div className="h-full w-full">
             {children}
         </div>
     );

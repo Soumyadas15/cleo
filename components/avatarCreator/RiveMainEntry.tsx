@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import RiveAvatar from "@/components/avatarCreator/RiveAvatarComponent";
 import RiveIconsContainer from "@/components/avatarCreator/RiveIconsContainer";
 import { AvatarStateContext } from "@/app/context/avatarState";
@@ -37,8 +37,10 @@ export default function RiveMainEntry({
 
   const avatarRef = useRef(null);
   const router = useRouter();
+  const [loading, setIsLoading] = useState(false);
 
   const uploadImageToCloudinary = async (imageBlob : any) => {
+    setIsLoading(true);
     const formData = new FormData();
     formData.append('file', imageBlob);
     formData.append('upload_preset', uploadPreset);
@@ -59,6 +61,7 @@ export default function RiveMainEntry({
       router.refresh()
       toast.success("Successfully updated")
       onClose();
+      setIsLoading(false)
     } catch (error : any) {
       toast.error(error.message);
     }
@@ -100,6 +103,7 @@ export default function RiveMainEntry({
               onClick={onClose}
             />
             <Button
+              disabled={loading}
               label="Save"
               className="bg-black dark:bg-white text-white dark:text-[#000000] p-5 text-[1.5rem] rounded-[5px]" 
               onClick={handleUploadAvatar}

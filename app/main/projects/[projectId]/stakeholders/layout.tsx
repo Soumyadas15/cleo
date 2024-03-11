@@ -1,11 +1,11 @@
-export default async function MilestonesLayout({
+export default async function StakeholdersLayout({
     children,
   }: Readonly<{
     children: React.ReactNode;
   }>) {
 
     return (  
-        <div className="h-full w-full">
+        <div className="w-full h-full">
             {children}
         </div>
     );

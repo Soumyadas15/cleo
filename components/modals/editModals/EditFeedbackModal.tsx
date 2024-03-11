@@ -34,9 +34,11 @@ enum STEPS {
 
 interface EditFeedbackModalProps {
   feedback: any;
+  onClose: () => void;
 }
 const EditFeedbackModal = ({
-  feedback
+  feedback,
+  onClose
 }: EditFeedbackModalProps) => {
 
   const router = useRouter();
@@ -66,6 +68,17 @@ const EditFeedbackModal = ({
             date: feedback.date,
             closureDate: feedback.closureDate,
     }})
+
+  useEffect(() => {
+      reset({
+        feedbackId: feedback.id,
+        type: feedback.type,
+        body: feedback.body,
+        action: feedback.action,
+        date: feedback.date,
+        closureDate: feedback.closureDate,
+      });
+  }, [feedback, reset]);
 
   useEffect(() => {
       if (feedback.date) {
@@ -105,7 +118,8 @@ const EditFeedbackModal = ({
             toast.error(error.message);
         }) .finally(() => {
             setIsLoading(false);
-            editFeedbackModal.onClose()
+            editFeedbackModal.onClose();
+            onClose();
     })
   }
 

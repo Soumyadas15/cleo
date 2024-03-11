@@ -27,6 +27,7 @@ import { ProgressBar } from "../../ProgressBar";
 
 interface EditResourceModalProps {
   resource?: any;
+  onClose: () => void;
 }
 
 enum STEPS {
@@ -38,6 +39,7 @@ enum STEPS {
 
 const EditResourceModal = ({
   resource,
+  onClose
 }: EditResourceModalProps) => {
 
 
@@ -68,6 +70,18 @@ const EditResourceModal = ({
             startDate: resource.startDate,
             endDate: resource.endDate,
     }})
+
+  useEffect(() => {
+      reset({
+        resourceId: resource.id,
+        name: resource.name,
+        role: resource.role,
+        comment: resource.comment,
+        startDate: resource.startDate,
+        endDate: resource.endDate,
+      });
+  }, [resource, reset]);
+  
 
   useEffect(() => {
       if (resource.startDate) {
@@ -107,9 +121,11 @@ const EditResourceModal = ({
             toast.error(error.message);
         }) .finally(() => {
             setIsLoading(false);
-            editResourceModal.onClose()
+            editResourceModal.onClose();
+            onClose()
     })
   }
+  
 
   const actionLabel = useMemo(() => {
     if(step === STEPS.DATES){

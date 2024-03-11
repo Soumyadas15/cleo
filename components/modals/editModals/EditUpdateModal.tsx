@@ -25,10 +25,12 @@ import useEditUpdateModal from "@/hooks/editModalHooks/useEditUpdateModa";
 
 interface EditUpdateModalProps {
   update: any;
+  onClose: () => void;
 }
 
 const EditUpdateModal = ({
   update,
+  onClose
 }: EditUpdateModalProps) => {
 
 
@@ -53,6 +55,14 @@ const EditUpdateModal = ({
   });
 
   useEffect(() => {
+    reset({
+      updateId: update?.id,
+      date: update.date,
+      body: update.body,
+    });
+}, [update, reset]);
+
+  useEffect(() => {
     if (date) {
       setValue("date", date);
     }
@@ -69,8 +79,10 @@ const EditUpdateModal = ({
         }) .finally(() => {
             setIsLoading(false);
             editUpdateModal.onClose();
+            onClose()
     })
   };
+  
 
   const bodyContent = (
     <div className="flex flex-col gap-4">

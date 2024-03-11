@@ -79,10 +79,15 @@ export const ResourceTable = ({
     setSureToDeleteId(sureToDeleteId === resourceId ? null : resourceId);
   };
 
+  const closeEditModal = () => {
+    setEditResourceId(null);
+    editResourceModal.onClose();
+  };
+
   return (
     <>
       {editResourceId && (
-        <EditResourceModal resource={resources.find((res: any) => res.id === editResourceId)} />
+        <EditResourceModal resource={resources.find((res: any) => res.id === editResourceId)} onClose={closeEditModal}/>
       )}
       <Table className="scrollbar-hide">
         <TableHeader className="bg-neutral-200 border-none dark:bg-neutral-800">

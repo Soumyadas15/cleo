@@ -26,13 +26,13 @@ export const ProjectItem = ({
     const handleClick = () => {
         setClicked(true);
         setTimeout(() => setClicked(false), 150);
-        router.push(`/main/projects/${project.id}/phases`);
+        router.push(`/main/projects/${project.id}/teams`);
     };
 
     const handleDeleteClick = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>, project: any) => {
         e.stopPropagation();
         try {
-            await axios.delete(`/api/projects/${project.id}`);
+            await axios.delete(`/api/teams/${project.id}`);
             router.refresh();
             toast.success("Project deleted");
         } catch (error : any) {

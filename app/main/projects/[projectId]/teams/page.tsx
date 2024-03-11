@@ -1,8 +1,8 @@
-import getPhases from "@/actions/getPhases/getPhases";
+import getPhases from "@/actions/getTeams/getTeams";
 import getProjectById from "@/actions/getProjects/getProjectById";
-import { PhasesClient } from "@/components/pages/projects/phases/PhasesClient";
-import { PhasesHome } from "@/components/pages/projects/phases/PhasesHome";
 import { initialProfile } from "@/lib/initial-profile";
+import { TeamsClient } from "@/components/pages/projects/teams/TeamsClient";
+import getTeams from "@/actions/getTeams/getTeams";
 
 interface IParams {
     projectId?: string;
@@ -14,13 +14,13 @@ const PhasesPage = async (
 
     const project = await getProjectById(params);
     const user = await initialProfile();
-    const phases = await getPhases(params);
+    const teams = await getTeams(params);
 
     
     return (  
         <div className="flex flex-col h-full">
             
-            <PhasesClient phases={phases} project={project} user={user}/>
+            <TeamsClient teams={teams} project={project} user={user}/>
             {/* <PhasesHome/> */}
         </div>
     );

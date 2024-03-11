@@ -5,7 +5,7 @@ export default async function AuditsLayout({
   }>) {
 
     return (  
-        <div>
+        <div className="w-full h-full">
             {children}
         </div>
     );

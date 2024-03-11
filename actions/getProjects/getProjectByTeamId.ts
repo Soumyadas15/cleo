@@ -3,10 +3,10 @@ import { initialProfile } from '@/lib/initial-profile';
 import { PrismaClient } from '@prisma/client';
 
 interface IParams {
-    phaseId?: string;
+    teamId?: string;
 }
 
-export default async function getProjectByPhaseId(params: IParams) {
+export default async function getProjectByTeamId(params: IParams) {
     try {
         const user = await initialProfile();
 
@@ -14,26 +14,26 @@ export default async function getProjectByPhaseId(params: IParams) {
             return [];
         }
 
-        const { phaseId } = params;
+        const { teamId } = params;
 
-        if (!phaseId) {
-            throw new Error('Audit ID is required');
+        if (!teamId) {
+            throw new Error('Team ID is required');
         }
 
-        const phase = await db.phase.findUnique({
+        const team = await db.team.findUnique({
             where: {
-                id: phaseId,
+                id: teamId,
             },
             include: {
                 project: true,
             },
         });
 
-        if (!phase) {
-            throw new Error('Audit not found');
+        if (!team) {
+            throw new Error('Team not found');
         }
 
-        return phase.project;
+        return team.project;
         
     } catch (error) {
         if (error instanceof Error) {

@@ -13,6 +13,7 @@ import useMomModal from "@/hooks/createModalHooks/useMomModal";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import useStakeholderModal from "@/hooks/createModalHooks/useStakeholderModal";
 
 interface ProjectNavbarProps {
     project: any;
@@ -39,8 +40,9 @@ export const ProjectNavbar = ({
     const feedbackModal = useFeedbackModal();
     const updateModal = useUpdateModal();
     const momModal = useMomModal();
+    const stakeholderModal = useStakeholderModal()
 
-    const isPhaseRoute = pathname?.startsWith(`/main/projects/${project.id}/phases`);
+    const isTeamRoute = pathname?.startsWith(`/main/projects/${project.id}/teams`);
     const isAuditRoute = pathname?.startsWith(`/main/projects/${project.id}/audits`);
     const isResourceRoute = pathname?.startsWith(`/main/projects/${project.id}/resources`);
     const isFeedbackRoute = pathname?.startsWith(`/main/projects/${project.id}/feedbacks`);
@@ -51,12 +53,12 @@ export const ProjectNavbar = ({
     const onAddPhase = async (project: any) => {
         const data = { projectId: project.id };
         console.log(project.id);
-        axios.post('/api/phases', data)
+        axios.post('/api/teams', data)
         .then((response) => {
             const phase = response.data;
             const phaseId = phase.id;
-            toast.success('Phase created');
-            router.push(`/main/projects/${project.id}/phases/${phaseId}`);
+            toast.success('New team phase created');
+            router.push(`/main/projects/${project.id}/teams/${phaseId}`);
         }).catch((error) => {
             toast.error(error.message);
         }).finally(() => {
@@ -65,7 +67,7 @@ export const ProjectNavbar = ({
     };
 
     const routes = [
-        '/phases',
+        '/teams',
         '/resources',
         '/feedbacks',
         '/updates',
@@ -99,9 +101,9 @@ export const ProjectNavbar = ({
             </div>
             {(user.role === "MANAGER" || user.role === "ADMIN") ? (
                 <div>
-                    {isPhaseRoute && (
+                    {isTeamRoute && (
                         <Button 
-                            label="Add Phase" 
+                            label="Add Team" 
                             icon={<Plus className="scale-[0.8]"/>}
                             className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
                             onClick={() => {onAddPhase(project)}}
@@ -153,7 +155,7 @@ export const ProjectNavbar = ({
                             label="Add stakeholder" 
                             icon={<Plus className="scale-[0.8]"/>}
                             className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={auditModal.onOpen}
+                            onClick={stakeholderModal.onOpen}
                         />
                     )}
                     {pathname?.endsWith('/escalation') && (

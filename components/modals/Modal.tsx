@@ -75,6 +75,7 @@ const Modal: React.FC<ModalProps> = ({
         <>
             <div
                 className='
+                    scrollbar-hide
                    justify-center
                    items-center
                    flex
