@@ -47,7 +47,7 @@ jobs:
           username: ${{ secrets.AWS_USERNAME }}
           key: ${{ secrets.AWS_KEYPAIR }}
           source: "docker-compose.yaml"
-          target: "/home/ubuntu/"
+          target: "/home/azureuser/"
 
       - name: SSH to AWS Instance and Pull Image
         uses: appleboy/ssh-action@master
