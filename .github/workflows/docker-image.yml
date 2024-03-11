@@ -65,7 +65,7 @@ jobs:
             echo "HOME=${{ secrets.HOME }}" >> .env
             echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
             echo "AUTH0_SECRET=${{ secrets.AUTH0_SECRET }}" >> .env
-            echo "AUTH0_BASE_URL=http://ec2-13-233-97-162.ap-south-1.compute.amazonaws.com" >> .env
+            echo "AUTH0_BASE_URL=${{ secrets.AUTH0_BASE_URL }}" >> .env
             echo "AUTH0_ISSUER_BASE_URL=${{ secrets.AUTH0_ISSUER_BASE_URL }}" >> .env
             echo "AUTH0_CLIENT_ID=${{ secrets.AUTH0_CLIENT_ID }}" >> .env
             echo "AUTH0_CLIENT_SECRET=${{ secrets.AUTH0_CLIENT_SECRET }}" >> .env
