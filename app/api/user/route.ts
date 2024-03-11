@@ -13,23 +13,23 @@ export async function POST(request: Request) {
 
         console.log("Ok")
 
-        // const body = await request.json();
-        // const { userId, name } = body;
+        const body = await request.json();
+        const { userId, name } = body;
 
-        // if (!userId || !name) {
-        //     return new Response("Missing required fields", { status: 400 });
-        // }
+        if (!userId || !name) {
+            return new Response("Missing required fields", { status: 400 });
+        }
 
-        // const user = await db.user.update({
-        //     where: {
-        //         id: userId,
-        //     },
-        //     data: { 
-        //         name: name 
-        //     },
-        // })
+        const user = await db.user.update({
+            where: {
+                id: userId,
+            },
+            data: { 
+                name: name 
+            },
+        })
 
-        return new Response(JSON.stringify(currentUser), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        return new Response(JSON.stringify(user), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
     } catch (error) {
         if (error instanceof Error) {
