@@ -14,6 +14,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import useStakeholderModal from "@/hooks/createModalHooks/useStakeholderModal";
+import useRiskModal from "@/hooks/createModalHooks/useRiskModal";
 
 interface ProjectNavbarProps {
     project: any;
@@ -40,7 +41,8 @@ export const ProjectNavbar = ({
     const feedbackModal = useFeedbackModal();
     const updateModal = useUpdateModal();
     const momModal = useMomModal();
-    const stakeholderModal = useStakeholderModal()
+    const stakeholderModal = useStakeholderModal();
+    const riskModal = useRiskModal();
 
     const isTeamRoute = pathname?.startsWith(`/main/projects/${project.id}/teams`);
     const isAuditRoute = pathname?.startsWith(`/main/projects/${project.id}/audits`);
@@ -48,6 +50,7 @@ export const ProjectNavbar = ({
     const isFeedbackRoute = pathname?.startsWith(`/main/projects/${project.id}/feedbacks`);
     const isUpdateRoute = pathname?.startsWith(`/main/projects/${project.id}/updates`);
     const isMomRoute = pathname?.startsWith(`/main/projects/${project.id}/moms`);
+    const isRiskRoute = pathname?.startsWith(`/main/projects/${project.id}/risks`);
     
 
     const onAddPhase = async (project: any) => {
@@ -166,12 +169,12 @@ export const ProjectNavbar = ({
                             onClick={auditModal.onOpen}
                         />
                     )}
-                    {pathname?.endsWith('/risks') && (
+                    {isRiskRoute && (
                         <Button 
                             label="Add risk" 
                             icon={<Plus className="scale-[0.8]"/>}
                             className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={auditModal.onOpen}
+                            onClick={riskModal.onOpen}
                         />
                     )}
                     {pathname?.endsWith('/milestones') && (

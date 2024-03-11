@@ -68,80 +68,80 @@ export const StakeholdersTable = ({ project, stakeholders, user }: StakeholdersT
 
     return (
         <>
-            {editStakeholderId && (
-                <EditStakeholderModal stakeholder={stakeholders.find((res: any) => res.id === editStakeholderId)} onClose={closeEditModal} />
-            )}
-            <Table className="scrollbar-hide">
-                <TableHeader className="bg-neutral-200 border-none dark:bg-neutral-800">
-                    <TableRow>
-                        <TableHead className="w-[100px] font-bold">Serial</TableHead>
-                        <TableHead className="w-[250px] font-bold">Title</TableHead>
-                        <TableHead className="w-[200px] font-bold">Name</TableHead>
-                        <TableHead className="w-[400] font-bold">Contact</TableHead>
-                        {(user.role === "MANAGER" || user.role === "ADMIN") ? (
-                            <TableHead className="w-[130px]">Actions</TableHead>
-                        ) : (
-                            <div></div>
+        {editStakeholderId && (
+            <EditStakeholderModal stakeholder={stakeholders.find((res: any) => res.id === editStakeholderId)} onClose={closeEditModal} />
+        )}
+        <Table className="scrollbar-hide">
+            <TableHeader className="bg-neutral-200 border-none dark:bg-neutral-800">
+                <TableRow>
+                    <TableHead className="w-[100px] font-bold">Serial</TableHead>
+                    <TableHead className="w-[250px] font-bold">Title</TableHead>
+                    <TableHead className="w-[200px] font-bold">Name</TableHead>
+                    <TableHead className="w-[400] font-bold">Contact</TableHead>
+                    {(user.role === "MANAGER" || user.role === "ADMIN") ? (
+                        <TableHead className="w-[130px] font-bold">Actions</TableHead>
+                    ) : (
+                        <div></div>
+                    )}
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+
+                {stakeholders.map((stakeholder: any, index: number) => (
+
+                    <TableRow key={stakeholder.id} className="dark:border-neutral-600 text-[12px]">
+                        <TableCell className="">{index}</TableCell>
+                        <TableCell className="">{stakeholder.title}</TableCell>
+                        <TableCell>{stakeholder.name}</TableCell>
+                        <TableCell>{stakeholder.contact}</TableCell>
+
+                        {(user.role === "MANAGER" || user.role === "ADMIN") && (
+                            <TableCell className="flex items-center justify-start gap-5">
+                                {sureToDeleteId === stakeholder.id ? (
+                                    <>
+                                    </>
+                                ) : (
+                                    <>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <MoreHorizontal
+                                                    className="hover:opacity-50 hover:cursor-pointer transition font-bold"
+                                                    onClick={() => toggleSureToDelete(stakeholder.id)}
+                                                />
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent className="w-32 z-[9999] bg-white dark:bg-neutral-800 border-none rounded-[5px]">
+                                                <DropdownMenuGroup>
+                                                    <DropdownMenuItem
+                                                        className="hover:cursor-pointer rounded-[5px] focus:bg-neutral-100 dark:focus:bg-neutral-700"
+                                                        onClick={() => {
+                                                            clickEdit(stakeholder);
+                                                        }}
+                                                    >
+                                                        <Pen className="mr-2 h-4 w-4" />
+                                                        <span>Edit</span>
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem
+                                                        className="hover:cursor-pointer rounded-[5px] focus:bg-neutral-100 dark:focus:bg-neutral-700"
+                                                        onClick={() => {
+                                                            clickDelete(stakeholder);
+                                                        }}
+                                                    >
+                                                        <Trash className="mr-2 h-4 w-4 text-red-700 dark:text-500" />
+                                                        <span className="text-red-700 dark:text-red-500">
+                                                            Delete
+                                                        </span>
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuGroup>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </>
+                                )}
+                            </TableCell>
                         )}
                     </TableRow>
-                </TableHeader>
-                <TableBody>
-
-                    {stakeholders.map((stakeholder: any, index: number) => (
-
-                        <TableRow key={stakeholder.id} className="dark:border-neutral-600">
-                            <TableCell className="">{index}</TableCell>
-                            <TableCell className="">{stakeholder.title}</TableCell>
-                            <TableCell>{stakeholder.name}</TableCell>
-                            <TableCell>{stakeholder.contact}</TableCell>
-
-                            {(user.role === "MANAGER" || user.role === "ADMIN") && (
-                                <TableCell className="flex items-center justify-start gap-5">
-                                    {sureToDeleteId === stakeholder.id ? (
-                                        <>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <MoreHorizontal
-                                                        className="hover:opacity-50 hover:cursor-pointer transition font-bold"
-                                                        onClick={() => toggleSureToDelete(stakeholder.id)}
-                                                    />
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent className="w-32 z-[9999] bg-white dark:bg-neutral-800 border-none rounded-[5px]">
-                                                    <DropdownMenuGroup>
-                                                        <DropdownMenuItem
-                                                            className="hover:cursor-pointer rounded-[5px] focus:bg-neutral-100 dark:focus:bg-neutral-700"
-                                                            onClick={() => {
-                                                                clickEdit(stakeholder);
-                                                            }}
-                                                        >
-                                                            <Pen className="mr-2 h-4 w-4" />
-                                                            <span>Edit</span>
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem
-                                                            className="hover:cursor-pointer rounded-[5px] focus:bg-neutral-100 dark:focus:bg-neutral-700"
-                                                            onClick={() => {
-                                                                clickDelete(stakeholder);
-                                                            }}
-                                                        >
-                                                            <Trash className="mr-2 h-4 w-4 text-red-700 dark:text-500" />
-                                                            <span className="text-red-700 dark:text-red-500">
-                                                                Delete
-                                                            </span>
-                                                        </DropdownMenuItem>
-                                                    </DropdownMenuGroup>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </>
-                                    )}
-                                </TableCell>
-                            )}
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                ))}
+            </TableBody>
+        </Table>
         </>
     );
 };

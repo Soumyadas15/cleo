@@ -98,7 +98,7 @@ const closeEditModal = () => {
           <TableHead className="w-[200px] font-bold">Availability</TableHead>
           <TableHead className="w-[200px] font-bold">Duration</TableHead>
           {(user.role === "MANAGER" || user.role === "ADMIN") ? (
-            <TableHead className="w-[130px]">Actions</TableHead>
+            <TableHead className="w-[130px] font-bold">Actions</TableHead>
           ) : (
             <div></div>
           )}
@@ -108,7 +108,7 @@ const closeEditModal = () => {
 
         {teamContents.map((teamContent: any, index: number) => (
           <>
-          <TableRow key={teamContent.id} className="dark:border-slate-600">
+          <TableRow key={teamContent.id} className="dark:border-slate-600 text-[12px]">
 
             <TableCell className="font-medium">{index}</TableCell>
 

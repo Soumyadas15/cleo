@@ -95,7 +95,7 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
           <TableHead className="w-[180px] font-bold">Date</TableHead>
           <TableHead className="font-bold w-[45rem]">Body</TableHead>
           {user.role === "AUDITOR" ? (
-            <TableHead className="">Actions</TableHead>
+            <TableHead className="font-bold">Actions</TableHead>
           ) : (
             <div></div>
           )}
@@ -104,7 +104,7 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
       <TableBody>
         {audits.map((audit: any, index: number) => (
           <>
-          <TableRow key={audit.id} className="dark:border-slate-600">
+          <TableRow key={audit.id} className="dark:border-slate-600 text-[12px]">
 
             <TableCell className="font-medium">{index}</TableCell>
 

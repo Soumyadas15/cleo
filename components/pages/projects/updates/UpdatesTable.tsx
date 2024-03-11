@@ -92,7 +92,7 @@ export const UpdateTable = ({ project, updates, user }: UpdateTableProps) => {
           <TableHead className="w-[180px] font-bold">Date</TableHead>
           <TableHead className="font-bold w-[45rem]">Body</TableHead>
           {(user.role === "MANAGER" || user.role === "ADMIN") ? (
-            <TableHead className="">Actions</TableHead>
+            <TableHead className="font-bold">Actions</TableHead>
           ) : (
             <div></div>
           )}
@@ -101,7 +101,7 @@ export const UpdateTable = ({ project, updates, user }: UpdateTableProps) => {
       <TableBody>
         {updates.map((update: any, index: number) => (
           <>
-          <TableRow key={update.id} className="dark:border-slate-600">
+          <TableRow key={update.id} className="dark:border-slate-600 text-[12px]">
 
             <TableCell className="font-medium">{index}</TableCell>
 

@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown";
 import { MoreHorizontal, Pen, Trash } from "lucide-react";
+import DisplayText from "@/components/reusable/DisplayText";
 
 
 /**
@@ -99,7 +100,7 @@ export const ResourceTable = ({
             <TableHead className="w-[200px] font-bold">End Date</TableHead>
             <TableHead className="font-bold w-[45rem]">Comment</TableHead>
             {(user.role === "MANAGER" || user.role === "ADMIN") ? (
-              <TableHead className="w-[130px]">Actions</TableHead>
+              <TableHead className="w-[130px] font-bold">Actions</TableHead>
             ) : (
               <div></div>
             )}
@@ -107,7 +108,7 @@ export const ResourceTable = ({
         </TableHeader>
         <TableBody>
           {resources.map((resource: any, index: number) => (
-            <TableRow key={resource.id} className="dark:border-slate-600">
+            <TableRow key={resource.id} className="dark:border-slate-600 text-[12px]">
               <TableCell className="font-medium">{index}</TableCell>
               <TableCell className="font-medium">{resource.name}</TableCell>
               <TableCell>{resource.role}</TableCell>
@@ -118,7 +119,7 @@ export const ResourceTable = ({
                 {format(new Date(resource.endDate), "MMM do yyyy")}
               </TableCell>
               <TableCell>
-                {resource.comment}
+                <DisplayText title="Comment" text={resource.comment} limit={150}/>
                 {resource.isEdited ? (
                   <span className="text-neutral-400 text-[12px] ml-2">
                     (edited)

@@ -8,6 +8,7 @@ import { ProjectNavbar } from "@/components/pages/projects/ProjectNavbar";
 import Heading from "@/components/reusable/Heading";
 import { initialProfile } from "@/lib/initial-profile";
 import StakeholderModal from "@/components/modals/createModals/StakeholderModal";
+import RiskModal from "@/components/modals/createModals/RiskModal";
 
 interface IParams {
     projectId?: string;
@@ -32,6 +33,7 @@ export default async function ProjectLayout({
         <UpdateModal project={project} user={user}/>
         <MomModal project={project} user={user}/>
         <StakeholderModal project={project} user={user}/>
+        <RiskModal project={project} user={user}/>
 
         <div className="p-5 h-full w-full flex flex-col justify-between scrollbar-hide">
             <div className="h-[5%] flex items-center">

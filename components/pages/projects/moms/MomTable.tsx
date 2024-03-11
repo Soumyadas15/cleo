@@ -26,6 +26,8 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import EditMomModal from "@/components/modals/editModals/EditMomModal";
 import useEditMomModal from "@/hooks/editModalHooks/useEditMomModal";
+import DisplayText from "@/components/reusable/DisplayText";
+import { Mom } from "@prisma/client";
 
 interface MomTableProps {
   project: any;
@@ -102,7 +104,7 @@ export const MomTable = ({
           <TableHead className="w-[200px] font-bold">Link</TableHead>
           <TableHead className="font-bold w-[45rem]">Comments</TableHead>
           {(user.role === "MANAGER" || user.role === "ADMIN") ? (
-            <TableHead className="w-[130px]">Actions</TableHead>
+            <TableHead className="w-[130px] font-bold">Actions</TableHead>
           ) : (
             <div></div>
           )}
@@ -111,27 +113,21 @@ export const MomTable = ({
       <TableBody>
 
 
-        {moms.map((mom: any, index: number) => (
+        {moms.map((mom: Mom, index: number) => (
           <>
           
-          <TableRow key={mom.id} className="dark:border-slate-600">
+          <TableRow key={mom.id} className="dark:border-slate-600 text-[12px]">
 
             <TableCell className="font-medium">{index}</TableCell>
 
             <TableCell>{format(new Date(mom.date), "MMM do yyyy")}</TableCell>
 
             <TableCell className="">{mom.duration} mins.</TableCell>
-            
 
             <TableCell>{mom.link}</TableCell>
 
             <TableCell>
-              {mom.comments}
-              {mom.isEdited ? (
-                 <span className="text-neutral-400 text-[12px] ml-2">(edited)</span>
-              ) : (
-                <div></div>
-              )}
+              <DisplayText title="Comments" text={mom.comments} limit={100}/>
             </TableCell>
 
             {(user.role === "MANAGER" || user.role === "ADMIN") && (

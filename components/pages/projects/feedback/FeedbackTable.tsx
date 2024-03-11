@@ -26,6 +26,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import useEditFeedbackModal from "@/hooks/editModalHooks/useEditFeedbackModal";
 import EditFeedbackModal from "@/components/modals/editModals/EditFeedbackModal";
+import DisplayText from "@/components/reusable/DisplayText";
 
 interface FeedbackTableProps {
   project: any;
@@ -103,7 +104,7 @@ export const FeedbackTable = ({
           <TableHead className="w-[200px] font-bold">Start Date</TableHead>
           <TableHead className="w-[200px] font-bold">End Date</TableHead>
           {(user.role === "MANAGER" || user.role === "ADMIN") ? (
-            <TableHead className="w-[130px]">Actions</TableHead>
+            <TableHead className="w-[130px] font-bold">Actions</TableHead>
           ) : (
             <div></div>
           )}
@@ -113,16 +114,20 @@ export const FeedbackTable = ({
 
         {feedbacks.map((feedback: any, index: number) => (
           <>
-          <TableRow key={feedback.id} className="dark:border-slate-600">
+          <TableRow key={feedback.id} className="dark:border-slate-600 text-[12px]">
 
             <TableCell className="font-medium">{index}</TableCell>
 
             <TableCell className="font-medium">{feedback.type}</TableCell>
             
 
-            <TableCell>{feedback.body}</TableCell>
+            <TableCell>
+              <DisplayText title="Feedback" text={feedback.body} limit={40}/>
+            </TableCell>
 
-            <TableCell>{feedback.action}</TableCell>
+            <TableCell>
+              <DisplayText title="Action items" text={feedback.action} limit={40}/>
+            </TableCell>
 
             <TableCell>{format(new Date(feedback.date), "MMM do yyyy")}</TableCell>
 
