@@ -35,7 +35,7 @@ const Textarea: React.FC<TextareaProps> = ({
                     text-neutral-800
                     dark:text-neutral-300
                     bg-white
-                    dark:bg-black
+                    dark:bg-neutral-900
                     border-[1px]
                     rounded-[5px]
                     outline-none

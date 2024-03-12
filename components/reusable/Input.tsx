@@ -57,7 +57,7 @@ const Input: React.FC<InputProps> = ({
                     dark:text-neutral-300
 
                     bg-white
-                    dark:bg-black
+                    dark:bg-neutral-900
                     
                     border-[1px]
                     rounded-[5px]

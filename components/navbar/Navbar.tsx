@@ -21,7 +21,7 @@ export const Navbar = ({
     const router = useRouter();
 
     return (
-        <div className="h-full w-full flex items-center justify-between">
+        <div className="h-full w-full flex items-center justify-between ">
             
             <input
                 placeholder="search"

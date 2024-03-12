@@ -47,7 +47,7 @@ export const ProjectItem = ({
             className="transition"
             style={{ transform: clicked ? 'scale(0.95)' : 'scale(1)' }}
         >
-            <Card className="w-full rounded-[5px] transition hover:cursor-pointer bg-neutral-100 dark:bg-neutral-800 dark:border-none">
+            <Card className="w-full rounded-[5px] transition hover:cursor-pointer bg-neutral-100 dark:bg-white/5 dark:border-none">
                 <CardHeader className="justify-between">
                     <div className="flex items-start justify-between">
                         <div className="flex flex-col">
@@ -71,13 +71,13 @@ export const ProjectItem = ({
                                     <DropdownMenuSeparator/>
                                     <DropdownMenuGroup>
                                         <DropdownMenuItem 
-                                            className="rounded-[5px] focus:bg-neutral-100 dark:focus:bg-neutral-900 hover:cursor-pointer"
+                                            className="rounded-[5px] focus:bg-neutral-100 dark:focus:bg-black hover:cursor-pointer"
                                         >
                                             <Pen className="mr-2 h-4 w-4"/>
                                             <span>Edit</span>
                                         </DropdownMenuItem>
                                         <DropdownMenuItem 
-                                            className="rounded-[5px] focus:bg-neutral-100 dark:focus:bg-neutral-900 hover:cursor-pointer"
+                                            className="rounded-[5px] focus:bg-neutral-100 dark:focus:bg-black hover:cursor-pointer"
                                             onClick={(e) => handleDeleteClick(e, project)}
                                         >
                                             <Trash className="mr-2 h-4 w-4 text-red-700 dark:text-500" />

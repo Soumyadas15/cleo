@@ -15,16 +15,18 @@ export const TotalPhases = ({
     phasesCreatedThisWeek
 }: TotalPhasesProps) => {
     return (
-        <Card className="h-full rounded-[5px] dark:bg-neutral-800 dark:border-none">
+        <Card className="h-full rounded-[5px] dark:bg-white/5 dark:border-none">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-base font-normal">Total number of phases</CardTitle>
             </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-bold">{totalPhases}</div>
-                <p className="text-xs text-muted-foreground">
-                    +{phasesCreatedThisWeek} created this week
-                </p>
-                <div className="h-[200px]">
+            <CardContent className="h-[80%] flex flex-col justify-between">
+                <div className="">
+                    <div className="text-2xl font-bold">{totalPhases}</div>
+                    <p className="text-xs text-muted-foreground">
+                        +{phasesCreatedThisWeek} created this week
+                    </p>
+                </div>
+                <div className="h-[300px]">
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart
                             data={data}

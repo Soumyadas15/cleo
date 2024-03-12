@@ -15,26 +15,28 @@ export const TotalResources = ({
     resourcesCreatedThisWeek
 }: TotalResourcesProps) => {
     return (
-        <Card className="h-full rounded-[5px] dark:bg-neutral-800 dark:border-none">
+        <Card className="h-full rounded-[5px] dark:bg-white/5 dark:border-none">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-base font-normal">Total number of resources</CardTitle>
             </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-bold">
-                    {totalResources > 0 ? (
-                        <div>{totalResources}</div>
-                    ) : (
-                        <div>0</div>
-                    )}
+            <CardContent className="h-[80%] flex flex-col justify-between">
+                <div>
+                    <div className="text-2xl font-bold">
+                        {totalResources > 0 ? (
+                            <div>{totalResources}</div>
+                        ) : (
+                            <div>0</div>
+                        )}
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                        {resourcesCreatedThisWeek > 0 ? (
+                            <div>+{resourcesCreatedThisWeek} resources added this week</div>
+                        ) : (
+                            <div>+0 resources added this week</div>
+                        )}
+                    </p>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                    {resourcesCreatedThisWeek > 0 ? (
-                        <div>+{resourcesCreatedThisWeek} resources added this week</div>
-                    ) : (
-                        <div>+0 resources added this week</div>
-                    )}
-                </p>
-                <div className="mt-4 h-[200px]">
+                <div className="h-[200px]">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={data}>
                             <Bar
