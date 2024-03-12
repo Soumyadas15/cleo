@@ -63,7 +63,7 @@ export default function RiveMainEntry({
       onClose();
       setIsLoading(false)
     } catch (error : any) {
-      toast.error(error.message);
+      toast.error(error.response.data);
     }
   };
 

@@ -68,7 +68,7 @@ const NameModal = ({
             router.refresh();
             toast.success('Name updated');
         }) .catch((error) => {
-            toast.error(error.message);
+            toast.error(error.response.data);
         }) .finally(() => {
             setIsLoading(false);
             nameModal.onClose()

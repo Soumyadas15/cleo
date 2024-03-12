@@ -49,7 +49,7 @@ export const TeamsClient = ({
             toast.success('Team phase created');
             router.push(`/main/projects/${project.id}/teams/${phaseId}`);
         }).catch((error) => {
-            toast.error(error.message);
+            toast.error(error.response.data);
         }).finally(() => {
             router.refresh();
         });
@@ -60,8 +60,8 @@ export const TeamsClient = ({
         return(
             <EmptyState 
                 title="No teams yet"
-                subtitle="Add a Team"
-                showButton = {user.role === "MANAGER"}
+                subtitle="Sart by addding a phase"
+                showButton = {user.role === "MANAGER" || user.role === "ADMIN"}
                 buttonLabel="Add"
                 onClick={() => {onAdd(project)}}
             />
@@ -77,7 +77,7 @@ export const TeamsClient = ({
                         <Button
                             label="Add team"
                             icon={ <PlusIcon/> }
-                            className="bg-red-500 pr-3 pl-3 p-2 flex items-center rounded-[5px] text-sm"
+                            className="bg-blue-500 pr-3 pl-3 p-2 flex items-center rounded-[5px] text-sm"
                             onClick={phaseContentModal.onOpen}
                         />
                     ) : (

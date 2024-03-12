@@ -21,7 +21,7 @@ export const NotificationItem = ({
             axios.delete(`/api/notifications/${notification.id}`);
             router.refresh();
           } catch (error: any) {
-            toast.error(error.message);
+            toast.error(error.response.data);
           } finally {
             router.refresh();
           }

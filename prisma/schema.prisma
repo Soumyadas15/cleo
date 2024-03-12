@@ -34,6 +34,12 @@ enum MeasureLevels {
   LOW
 }
 
+enum EscalationMatrixTypes {
+  OPERATIONAL
+  FINANCIAL
+  TECHNICAL
+}
+
 
 
 model User {
@@ -62,6 +68,8 @@ model User {
 model Project {
   id String @id @default(uuid())
   name String
+  description String @db.Text @default("Lorem ipsum")
+  scope String @db.Text @default("Lorem ipsum")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -77,6 +85,7 @@ model Project {
   notifications Notification[]
   stakeholders Stakeholder[]
   risks Risk[]
+  escalationMatrix Escalation_matrix[]
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -284,6 +293,19 @@ model Team_content {
 
   teamId String
   team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model Escalation_matrix {
+  id String @id @default(uuid())
+
+  type EscalationMatrixTypes
+  level Int
+  name String
+
+  projectId String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 }

@@ -50,7 +50,7 @@ export const StakeholdersTable = ({ project, stakeholders, user }: StakeholdersT
             router.refresh();
             toast.success("Stakeholder deleted");
         } catch (error: any) {
-            toast.error(error.message);
+            toast.error(error.response.data);
         } finally {
             setIsLoading(false);
             setSureToDeleteId(null);

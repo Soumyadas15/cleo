@@ -1,13 +1,13 @@
 import { FieldErrors, UseFormRegister, FieldValues } from "react-hook-form";
-import { BiDollar } from "react-icons/bi";
 
 interface TextareaProps {
-    id: string,
+    id: string;
     label: string;
     disabled?: boolean;
     required?: boolean;
-    register: UseFormRegister<FieldValues>,
-    errors: FieldErrors
+    register: UseFormRegister<FieldValues>;
+    errors: FieldErrors;
+    minLength?: number; // Add minLength prop
 }
 
 const Textarea: React.FC<TextareaProps> = ({
@@ -16,14 +16,15 @@ const Textarea: React.FC<TextareaProps> = ({
     disabled,
     register,
     required,
-    errors
+    errors,
+    minLength = 20, // Default minLength to 0 if not provided
 }) => {
     return (
         <div className="w-full relative">
             <textarea
                 id={id}
                 disabled={disabled}
-                {...register(id, { required })}
+                {...register(id, { required, minLength })} // Include minLength in validation rules
                 placeholder=" "
                 className={`
                     peer
@@ -67,6 +68,11 @@ const Textarea: React.FC<TextareaProps> = ({
             >
                 {label}
             </label>
+            {errors[id] && (
+                <p className="text-xs text-[#ff297f] absolute bottom-2 left-4">
+                    {`Minimum ${minLength} characters required`}
+                </p>
+            )}
         </div>
     );
 }

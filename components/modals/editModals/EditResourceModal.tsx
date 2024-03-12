@@ -118,7 +118,7 @@ const EditResourceModal = ({
             router.refresh();
             toast.success('Resource updated');
         }) .catch((error) => {
-            toast.error(error.message);
+            toast.error(error.response.data);
         }) .finally(() => {
             setIsLoading(false);
             editResourceModal.onClose();

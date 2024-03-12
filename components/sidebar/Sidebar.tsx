@@ -26,10 +26,10 @@ export const Sidebar = ({
                     <Image
                         src={'/logo.png'}
                         alt="logo"
-                        height={32}
-                        width={32}
+                        height={36}
+                        width={36}
                     />
-                    <div className="text-3xl font-bold">Cleo</div>
+                    <div className="text-md leading-5 font-bold">Customer <br/>success</div>
                 </div>
                 <div className="flex flex-col h-[20%] w-full">
                     {user.role === "ADMIN" ? (
@@ -37,7 +37,7 @@ export const Sidebar = ({
                                 onClick={createModal.onOpen}
                                 label="Add project" 
                                 color="bg-cyan-500" 
-                                className="p-2 rounded-[5px] flex items-center text-sm text-white w-full" 
+                                className="p-2 bg-blue-500 rounded-[5px] flex items-center text-sm text-white w-full" 
                                 icon={<Plus className="scale-[0.8]"/>}
                             />
                         ) : (

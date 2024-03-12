@@ -1,5 +1,6 @@
 "use client"
 
+import DisplayText from "@/components/reusable/DisplayText";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown";
@@ -32,11 +33,11 @@ export const ProjectItem = ({
     const handleDeleteClick = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>, project: any) => {
         e.stopPropagation();
         try {
-            await axios.delete(`/api/teams/${project.id}`);
+            await axios.delete(`/api/projects/${project.id}`);
             router.refresh();
             toast.success("Project deleted");
         } catch (error : any) {
-            toast.error(error.message);
+            toast.error(error.response.data);
         }
     };
 
@@ -54,7 +55,7 @@ export const ProjectItem = ({
                                 {project.name}
                             </CardTitle>
                             <CardDescription className="text-neutral-400 w-[90%]">
-                                This project is created by admin, using Cleo, a customer success platform.
+                                <DisplayText limit={80} title="Project description" text={project.description}/>
                             </CardDescription>
                         </div>
                         {user.role === "ADMIN" ? (

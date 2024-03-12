@@ -65,7 +65,7 @@ const AuditModal = ({
             router.refresh();
             toast.success('Done');
         }) .catch((error) => {
-            toast.error(error.message);
+            toast.error(error.response.data);
         }) .finally(() => {
             setIsLoading(false);
             auditModal.onClose();

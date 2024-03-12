@@ -63,7 +63,7 @@ export const ProjectNavbar = ({
             toast.success('New team phase created');
             router.push(`/main/projects/${project.id}/teams/${phaseId}`);
         }).catch((error) => {
-            toast.error(error.message);
+            toast.error(error.response.data);
         }).finally(() => {
             router.refresh();
         });
@@ -104,19 +104,12 @@ export const ProjectNavbar = ({
             </div>
             {(user.role === "MANAGER" || user.role === "ADMIN") ? (
                 <div>
-                    {isTeamRoute && (
-                        <Button 
-                            label="Add Team" 
-                            icon={<Plus className="scale-[0.8]"/>}
-                            className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={() => {onAddPhase(project)}}
-                        />
-                    )}
+                   
                     {isResourceRoute && (
                         <Button 
                             label="Add resource" 
                             icon={<Plus className="scale-[0.8]"/>}
-                            className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
+                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
                             onClick={resourceModal.onOpen}
                         />
                     )}
@@ -124,7 +117,7 @@ export const ProjectNavbar = ({
                         <Button 
                             label="Add feedback" 
                             icon={<Plus className="scale-[0.8]"/>}
-                            className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
+                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
                             onClick={feedbackModal.onOpen}
                         />
                     )}
@@ -132,7 +125,7 @@ export const ProjectNavbar = ({
                         <Button 
                             label="Add update" 
                             icon={<Plus className="scale-[0.8]"/>}
-                            className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
+                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
                             onClick={updateModal.onOpen}
                         />
                     )}
@@ -140,7 +133,7 @@ export const ProjectNavbar = ({
                         <Button 
                             label="Add MoM" 
                             icon={<Plus className="scale-[0.8]"/>}
-                            className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
+                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
                             onClick={momModal.onOpen}
                         />
                     )}
@@ -149,7 +142,7 @@ export const ProjectNavbar = ({
                         <Button 
                             label="Add scope" 
                             icon={<Plus className="scale-[0.8]"/>}
-                            className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
+                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
                             onClick={auditModal.onOpen}
                         />
                     )}
@@ -157,23 +150,16 @@ export const ProjectNavbar = ({
                         <Button 
                             label="Add stakeholder" 
                             icon={<Plus className="scale-[0.8]"/>}
-                            className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
+                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
                             onClick={stakeholderModal.onOpen}
                         />
                     )}
-                    {pathname?.endsWith('/escalation') && (
-                        <Button 
-                            label="Add matrix" 
-                            icon={<Plus className="scale-[0.8]"/>}
-                            className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={auditModal.onOpen}
-                        />
-                    )}
+                   
                     {isRiskRoute && (
                         <Button 
                             label="Add risk" 
                             icon={<Plus className="scale-[0.8]"/>}
-                            className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
+                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
                             onClick={riskModal.onOpen}
                         />
                     )}
@@ -181,7 +167,7 @@ export const ProjectNavbar = ({
                         <Button 
                             label="Add milestone" 
                             icon={<Plus className="scale-[0.8]"/>}
-                            className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
+                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
                             onClick={auditModal.onOpen}
                         />
                     )}

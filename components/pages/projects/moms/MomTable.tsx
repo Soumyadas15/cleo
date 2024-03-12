@@ -74,7 +74,7 @@ export const MomTable = ({
       router.refresh();
       toast.success("MoM deleted");
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(error.response.data);
     } finally {
       setIsLoading(false);
       setSureToDeleteId(null);

@@ -64,7 +64,7 @@ export const UpdateTable = ({ project, updates, user }: UpdateTableProps) => {
       toast.success("Deleted update");
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(error.response.data);
     } finally {
       setIsLoading(false);
       setSureToDeleteId(null);

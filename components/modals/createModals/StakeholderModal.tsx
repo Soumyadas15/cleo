@@ -63,7 +63,7 @@ const StakeholderModal = ({
             router.refresh();
             toast.success('Stakeholder added');
         }) .catch((error) => {
-            toast.error(error.message);
+            toast.error(error.response.data);
         }) .finally(() => {
             setIsLoading(false);
             stakeholderModal.onClose();

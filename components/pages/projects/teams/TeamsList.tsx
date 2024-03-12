@@ -21,6 +21,12 @@ interface TeamsListProps {
     user:any;
 }
 
+
+function isValidUUID(uuid : string) {
+    const uuidRegex = /^[a-f\d]{8}-([a-f\d]{4}-){3}[a-f\d]{12}$/i;
+    return uuidRegex.test(uuid);
+}
+
 export const TeamsList = ({
     teams,
     project,
@@ -29,31 +35,51 @@ export const TeamsList = ({
 
     const router = useRouter();
     //@ts-ignore
-    const { phaseId } = useParams();
+    const { teamId } = useParams();
     const pathname = usePathname();
 
-    const [currentPhaseText, setCurrentPhaseText] = useState('No teams');
+    const [label, setLabel] = useState('No teams');
     const [clicked, setClicked] = useState(false);
-    const [position, setPosition] = useState("bottom")
+    const [position, setPosition] = useState("bottom");
+    const [phaseMap, setPhaseMap] = useState<{ [key: string]: string }>({});
+
+
+
+    useEffect(() => {
+        const phaseMapping: { [key: string]: string } = {};
+        teams.forEach((team, index) => {
+            phaseMapping[team.id] = `Phase ${teams.length - index}`;
+        });
+        setPhaseMap(phaseMapping);
+    }, [teams]);
 
 
 
     useEffect(() => {
         //@ts-ignore
         if (pathname?.endsWith('/teams') && teams.length > 0){
-            setCurrentPhaseText('Select phase')
+            setLabel('Select phase')
         }
-        else if (teams.length > 0 && phaseId) {
-            const currentPhaseIndex = teams.findIndex(phase => phase.id === phaseId);
+        else if (teams.length > 0 && teamId) {
+            const currentPhaseIndex = teams.findIndex(phase => phase.id === teamId);
             if (currentPhaseIndex !== -1) {
-                setCurrentPhaseText(`Phase ${teams.length - currentPhaseIndex}`);
+                setLabel(`Phase ${teams.length - currentPhaseIndex}`);
             } else {
-                setCurrentPhaseText(`Phase ${teams.length}`);
+                setLabel(`Phase ${teams.length}`);
             }
         } else if (teams.length > 0) {
-            setCurrentPhaseText(`Phase ${teams.length}`);
+            setLabel(`Phase ${teams.length}`);
         }
-    }, [teams, phaseId]);
+    }, [teams, teamId]);
+
+    useEffect(() => {
+        if (!teamId){
+            setLabel('Select Phase');
+        }
+        else setLabel(phaseMap[teamId])
+    })
+
+
 
     const onAdd = async (project: any) => {
         const data = { projectId: project.id };
@@ -65,7 +91,7 @@ export const TeamsList = ({
             toast.success('team phase created');
             router.push(`/main/projects/${project.id}/teams/${phaseId}`);
         }).catch((error) => {
-            toast.error(error.message);
+            toast.error(error.response.data);
         }).finally(() => {
             router.refresh();
         });
@@ -86,24 +112,33 @@ export const TeamsList = ({
                         variant="outline" 
                         className={`w-[8rem] transition`}
                     >
-                        {currentPhaseText}
+                        {label}
                     </Button>
                 
                 
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-42 bg-white dark:bg-neutral-800 dark:border-none rounded-[5px]">
+            <DropdownMenuContent className="w-42 bg-white dark:bg-black dark:border-none rounded-[5px]">
 
                 <DropdownMenuLabel>
-                    teams
+                    Phases
                 </DropdownMenuLabel>
                 
                 <DropdownMenuSeparator />
 
                 <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
+                    <DropdownMenuItem
+                        className="rounded-[5px] hover:cursor-pointer focus:bg-neutral-200 dark:focus:bg-neutral-800"
+                        onClick={() => {
+                            router.push(`/main/projects/${project.id}/teams`)
+                        }}
+                    >
+                        Dashboard
+                    </DropdownMenuItem>
+                    
                     {teams.map((phase, index) => (
                         <DropdownMenuItem  
                             key={phase.id}
-                            className="rounded-[5px] hover:cursor-pointer focus:bg-neutral-200 dark:focus:bg-neutral-700"
+                            className="rounded-[5px] hover:cursor-pointer focus:bg-neutral-200 dark:focus:bg-neutral-800"
                             onClick={() => {
                                 router.push(`/main/projects/${project.id}/teams/${phase.id}`)
                             }}

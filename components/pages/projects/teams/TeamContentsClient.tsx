@@ -29,10 +29,6 @@ export const TeamContentsClient = ({
         return(
             <EmptyState 
                 title="This phase is empty"
-                subtitle="Add content"
-                showButton = {user.role === "MANAGER"}
-                buttonLabel="Add"
-                onClick={phaseContentModal.onOpen}
             />
         )
 

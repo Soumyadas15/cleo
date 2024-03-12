@@ -69,7 +69,7 @@ export const ResourceTable = ({
       router.refresh();
       toast.success("Resource deleted");
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(error.response.data);
     } finally {
       setIsLoading(false);
       setSureToDeleteId(null);

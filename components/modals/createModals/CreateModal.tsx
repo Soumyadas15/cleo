@@ -19,12 +19,15 @@ import { useModal } from "@/hooks/useModalStore";
 import { ProgressBar } from "../../ProgressBar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown";
 import { Button } from "@/components/ui/button";
+import Textarea from "@/components/reusable/Textarea";
 
 enum STEPS {
-  DESCRIPTION = 0,
-  CLIENTS = 1,
-  MANAGER = 2,
-  AUDITOR = 3,
+  NAME = 0,
+  DESCRIPTION = 1,
+  SCOPE = 2,
+  CLIENTS = 3,
+  MANAGER = 4,
+  AUDITOR = 5,
 }
 
 interface CreateModalProps {
@@ -43,7 +46,7 @@ const CreateModal = ({
   const router = useRouter();
   const createModal = useCreateModal();
   const successModal = useSuccessModal();
-  const [step, setStep] = useState(STEPS.DESCRIPTION);
+  const [step, setStep] = useState(STEPS.NAME);
   const [isLoading, setIsLoading] = useState(false);
   const [selectManager, setSelectManager] = useState("Select manager")
   const [selectAuditor, setSelectAuditor] = useState("Select auditor");
@@ -63,6 +66,8 @@ const CreateModal = ({
         createdBy: user?.id,
         name: '',
         client: '',
+        scope: '',
+        description: '',
         manager: '',
         auditor: '',
     }
@@ -91,7 +96,7 @@ const CreateModal = ({
             router.refresh();
             toast.success('Done');
         }) .catch((error) => {
-            toast.error(error.message);
+            toast.error(error.response.data);
         }) .finally(() => {
             setIsLoading(false);
             formToggle();
@@ -108,7 +113,7 @@ const CreateModal = ({
 
 
   const secondaryActionLabel = useMemo(() => {
-      if(step === STEPS.DESCRIPTION){
+      if(step === STEPS.NAME){
           return undefined;
       }
       return 'Back'
@@ -143,7 +148,7 @@ const CreateModal = ({
         center
       />
         <motion.div
-            key="manager"
+            key="name"
             initial={{ opacity: 0, x: "-50%" }}
             animate={{ opacity: 1, x: "0%" }}
             exit={{ opacity: 0, x: "100%" }}
@@ -160,6 +165,63 @@ const CreateModal = ({
         </motion.div>
     </div>
   )
+
+  if (step === STEPS.DESCRIPTION){
+    bodyContent = (
+      <div className="flex flex-col gap-4">
+        <Heading
+          title="Project description"
+          subtitle=""
+          center
+        />
+          <motion.div
+              key="description"
+              initial={{ opacity: 0, x: "-50%" }}
+              animate={{ opacity: 1, x: "0%" }}
+              exit={{ opacity: 0, x: "100%" }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <Textarea
+              id="description"
+              label="Description"
+              disabled={isLoading}
+              register={register}  
+              errors={errors}
+              required
+              minLength={100}
+            />
+          </motion.div>
+      </div>
+    )
+  }
+
+  if (step === STEPS.SCOPE){
+    bodyContent = (
+      <div className="flex flex-col gap-4">
+        <Heading
+          title="Project scope"
+          subtitle=""
+          center
+        />
+          <motion.div
+              key="scope"
+              initial={{ opacity: 0, x: "-50%" }}
+              animate={{ opacity: 1, x: "0%" }}
+              exit={{ opacity: 0, x: "100%" }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <Textarea
+              id="scope"
+              label="Scope"
+              disabled={isLoading}
+              register={register}  
+              errors={errors}
+              required
+            />
+          </motion.div>
+      </div>
+    )
+  }
 
   if (step === STEPS.CLIENTS){
     bodyContent = (
@@ -296,7 +358,7 @@ const CreateModal = ({
       actionLabel={actionLabel}
       onClose={createModal.onClose}
       secondaryActionLabel={secondaryActionLabel}
-      secondaryAction={step == STEPS.DESCRIPTION ? undefined : onBack}
+      secondaryAction={step == STEPS.NAME ? undefined : onBack}
       onSubmit={handleSubmit(onSubmit)}
       body={
         <div className="flex flex-col gap-6 items-center">

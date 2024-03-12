@@ -115,7 +115,7 @@ const EditFeedbackModal = ({
             router.refresh();
             toast.success('Success');
         }) .catch((error) => {
-            toast.error(error.message);
+            toast.error(error.response.data);
         }) .finally(() => {
             setIsLoading(false);
             editFeedbackModal.onClose();

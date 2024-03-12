@@ -17,11 +17,11 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json();
-        const { createdBy, name, manager, client, auditor } = body;
+        const { createdBy, name, description, scope, manager, client, auditor } = body;
 
         console.log(body)
 
-        if (!createdBy || !name || !manager || !client || !auditor) {
+        if (!createdBy || !name ||!description ||!scope ||!manager || !client || !auditor) {
             return new Response("Missing required fields", { status: 400 });
         }
 
@@ -29,6 +29,8 @@ export async function POST(request: Request) {
             //@ts-ignore
             data: {
                 name: name,
+                description: description,
+                scope: scope,
                 userId: createdBy,
             }
         })

@@ -122,7 +122,7 @@ const RiskModal = ({
             router.refresh();
             toast.success('Risk added');
         }) .catch((error) => {
-            toast.error(error.message);
+            toast.error(error.response.data);
         }) .finally(() => {
             setIsLoading(false);
             riskModal.onClose()

@@ -59,7 +59,7 @@ export const RiskTable = ({
       router.refresh();
       toast.success("Risk deleted");
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(error.response.data);
     } finally {
       setIsLoading(false);
       setSureToDeleteId(null);

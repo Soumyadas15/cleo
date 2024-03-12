@@ -101,7 +101,7 @@ const ResourceModal = ({
             router.refresh();
             toast.success('Resource added');
         }) .catch((error) => {
-            toast.error(error.message);
+            toast.error(error.response.data);
         }) .finally(() => {
             setIsLoading(false);
             resourceModal.onClose()

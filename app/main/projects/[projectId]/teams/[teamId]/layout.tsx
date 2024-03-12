@@ -34,7 +34,6 @@ export default async function PhaseLayout({
     return (  
         <div className="overflow-hidden h-[99%] flex flex-col justify-between">
             <TeamContentModal team={team} user={user}/>
-            <TeamsClient teams={teams} user={user} project={project} team={team}/>
             <div className="h-[88%] w-full">
                 <TeamContentsClient teamContents={teamContents} project={project} user={user}/>
             </div>

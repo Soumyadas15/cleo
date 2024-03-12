@@ -75,7 +75,7 @@ const EditUpdateModal = ({
             router.refresh();
             toast.success('Update edited successfully');
         }) .catch((error) => {
-            toast.error(error.message);
+            toast.error(error.response.data);
         }) .finally(() => {
             setIsLoading(false);
             editUpdateModal.onClose();
