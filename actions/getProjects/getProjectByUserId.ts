@@ -12,61 +12,46 @@ export default async function getProjectsByUsertId() {
 
         let projects;
         
-        //@ts-ignore
         if (user.role === 'ADMIN') {
-            // Fetch all projects created by the admin user
             projects = await db.project.findMany({
                 where: {
-                    //@ts-ignore
                     userId: user.id
                 },
                 orderBy: {
                     createdAt: 'desc',
                 }
             });
-        //@ts-ignore
-        } else if (user.role === 'MANAGER') {
-            // Fetch projects where the user is a project manager
+        } 
+        else if (user.role === 'MANAGER') {
             projects = await db.project.findMany({
                 where: {
-                     //@ts-ignore
                     projectManagerId: user.id
                 },
                 orderBy: {
                     createdAt: 'desc',
                 }
             });
-             //@ts-ignore
-        } else if (user.role === 'AUDITOR') {
-            // Fetch projects where the user is an auditor
+        } 
+        else if (user.role === 'AUDITOR') {
             projects = await db.project.findMany({
                 where: {
-                     //@ts-ignore
                     auditorId: user.id
                 },
                 orderBy: {
                     createdAt: 'desc',
                 }
             });
+        } 
+        else if (user.role === 'CLIENT') {
+            projects = await db.project.findMany({
+                where: {
+                    clientId: user.id
+                },
+                orderBy: {
+                    createdAt: 'desc',
+                }
+            });
         }
-
-        // Iterate through each project to get user and auditor names
-        // const projectsWithNames = await Promise.all(projects.map(async (project) => {
-        //     const manager = await getUserById({ userId: project.projectManagerId! });
-        //     const auditor = await getUserById({ userId: project.auditorId! });
-
-        //     return {
-        //         id: project.id,
-        //         name: project.name,
-        //         userId: project.userId,
-        //         auditorId: project.auditorId,
-        //         auditorName: auditor ? auditor.name : null,
-        //         managerId: project.projectManagerId,
-        //         managerName: manager ? manager.name : null,
-        //         createdAt: project.createdAt.toISOString(),
-        //         updatedAt: project.updatedAt.toISOString(),
-        //     };
-        // }));
 
         return projects
         

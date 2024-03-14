@@ -77,7 +77,7 @@ export const TeamsClient = ({
                         <Button
                             label="Add team"
                             icon={ <PlusIcon/> }
-                            className="bg-blue-500 pr-3 pl-3 p-2 flex items-center rounded-[5px] text-sm"
+                            className=" pr-3 pl-3 p-2 flex items-center rounded-[5px] text-sm"
                             onClick={phaseContentModal.onOpen}
                         />
                     ) : (

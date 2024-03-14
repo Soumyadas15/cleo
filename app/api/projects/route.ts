@@ -81,6 +81,7 @@ export async function POST(request: Request) {
             data: {
                 projectManagerId: projectManager?.id,
                 auditorId: projectAuditor?.id,
+                clientId: projectClient?.id,
             }
         })
 

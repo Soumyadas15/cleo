@@ -3,8 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { ProjectNavbarItem } from "./ProjectNavbarItem";
 import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
-import { Button } from "@/components/reusable/Button";
-import { ArrowRightIcon, Plus } from "lucide-react";
+import { ArrowRightIcon, DownloadIcon, Plus } from "lucide-react";
 import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
 import useFeedbackModal from "@/hooks/createModalHooks/useFeedbackModal";
 import useUpdateModal from "@/hooks/createModalHooks/useUpdateModal";
@@ -15,6 +14,8 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import useStakeholderModal from "@/hooks/createModalHooks/useStakeholderModal";
 import useRiskModal from "@/hooks/createModalHooks/useRiskModal";
+import { ClientDownloadButton } from "./ClientDownloadButton";
+import { Button } from "@/components/ui/button";
 
 interface ProjectNavbarProps {
     project: any;
@@ -106,81 +107,84 @@ export const ProjectNavbar = ({
                 <div>
                    
                     {isResourceRoute && (
-                        <Button 
-                            label="Add resource" 
-                            icon={<Plus className="scale-[0.8]"/>}
-                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={resourceModal.onOpen}
-                        />
+                        <Button onClick={resourceModal.onOpen}>
+                            <div className="flex items-center gap-2">
+                                <Plus/>
+                                <p>Add resource</p>
+                            </div>
+                        </Button>
                     )}
                     {isFeedbackRoute && (
-                        <Button 
-                            label="Add feedback" 
-                            icon={<Plus className="scale-[0.8]"/>}
-                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={feedbackModal.onOpen}
-                        />
+                        <Button onClick={feedbackModal.onOpen}>
+                            <div className="flex items-center gap-2">
+                                <Plus/>
+                                <p>Add feedback</p>
+                            </div>
+                        </Button>
                     )}
                     {isUpdateRoute && (
-                        <Button 
-                            label="Add update" 
-                            icon={<Plus className="scale-[0.8]"/>}
-                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={updateModal.onOpen}
-                        />
+                        <Button onClick={updateModal.onOpen}>
+                            <div className="flex items-center gap-2">
+                                <Plus/>
+                                <p>Add update</p>
+                            </div>
+                        </Button>
                     )}
                     {isMomRoute && (
-                        <Button 
-                            label="Add MoM" 
-                            icon={<Plus className="scale-[0.8]"/>}
-                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={momModal.onOpen}
-                        />
+                        <Button onClick={momModal.onOpen}>
+                            <div className="flex items-center gap-2">
+                                <Plus/>
+                                <p>Add MoM</p>
+                            </div>
+                        </Button>
                     )}
                     
                     {pathname?.endsWith('/scope') && (
-                        <Button 
-                            label="Add scope" 
-                            icon={<Plus className="scale-[0.8]"/>}
-                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={auditModal.onOpen}
-                        />
+                        <Button onClick={resourceModal.onOpen}>
+                            <div className="flex items-center gap-2">
+                                <Plus/>
+                                <p>Add scope</p>
+                            </div>
+                        </Button>
                     )}
                     {pathname?.endsWith('/stakeholders') && (
-                        <Button 
-                            label="Add stakeholder" 
-                            icon={<Plus className="scale-[0.8]"/>}
-                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={stakeholderModal.onOpen}
-                        />
+                        <Button onClick={stakeholderModal.onOpen}>
+                            <div className="flex items-center">
+                                <Plus/>
+                                <p>Add stakeholder</p>
+                            </div>
+                        </Button>
                     )}
                    
                     {isRiskRoute && (
-                        <Button 
-                            label="Add risk" 
-                            icon={<Plus className="scale-[0.8]"/>}
-                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={riskModal.onOpen}
-                        />
+                        <Button onClick={riskModal.onOpen}>
+                            <div className="flex items-center gap-2">
+                                <Plus/>
+                                <p>Add risk</p>
+                            </div>
+                        </Button>
                     )}
                     {pathname?.endsWith('/milestones') && (
-                        <Button 
-                            label="Add milestone" 
-                            icon={<Plus className="scale-[0.8]"/>}
-                            className="flex bg-blue-500 items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={auditModal.onOpen}
-                        />
+                        <Button onClick={resourceModal.onOpen}>
+                            <div className="flex items-center gap-2">
+                                <Plus/>
+                                <p>Add milestones</p>
+                            </div>
+                        </Button>
                     )}
                 </div>
             ) : (
                 <div>
                     {user.role === "AUDITOR" && isAuditRoute && (
-                        <Button 
-                            label="Add audit" 
-                            icon={<Plus className="scale-[0.8]"/>}
-                            className="flex items-center text-sm p-2 mb-1 rounded-[5px] pr-3"
-                            onClick={auditModal.onOpen}
-                        />
+                        <Button onClick={auditModal.onOpen}>
+                            <div className="flex items-center gap-2">
+                                <Plus/>
+                                <p>Add audit</p>
+                            </div>
+                        </Button>
+                    )}
+                    {user.role === "CLIENT" && (
+                        <ClientDownloadButton project={project} user={user}/>
                     )}
                 </div>
             )}

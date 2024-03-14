@@ -20,7 +20,7 @@ export const Sidebar = ({
     const pathname = usePathname();
 
     return (
-        <div className="h-full hidden md:block w-full bg-white dark:bg-black transition p-5 dark:border-neutral-800 border-r-2">
+        <div className="h-full hidden md:block w-full bg-white dark:bg-black border-r-1 border-neutral-200 shadow-sm dark:border-neutral-700 transition p-5">
             <div className="h-[40%] w-full gap-12 flex flex-col">
                 <div className="flex items-center gap-2">
                     <Image
@@ -37,7 +37,7 @@ export const Sidebar = ({
                                 onClick={createModal.onOpen}
                                 label="Add project" 
                                 color="bg-cyan-500" 
-                                className="p-2 bg-blue-500 rounded-[5px] flex items-center text-sm text-white w-full" 
+                                className="p-2  rounded-[5px] flex items-center text-sm text-white w-full" 
                                 icon={<Plus className="scale-[0.8]"/>}
                             />
                         ) : (
@@ -63,11 +63,11 @@ export const Sidebar = ({
                         isActive = {pathname?.startsWith('/main/managers')}
                     />
                     <SidebarItem 
-                        label="Employees"  
-                        to="main/employees"
+                        label="Dashboard"  
+                        to="main/dashboard"
                         icon={ <UserRoundPlus/>}
                         highlight="text-green-600"
-                        isActive = {pathname?.startsWith('/main/employees')}
+                        isActive = {pathname?.startsWith('/main/dashboard')}
                     />
                     <SidebarItem 
                         label="Settings"  

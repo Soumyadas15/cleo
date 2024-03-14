@@ -43,10 +43,10 @@ export const TotalPhases = ({
                                 dataKey="revenue"
                                 activeDot={{
                                     r: 6,
-                                    style: { fill: "#2196f3", opacity: 0.25 },
+                                    style: { fill: "#2563EB", opacity: 0.25 },
                                 }}
                                 style={{
-                                    stroke: "#2196f3"
+                                    stroke: "#2563EB"
                                 }}
                             />
                         </LineChart>

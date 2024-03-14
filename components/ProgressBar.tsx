@@ -16,7 +16,7 @@ export const ProgressBar = ({
     <div className="relative w-full mb-6">
       <div className="w-full bg-gray-200 dark:bg-neutral-700 h-[1.5px] rounded-full overflow-hidden">
         <motion.div
-          className="bg-blue-500 h-2 rounded-full"
+          className=" h-2 rounded-full"
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -40,7 +40,7 @@ export const ProgressBar = ({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-white text-sm flex items-center justify-center p-3 bg-blue-500 rounded-full"
+                className="text-white text-sm flex items-center justify-center p-3  rounded-full"
                 transition={{ duration: 0.1 }} 
                 style={{ height: '16px', width: '16px' }}
               >

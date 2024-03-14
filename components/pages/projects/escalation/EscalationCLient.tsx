@@ -27,7 +27,7 @@ export const EscalationClient = ({
                     <Button 
                         label="Add content" 
                         icon={<Plus className="scale-[0.8]"/>}
-                        className="flex bg-blue-500 items-center text-sm p-2 rounded-[5px] pr-3"
+                        className="flex  items-center text-sm p-2 rounded-[5px] pr-3"
                         onClick={escalationMatrixModal.onOpen}
                     />
                 ) : (

@@ -56,7 +56,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
               <Avatar user={user} />
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-40 left-5 bg-white dark:border-none dark:bg-neutral-800 rounded-[5px]">
+          <DropdownMenuContent align='end' className="w-40 left-5 bg-white dark:border-none dark:bg-neutral-800 rounded-[5px]">
 
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             

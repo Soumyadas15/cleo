@@ -42,7 +42,7 @@ export const TotalResources = ({
                             <Bar
                                 dataKey="subscription"
                                 style={{
-                                    fill: "#2196f3",
+                                    fill: "#2563EB",
                                 }}
                             />
                         </BarChart>
