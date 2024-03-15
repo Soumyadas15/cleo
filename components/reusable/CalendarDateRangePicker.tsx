@@ -46,19 +46,23 @@ export function CalendarDateRangePicker({
   };
 
   const handleDownloadPDF = async () => {
-
-    console.log(rangeData)
+    setLoading(true);
     axios.post('/api/pdf', rangeData)
         .then(() => {
             router.refresh();
-            toast.success('Done');
+            toast.success('API hit');
         }) .catch((error) => {
-            toast.error(error.response.data);
+            toast.error("Error");
         }) .finally(() => {
+          setLoading(false);
     })
   };
 
-  const formattedDateRange = date ? `${format(date.from!, 'MM/dd/yyyy')} - ${format(date.to!, 'MM/dd/yyyy')}` : '';
+
+
+  const formattedDateRange = date && date.from && date.to
+                                ? `${format(date.from, 'MM/dd/yyyy')} - ${format(date.to, 'MM/dd/yyyy')}`
+                                : '';
 
   return (
       <Dialog>
