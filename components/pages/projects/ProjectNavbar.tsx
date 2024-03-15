@@ -16,6 +16,7 @@ import useStakeholderModal from "@/hooks/createModalHooks/useStakeholderModal";
 import useRiskModal from "@/hooks/createModalHooks/useRiskModal";
 import { ClientDownloadButton } from "./ClientDownloadButton";
 import { Button } from "@/components/ui/button";
+import useVersionHistoryModal from "@/hooks/createModalHooks/useVersionHistoryModal";
 
 interface ProjectNavbarProps {
     project: any;
@@ -42,6 +43,7 @@ export const ProjectNavbar = ({
     const feedbackModal = useFeedbackModal();
     const updateModal = useUpdateModal();
     const momModal = useMomModal();
+    const versionHistoryModal = useVersionHistoryModal();
     const stakeholderModal = useStakeholderModal();
     const riskModal = useRiskModal();
 
@@ -52,6 +54,7 @@ export const ProjectNavbar = ({
     const isUpdateRoute = pathname?.startsWith(`/main/projects/${project.id}/updates`);
     const isMomRoute = pathname?.startsWith(`/main/projects/${project.id}/moms`);
     const isRiskRoute = pathname?.startsWith(`/main/projects/${project.id}/risks`);
+    const isVersionRoute = pathname?.startsWith(`/main/projects/${project.id}/versions`);
     
 
     const onAddPhase = async (project: any) => {
@@ -75,13 +78,14 @@ export const ProjectNavbar = ({
         '/resources',
         '/feedbacks',
         '/updates',
+        '/versions',
         '/moms',
         '/scope',
         '/stakeholders',
         '/escalation',
         '/risks',
         '/milestones',
-        '/audits'
+        '/audits',
     ];
 
     return (
@@ -107,7 +111,7 @@ export const ProjectNavbar = ({
                 <div>
                    
                     {isResourceRoute && (
-                        <Button onClick={resourceModal.onOpen}>
+                        <Button onClick={auditModal.onOpen}>
                             <div className="flex items-center gap-2">
                                 <Plus/>
                                 <p>Add resource</p>
@@ -127,6 +131,14 @@ export const ProjectNavbar = ({
                             <div className="flex items-center gap-2">
                                 <Plus/>
                                 <p>Add update</p>
+                            </div>
+                        </Button>
+                    )}
+                    {isVersionRoute && (
+                        <Button onClick={versionHistoryModal.onOpen}>
+                            <div className="flex items-center gap-2">
+                                <Plus/>
+                                <p>Add version</p>
                             </div>
                         </Button>
                     )}

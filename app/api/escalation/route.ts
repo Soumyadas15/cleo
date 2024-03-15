@@ -64,7 +64,7 @@ export async function PUT(request: Request){
 
         if (!(currentUser.role === "ADMIN" || currentUser.role === "MANAGER")) {
             return new Response('You dont have the necessary permissions', { status: 404 });
-          }
+        }
     
         const body = await request.json();
         const { matrixId, level, name, type } = body;

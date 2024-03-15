@@ -40,7 +40,7 @@ export const ProgressBar = ({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-white text-sm flex items-center justify-center p-3  rounded-full"
+                className="text-white text-sm flex items-center justify-center p-3 bg-blue-500 rounded-full"
                 transition={{ duration: 0.1 }} 
                 style={{ height: '16px', width: '16px' }}
               >

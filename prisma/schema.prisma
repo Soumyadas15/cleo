@@ -87,6 +87,8 @@ model Project {
   stakeholders Stakeholder[]
   risks Risk[]
   escalationMatrix Escalation_matrix[]
+  versions Version[]
+  milestones Milestone[]
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -128,7 +130,11 @@ model Audit {
   id String @id @default(uuid())
   
   date DateTime @default(now())
-  body String @db.Text
+  reviewedBy     String?
+  status         String?
+  reviewedSection String?
+  comments        String? @db.Text
+  actionItem     String?
   isEdited Boolean @default(false)
 
   projectId String
@@ -137,6 +143,23 @@ model Audit {
   createdAt DateTime @default(now())
 }
 
+model Version {
+  id String @id @default(uuid())
+
+  version      String
+  change       String?
+  changeType   String
+  changeReason String
+  createdBy    String
+  revisionDate DateTime
+  approvalDate DateTime?
+  approvedBy   String?
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId    String
+
+  createdAt DateTime @default(now())
+}
 
 
 
@@ -318,6 +341,23 @@ model Escalation_matrix {
 
   projectId String
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model Milestone {
+  id String @id @default(uuid())
+
+  title           String
+  startDate       DateTime
+  completionDate DateTime
+  approvalDate    DateTime?
+  status          String
+  revisedCompletionDate DateTime?
+  comments        String?
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId       String
 
   createdAt DateTime @default(now())
 }

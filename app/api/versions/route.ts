@@ -1,28 +1,28 @@
 import { db } from "@/lib/db";
 import { initialProfile } from "@/lib/initial-profile";
 
-
-
-/**
- * Handles POST requests to the /api/audit endpoint.
- *
- * @param request - the incoming HTTP request
- * @returns a response containing the created audit, or an error response
-*/
-
-
 export async function POST(request: Request) {
   try {
     const currentUser = await initialProfile();
 
-    if (!(currentUser.role === "ADMIN" || currentUser.role === "AUDITOR")) {
+    if (!(currentUser.role === "ADMIN" || currentUser.role === "MANAGER")) {
       return new Response('You dont have the necessary permissions', { status: 404 });
   }
 
     const body = await request.json();
-    const { projectId, date, comments, reviewedBy, reviewedSection, status, actionItems  } = body;
+    const { 
+        projectId, 
+        version, 
+        type, 
+        change, 
+        changeReason, 
+        revisionDate, 
+        approvalDate,
+        approvedBy,
+        createdBy,
+    } = body;
 
-    if (!projectId || !date || !comments ||!reviewedBy || !reviewedSection || !status || !actionItems) {
+    if (!projectId || !version || !type ||!change || !changeReason || !revisionDate || !approvalDate || !approvedBy || !createdBy) {
       return new Response('Missing required fields', { status: 400 });
     }
 
@@ -36,19 +36,21 @@ export async function POST(request: Request) {
         return new Response('Project not found', { status: 400 });
     }
 
-    const audit = await db.audit.create({
+    const versionData = await db.version.create({
         data: {
           projectId: projectId,
-          date: date,
-          comments: comments,
-          reviewedBy: reviewedBy,
-          reviewedSection: reviewedSection,
-          status: status,
-          actionItem: actionItems,
+          version: version,
+          changeType: type,
+          change: change,
+          changeReason: changeReason,
+          createdBy: createdBy,
+          revisionDate: revisionDate,
+          approvalDate: approvalDate,
+          approvedBy: approvedBy,
         }
     }) 
 
-    return new Response(JSON.stringify(audit), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify(versionData), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
   } catch (error) {
     if (error instanceof Error) {
@@ -58,14 +60,6 @@ export async function POST(request: Request) {
     }
   }
 }
-
-/**
- * Handles GET requests to the /api/audit endpoint.
- *
- * @param request - the incoming HTTP request
- * @returns a response containing a list of audits, or an error response
-*/
-
 
 
 export async function GET(request: Request) {
@@ -105,38 +99,49 @@ export async function GET(request: Request) {
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
-    const { auditId, date, comments, reviewedBy, reviewedSection, status, actionItems  } = body;
+    const { 
+        versionId, 
+        version, 
+        type, 
+        change, 
+        changeReason, 
+        revisionDate, 
+        approvalDate,
+        approvedBy,
+        createdBy,
+    } = body;
 
-    if (!auditId || !date || !comments ||!reviewedBy || !reviewedSection || !status || !actionItems) {
+    if (!versionId || !version || !type ||!change || !changeReason || !revisionDate || !approvalDate || !approvedBy || !createdBy) {
       return new Response('Missing required fields', { status: 400 });
     }
 
-    const audit = await db.audit.findUnique({
+    const foundVersion = await db.version.findUnique({
       where: {
-        id: auditId,
+        id: versionId,
       },
     });
 
-    if (!audit) {
-      return new Response('Audit not found', { status: 404 });
+    if (!foundVersion) {
+      return new Response('Version not found', { status: 404 });
     }
 
-    const updatedAudit = await db.audit.update({
+    const updatedVersion = await db.version.update({
       where: {
-        id: auditId,
+        id: versionId,
       },
       data: {
-        comments: comments,
-        date: date,
-        isEdited: true,
-        reviewedSection: reviewedSection,
-        reviewedBy: reviewedBy,
-        status: status,
-        actionItem: actionItems,
+        version: version,
+        changeType: type,
+        change: change,
+        changeReason: changeReason,
+        createdBy: createdBy,
+        revisionDate: revisionDate,
+        approvalDate: approvalDate,
+        approvedBy: approvedBy,
       },
     });
 
-    return new Response(JSON.stringify(updatedAudit), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify(updatedVersion), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
   } catch (error) {
     if (error instanceof Error) {

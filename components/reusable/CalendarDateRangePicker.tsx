@@ -19,6 +19,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Project } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { generatePDF } from "@/lib/generatePdf";
 
 
 interface CalendarDateRangePickerProps {
@@ -38,6 +39,18 @@ export function CalendarDateRangePicker({
   });
 
   const [loading, setLoading] = React.useState(false);
+  const [loading2, setLoading2] = React.useState(false);
+
+  const jsonData: any[] = [
+    { id: 1, name: 'John Doe', age: 30 },
+    { id: 2, name: 'Jane Smith', age: 25 },
+    // Add more data as needed
+  ];
+
+  const handleGeneratePDF = () => {
+    const pdfDoc = generatePDF(jsonData);
+    pdfDoc.save('data.pdf');
+  };
 
   const rangeData = {
     startDate: date?.from,
@@ -46,17 +59,21 @@ export function CalendarDateRangePicker({
   };
 
   const handleDownloadPDF = async () => {
-    setLoading(true);
-    axios.post('/api/pdf', rangeData)
-        .then(() => {
-            router.refresh();
-            toast.success('API hit');
-        }) .catch((error) => {
-            toast.error("Error");
-        }) .finally(() => {
-          setLoading(false);
-    })
+    setLoading2(true);
+    try {
+      const response = await axios.post('/api/pdf', rangeData);
+      const pdfData = response.data; // Assuming the API returns data for PDF generation
+      const pdfDoc = generatePDF(pdfData);
+      pdfDoc.save('data.pdf');
+      toast.success('PDF generated successfully');
+      console.log(pdfData)
+    } catch (error) {
+      toast.error("Error generating PDF");
+    } finally {
+      setLoading2(false);
+    }
   };
+  
 
 
 
@@ -97,11 +114,11 @@ export function CalendarDateRangePicker({
                     </div>
                     
                     <div className="w-full flex flex-col items-center justify-between mt-4">
-                        <Button className=" w-full mb-2" onClick={handleDownloadPDF}>
-                        {loading ? 'Downloading...' : `Download report for ${formattedDateRange}`}
+                        <Button className=" w-full mb-2">
+                          {loading ? 'Downloading...' : `Download report for ${formattedDateRange}`}
                         </Button>
-                        <Button variant={'outline'} className="w-full">
-                            Download full report
+                        <Button variant={'outline'} className="w-full" onClick={handleDownloadPDF}>
+                          {loading2 ? 'Downloading...' : `Download full report`}
                         </Button>
                     </div>
                 </div>
