@@ -12,6 +12,6 @@ export const ClientDownloadButton = ({
     user
 } : ClientDownloadButtonProps) => {
     return (
-        <CalendarDateRangePicker/>
+        <CalendarDateRangePicker project={project}/>
     )
 }

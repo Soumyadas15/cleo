@@ -116,6 +116,8 @@ model Member {
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+
+  createdAt DateTime @default(now())
 }
 
 
@@ -132,6 +134,7 @@ model Audit {
   projectId String
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   
+  createdAt DateTime @default(now())
 }
 
 
@@ -150,6 +153,7 @@ model Resource {
   projectId String
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   
+  createdAt DateTime @default(now())
 }
 
 
@@ -169,6 +173,7 @@ model Feedback {
   projectId String
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   
+  createdAt DateTime @default(now())
 }
 
 
@@ -182,6 +187,7 @@ model Update {
   projectId String
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   
+  createdAt DateTime @default(now())
 }
 
 
@@ -198,6 +204,8 @@ model Mom {
 
   projectId String
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 }
 
 

@@ -16,10 +16,22 @@ import { DownloadIcon } from "lucide-react";
 import * as React from "react";
 import { DateRange } from "react-day-picker";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Project } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
+
+interface CalendarDateRangePickerProps {
+  className?: React.HTMLAttributes<HTMLDivElement>;
+  project: Project;
+}
 export function CalendarDateRangePicker({
   className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+  project,
+
+}: CalendarDateRangePickerProps) {
+
+  const router  = useRouter();
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: new Date(2023, 0, 20),
     to: addDays(new Date(2023, 0, 20), 20),
@@ -27,14 +39,23 @@ export function CalendarDateRangePicker({
 
   const [loading, setLoading] = React.useState(false);
 
+  const rangeData = {
+    startDate: date?.from,
+    endDate: date?.to,
+    projectId: project.id
+  };
+
   const handleDownloadPDF = async () => {
-    try {
-      await axios.get('api/pdf')
-    } catch (error) {
-      console.error('Error downloading PDF:', error);
-      setLoading(false);
-    }
-    console.log("clicked")
+
+    console.log(rangeData)
+    axios.post('/api/pdf', rangeData)
+        .then(() => {
+            router.refresh();
+            toast.success('Done');
+        }) .catch((error) => {
+            toast.error(error.response.data);
+        }) .finally(() => {
+    })
   };
 
   const formattedDateRange = date ? `${format(date.from!, 'MM/dd/yyyy')} - ${format(date.to!, 'MM/dd/yyyy')}` : '';
@@ -55,12 +76,12 @@ export function CalendarDateRangePicker({
 
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-[50rem] w-[36rem]">
+        <DialogContent className="max-w-[50rem] flex flex-col items-center p-7 w-[36rem] dark:border-none dark:bg-neutral-900">
             <DialogHeader>
                 <DialogTitle>Download report</DialogTitle>
             </DialogHeader>
-                <div>
-                    <div className="">
+                <div className="">
+                    <div className="flex items-center">
                         <Calendar
                             initialFocus
                             mode="range"
@@ -73,7 +94,7 @@ export function CalendarDateRangePicker({
                     
                     <div className="w-full flex flex-col items-center justify-between mt-4">
                         <Button className=" w-full mb-2" onClick={handleDownloadPDF}>
-                        {loading ? 'Downloading...' : 'Download PDF'}
+                        {loading ? 'Downloading...' : `Download report for ${formattedDateRange}`}
                         </Button>
                         <Button variant={'outline'} className="w-full">
                             Download full report
