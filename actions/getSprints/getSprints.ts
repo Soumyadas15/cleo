@@ -5,7 +5,7 @@ interface IParams {
     projectId?: string;
 }
 
-export default async function getResources(params: IParams){
+export default async function getSprints(params: IParams){
     try{
         const currentUser = await initialProfile();
         const { projectId } = params; 
@@ -14,7 +14,7 @@ export default async function getResources(params: IParams){
             return new Response('User not found', { status: 404 });
         }
 
-        const resources = await db.resource.findMany({
+        const sprints = await db.sprint.findMany({
             where: {
                 projectId: projectId
             },
@@ -23,7 +23,7 @@ export default async function getResources(params: IParams){
             }
         });
 
-        return resources;
+        return sprints;
 
     } catch(error) {
         if (error instanceof Error) {

@@ -15,6 +15,7 @@ import getMembers from "@/actions/getMembers/getMembers";
 import { ProjectMembers } from "@/components/pages/projects/ProjectMembers";
 import { ProjectHeader } from "@/components/pages/projects/ProjectHeader";
 import EditProjectModal from "@/components/modals/editModals/EditProjectModal";
+import SprintModal from "@/components/modals/createModals/SprintModal";
 
 interface IParams {
     projectId?: string;
@@ -44,6 +45,7 @@ export default async function ProjectLayout({
         <VersionHistoryModal project={project} user={user}/>
         <MilestoneModal project={project} user={user}/>
         <EditProjectModal project={project!}/>
+        <SprintModal project={project} user={user}/>
 
         <div className="p-5 h-full w-full flex flex-col justify-between scrollbar-hide">
             <div className="h-[7.5%]">
@@ -52,6 +54,7 @@ export default async function ProjectLayout({
                     project={project} 
                     //@ts-ignore
                     members={members}
+                    user={user}
                 />
             </div>
             <div className="h-[7.5%] flex items-center">

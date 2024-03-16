@@ -129,7 +129,7 @@ const EditResourceModal = ({
 
   const actionLabel = useMemo(() => {
     if(step === STEPS.DATES){
-        return 'Create'
+        return 'Update'
     }
 
     return 'Next'

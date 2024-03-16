@@ -93,6 +93,7 @@ model Project {
   escalationMatrix Escalation_matrix[]
   versions Version[]
   milestones Milestone[]
+  sprints Sprint[]
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -362,6 +363,20 @@ model Milestone {
   status          String
   revisedCompletionDate DateTime
   comments        String
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId       String
+
+  createdAt DateTime @default(now())
+}
+
+model Sprint {
+  id String @id @default(uuid())
+
+  startDate       DateTime
+  endDate         DateTime
+  status          String
+  comments        String @db.Text
 
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId       String

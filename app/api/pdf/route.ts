@@ -42,18 +42,36 @@ export async function POST(req: Request) {
             createdAt: 'asc',
           },
         },
+        sprints: {
+          orderBy: {
+            createdAt: 'asc',
+          }
+        },
         moms: {
           orderBy: {
             createdAt: 'asc',
           },
         },
-
         stakeholders: {
           orderBy: {
             createdAt: 'asc',
           },
+        },
+        milestones: {
+          orderBy: {
+            createdAt: 'asc',
+          }
+        },
+        risks: {
+          orderBy: {
+            createdAt: 'asc',
+          }
+        },
+        versions: {
+          orderBy: {
+            createdAt: 'asc',
+          }
         }
-
       },
     });
 
@@ -67,19 +85,29 @@ export async function POST(req: Request) {
     }));
 
     const formattedResources = project.resources.map(resource => ({
-      Start: format(new Date(resource.startDate), 'MM/dd/yyyy'),
-      End: format(new Date(resource.startDate), 'MM/dd/yyyy'),
+      Name: resource.name,
+      Start_Date: format(new Date(resource.startDate), 'MM/dd/yyyy'),
+      End_Date: format(new Date(resource.startDate), 'MM/dd/yyyy'),
       Body: resource.comment,
     }));
 
     const formattedFedbacks = project.feedbacks.map(feedback => ({
       Date: format(new Date(feedback.date), 'MM/dd/yyyy'),
       Body: feedback.body,
+      Action: feedback.action,
+      Closure_Date: format(new Date(feedback.closureDate), 'MM/dd/yyyy'),
     }));
 
     const formattedUpdates = project.updates.map(update => ({
       Date: format(new Date(update.date), 'MM/dd/yyyy'),
       Body: update.body,
+    }));
+
+    const formattedSprints = project.sprints.map(sprint => ({
+      Start_Date: format(new Date(sprint.startDate), 'MM/dd/yyyy'),
+      End_Date: format(new Date(sprint.endDate), 'MM/dd/yyyy'),
+      Status: sprint.status,
+      Body: sprint.comments,
     }));
 
     const formattedMoms = project.moms.map(mom => ({
@@ -93,13 +121,49 @@ export async function POST(req: Request) {
       Contact: stakeholder.contact
     }));
 
+    const formattedMilestones = project.milestones.map(milestone => ({
+      Title: milestone.title,
+      Start_Date: format(new Date(milestone.startDate), 'MM/dd/yyyy'),
+      Completion_Date: format(new Date(milestone.completionDate), 'MM/dd/yyyy'),
+      Approval_Date: format(new Date(milestone.approvalDate), 'MM/dd/yyyy'),
+      Status: milestone.status,
+      Revised_Completion_Date: format(new Date(milestone.revisedCompletionDate), 'MM/dd/yyyy'),
+      Comments: milestone.comments,
+    }));
+
+    const formattedRiskProfile = project.risks.map(risk => ({
+      Type: risk.type,
+      Description: risk.description,
+      Severity: risk.severity,
+      Impact: risk.impact,
+      Remedial: risk.remedialSteps,
+      Status: risk.status,
+      Closure_Date: risk.closureDate,
+    }));
+
+    const formattedVersion = project.versions.map(version => ({
+      Version: version.version,
+      Type: version.changeType,
+      Change: version.change,
+      Change_Reason: version.changeReason,
+      Created_By: version.createdBy,
+      Revision_Date: format(new Date(version.revisionDate), 'MM/dd/yyyy'),
+      //@ts-ignore
+      Approval_Date: format(new Date(version.approvalDate), 'MM/dd/yyyy'),
+      Approved_By: version.approvedBy
+    }));
+
     const responseData = {
       audits: formattedAudits,
       resources: formattedResources,
       feedbacks: formattedFedbacks,
       updates: formattedUpdates,
       moms: formattedMoms,
-      stakeholders: stakeHolders
+      stakeholders: stakeHolders,
+      sprints: formattedSprints,
+      milestones: formattedMilestones,
+      risks: formattedRiskProfile,
+      version: formattedVersion,
     };
 
     return new Response(JSON.stringify(responseData), { status: 200, headers: { 'Content-Type': 'application/json' } });

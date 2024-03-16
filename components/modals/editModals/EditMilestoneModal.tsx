@@ -107,7 +107,7 @@ const EditMilestoneModal = ({
 
   const actionLabel = useMemo(() => {
     if(step === STEPS.COMMENTS){
-        return 'Create'
+        return 'Update'
     }
 
     return 'Next'

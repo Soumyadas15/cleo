@@ -106,7 +106,7 @@ useEffect(() => {
 
   const actionLabel = useMemo(() => {
     if(step === STEPS.TIME){
-        return 'Create'
+        return 'Update'
     }
 
     return 'Next'

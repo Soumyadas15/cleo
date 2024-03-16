@@ -39,7 +39,7 @@ export const LandingNavbar: React.FC = () => {
                 <div className="flex justify-between items-center">
                     <div className={`ml-5 font-bold ${logoColor} flex items-center gap-2`}>
                         <img src={'/logo.png'} height={24} width={24} alt="logo"/>
-                        Cleo
+                        Customer sucess
                     </div>
                     <div className={`flex gap-6 items-center ${textColor}`}>
                         

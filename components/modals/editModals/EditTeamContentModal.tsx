@@ -97,7 +97,7 @@ const EditTeamContentModal = ({
 
   const actionLabel = useMemo(() => {
     if(step === STEPS.DURATION){
-        return 'Create'
+        return 'Update'
     }
 
     return 'Next'

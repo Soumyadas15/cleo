@@ -151,7 +151,7 @@ const EditRiskModal = ({
 
   const actionLabel = useMemo(() => {
     if(step === STEPS.CLOSURE){
-        return 'Create'
+        return 'Update'
     }
 
     return 'Next'

@@ -18,6 +18,7 @@ import { ClientDownloadButton } from "./ClientDownloadButton";
 import { Button } from "@/components/ui/button";
 import useVersionHistoryModal from "@/hooks/createModalHooks/useVersionHistoryModal";
 import useMilestoneModal from "@/hooks/createModalHooks/useMilestoneModal";
+import useSprintModal from "@/hooks/createModalHooks/useSprintModal";
 
 interface ProjectNavbarProps {
     project: any;
@@ -47,7 +48,8 @@ export const ProjectNavbar = ({
     const versionHistoryModal = useVersionHistoryModal();
     const stakeholderModal = useStakeholderModal();
     const riskModal = useRiskModal();
-    const milestoneModal = useMilestoneModal()
+    const milestoneModal = useMilestoneModal();
+    const sprintModal = useSprintModal();
 
     const isTeamRoute = pathname?.startsWith(`/main/projects/${project.id}/teams`);
     const isAuditRoute = pathname?.startsWith(`/main/projects/${project.id}/audits`);
@@ -58,24 +60,8 @@ export const ProjectNavbar = ({
     const isRiskRoute = pathname?.startsWith(`/main/projects/${project.id}/risks`);
     const isVersionRoute = pathname?.startsWith(`/main/projects/${project.id}/versions`);
     const isMilestoneRoute = pathname?.startsWith(`/main/projects/${project.id}/milestones`);
+    const isSprintRoute = pathname?.startsWith(`/main/projects/${project.id}/sprints`);
     
-    
-
-    const onAddPhase = async (project: any) => {
-        const data = { projectId: project.id };
-        console.log(project.id);
-        axios.post('/api/teams', data)
-        .then((response) => {
-            const phase = response.data;
-            const phaseId = phase.id;
-            toast.success('New team phase created');
-            router.push(`/main/projects/${project.id}/teams/${phaseId}`);
-        }).catch((error) => {
-            toast.error(error.response.data);
-        }).finally(() => {
-            router.refresh();
-        });
-    };
 
     const routes = [
         '/teams',
@@ -83,6 +69,7 @@ export const ProjectNavbar = ({
         '/feedbacks',
         '/updates',
         '/versions',
+        '/sprints',
         '/moms',
         '/scope',
         '/stakeholders',
@@ -143,6 +130,14 @@ export const ProjectNavbar = ({
                             <div className="flex items-center gap-2">
                                 <Plus/>
                                 <p>Add version</p>
+                            </div>
+                        </Button>
+                    )}
+                    {isSprintRoute && (
+                        <Button onClick={sprintModal.onOpen}>
+                            <div className="flex items-center gap-2">
+                                <Plus/>
+                                <p>Add sprint</p>
                             </div>
                         </Button>
                     )}

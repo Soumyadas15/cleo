@@ -10,21 +10,15 @@ import { motion } from 'framer-motion';
 import Modal from "../Modal";
 import Heading from "../../reusable/Heading";
 import Textarea from "../../reusable/Textarea";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { Button } from "../../ui/button";
-import { Calendar } from "../../ui/calendar";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
-import useUpdateModal from "@/hooks/createModalHooks/useUpdateModal";
 import useEditUpdateModal from "@/hooks/editModalHooks/useEditUpdateModa";
+import { Update } from "@prisma/client";
+import DateInput from "@/components/reusable/DateInput";
 
 interface EditUpdateModalProps {
-  update: any;
+  update: Update;
   onClose: () => void;
 }
 
@@ -34,7 +28,7 @@ const EditUpdateModal = ({
 }: EditUpdateModalProps) => {
 
 
-  const [date, setDate] = useState<Date>();
+  const [date, setDate] = useState<Date>(update.date);
   const router = useRouter();
   const editUpdateModal = useEditUpdateModal();
   const [isLoading, setIsLoading] = useState(false);
@@ -94,28 +88,11 @@ const EditUpdateModal = ({
         exit={{ opacity: 0, x: "100%" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant={"outline"}
-              className={cn(
-                "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                !date && "text-muted-foreground"
-              )}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? format(date, "PPP") : <span>Date</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
+        <DateInput
+          label="Date"
+          selectedDate={date}
+          onSelect={setDate}
+        />
       </motion.div>
       <motion.div
         key="body"
