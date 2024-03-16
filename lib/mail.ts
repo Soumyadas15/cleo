@@ -15,7 +15,7 @@ export const sendEmail = async (
     clientName: string,
     project: Project,
     auditAction: string
-) => {
+) => { 
 
     const transporter = nodemailer.createTransport({
         service: "gmail",
