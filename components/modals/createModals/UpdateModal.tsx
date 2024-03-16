@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import useUpdateModal from "@/hooks/createModalHooks/useUpdateModal";
+import DateInput from "@/components/reusable/DateInput";
 
 interface UpdateModalProps {
   project: any;
@@ -83,28 +84,11 @@ const UpdateModal = ({
         exit={{ opacity: 0, x: "100%" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant={"outline"}
-              className={cn(
-                "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                !date && "text-muted-foreground"
-              )}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? format(date, "PPP") : <span>Date</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
+        <DateInput
+          label="Date"
+          selectedDate={date}
+          onSelect={setDate}
+        />
       </motion.div>
       <motion.div
         key="body"

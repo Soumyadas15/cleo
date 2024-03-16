@@ -25,6 +25,7 @@ import { cn } from "@/lib/utils";
 import { format } from 'date-fns';
 import { Calendar } from "../../ui/calendar";
 import { ProgressBar } from "../../ProgressBar";
+import DateInput from "@/components/reusable/DateInput";
 
 enum STEPS {
   DESCRIPTION = 0,
@@ -228,28 +229,11 @@ const ResourceModal = ({
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-            <Popover>
-            <PopoverTrigger asChild>
-                <Button
-                variant={"outline"}
-                className={cn(
-                    "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                    !startDate && "text-muted-foreground"
-                )}
-                >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {startDate ? format(startDate, "PPP") : <span>Start date</span>}
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
-                <Calendar
-                mode="single"
-                selected={startDate}
-                onSelect={setStartDate}
-                initialFocus
-                />
-            </PopoverContent>
-            </Popover>
+            <DateInput
+              label="Start Date"
+              selectedDate={startDate}
+              onSelect={setStartDate}
+            />
         </motion.div>
         <motion.div
             key="endDate"
@@ -258,28 +242,11 @@ const ResourceModal = ({
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-            <Popover>
-            <PopoverTrigger asChild>
-                <Button
-                variant={"outline"}
-                className={cn(
-                    "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                    !endDate && "text-muted-foreground"
-                )}
-                >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {endDate ? format(endDate, "PPP") : <span>End date</span>}
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
-                <Calendar
-                mode="single"
-                selected={endDate}
-                onSelect={setEndDate}
-                initialFocus
-                />
-            </PopoverContent>
-            </Popover>
+            <DateInput
+              label="End Date"
+              selectedDate={endDate}
+              onSelect={setEndDate}
+            />
         </motion.div>
       </div>
     )

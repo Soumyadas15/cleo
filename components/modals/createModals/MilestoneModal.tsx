@@ -22,7 +22,6 @@ import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns"
-import DateInput from "@/components/reusable/DateInput";
 
 enum STEPS {
   DATE = 0,
@@ -31,14 +30,14 @@ enum STEPS {
   ACTION = 3,
 }
 
-interface AuditModalProps {
+interface MilestoneModalProps {
   user: any;
   project: any;
 }
-const AuditModal = ({
+const MilestoneModal = ({
   user,
   project,
-}: AuditModalProps) => {
+}: MilestoneModalProps) => {
 
   const router = useRouter();
   const auditModal = useAuditModal();
@@ -132,11 +131,28 @@ const AuditModal = ({
         exit={{ opacity: 0, x: "100%" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <DateInput
-            label="Date"
-            selectedDate={date}
-            onSelect={setDate}
-        />
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
+                !date && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {date ? format(date, "PPP") : <span>Pick a date</span>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
       </motion.div>
     </div>
   )
@@ -287,4 +303,4 @@ const AuditModal = ({
   );
 }
 
-export default AuditModal;
+export default MilestoneModal;

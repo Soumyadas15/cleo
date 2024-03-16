@@ -24,6 +24,7 @@ import { Calendar } from "../../ui/calendar";
 import useFeedbackModal from "@/hooks/createModalHooks/useFeedbackModal";
 import useMomModal from "@/hooks/createModalHooks/useMomModal";
 import { ProgressBar } from "../../ProgressBar";
+import DateInput from "@/components/reusable/DateInput";
 
 enum STEPS {
   DURATION = 0,
@@ -161,28 +162,11 @@ const MomModal = ({
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <Popover>
-            <PopoverTrigger asChild>
-                <Button
-                    variant={"outline"}
-                    className={cn(
-                        "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                        !date && "text-muted-foreground"
-                    )}
-                >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? format(date, "PPP") : <span>Select date</span>}
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
-                <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                initialFocus
-                />
-            </PopoverContent>
-            </Popover>
+          <DateInput
+              label="Date"
+              selectedDate={date}
+              onSelect={setDate}
+          />
         </motion.div>
         
       </div>

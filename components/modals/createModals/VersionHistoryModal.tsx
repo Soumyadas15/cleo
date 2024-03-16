@@ -23,6 +23,7 @@ import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns"
 import useVersionHistoryModal from "@/hooks/createModalHooks/useVersionHistoryModal";
+import DateInput from "@/components/reusable/DateInput";
 
 enum STEPS {
   TYPE = 0,
@@ -228,28 +229,11 @@ const VersionHistoryModal = ({
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-            <Popover>
-            <PopoverTrigger asChild>
-                <Button
-                variant={"outline"}
-                className={cn(
-                    "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                    !revisionDate && "text-muted-foreground"
-                )}
-                >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {revisionDate ? format(revisionDate, "PPP") : <span>Revision date</span>}
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
-                <Calendar
-                mode="single"
-                selected={revisionDate}
-                onSelect={setRevisionDate}
-                initialFocus
-                />
-            </PopoverContent>
-            </Popover>
+          <DateInput
+            label="Revision Date"
+            selectedDate={revisionDate}
+            onSelect={setRevisionDate}
+          />
         </motion.div>
         <motion.div
             key="approvalDate"
@@ -258,28 +242,11 @@ const VersionHistoryModal = ({
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-            <Popover>
-            <PopoverTrigger asChild>
-                <Button
-                variant={"outline"}
-                className={cn(
-                    "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                    !approvalDate && "text-muted-foreground"
-                )}
-                >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {approvalDate ? format(approvalDate, "PPP") : <span>Change Date</span>}
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
-                <Calendar
-                mode="single"
-                selected={approvalDate}
-                onSelect={setApprovalDate}
-                initialFocus
-                />
-            </PopoverContent>
-            </Popover>
+          <DateInput
+            label="Approval Date"
+            selectedDate={approvalDate}
+            onSelect={setApprovalDate}
+          />
         </motion.div>
       </div>
     )
