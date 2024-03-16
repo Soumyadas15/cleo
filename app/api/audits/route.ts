@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { initialProfile } from "@/lib/initial-profile";
-
+import { sendEmail } from "@/lib/mail";
+import { format } from 'date-fns';
 
 
 /**
@@ -47,6 +48,20 @@ export async function POST(request: Request) {
           actionItem: actionItems,
         }
     }) 
+
+    const client = await db.user.findUnique({
+      where: {
+        id: project.clientId!,
+      }
+    })
+
+    await sendEmail(
+          client?.email!, 
+          audit, 
+          client?.name!, 
+          project,
+          "a new audit has been added"
+    )
 
     return new Response(JSON.stringify(audit), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
@@ -135,6 +150,26 @@ export async function PUT(request: Request) {
         actionItem: actionItems,
       },
     });
+
+    const project = await db.project.findUnique({
+      where: {
+        id: audit.projectId,
+      }
+    })
+
+    const client = await db.user.findUnique({
+      where: {
+        id: project?.clientId!,
+      }
+    })
+
+    await sendEmail(
+          client?.email!, 
+          audit, 
+          client?.name!, 
+          project!,
+          `an existing audit from ${format(new Date(audit.createdAt), "MM dd yyyy")} has been updated.`
+    )
 
     return new Response(JSON.stringify(updatedAudit), { status: 200, headers: { 'Content-Type': 'application/json' } });
 

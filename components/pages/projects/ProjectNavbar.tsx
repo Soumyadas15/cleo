@@ -17,6 +17,7 @@ import useRiskModal from "@/hooks/createModalHooks/useRiskModal";
 import { ClientDownloadButton } from "./ClientDownloadButton";
 import { Button } from "@/components/ui/button";
 import useVersionHistoryModal from "@/hooks/createModalHooks/useVersionHistoryModal";
+import useMilestoneModal from "@/hooks/createModalHooks/useMilestoneModal";
 
 interface ProjectNavbarProps {
     project: any;
@@ -46,6 +47,7 @@ export const ProjectNavbar = ({
     const versionHistoryModal = useVersionHistoryModal();
     const stakeholderModal = useStakeholderModal();
     const riskModal = useRiskModal();
+    const milestoneModal = useMilestoneModal()
 
     const isTeamRoute = pathname?.startsWith(`/main/projects/${project.id}/teams`);
     const isAuditRoute = pathname?.startsWith(`/main/projects/${project.id}/audits`);
@@ -55,6 +57,8 @@ export const ProjectNavbar = ({
     const isMomRoute = pathname?.startsWith(`/main/projects/${project.id}/moms`);
     const isRiskRoute = pathname?.startsWith(`/main/projects/${project.id}/risks`);
     const isVersionRoute = pathname?.startsWith(`/main/projects/${project.id}/versions`);
+    const isMilestoneRoute = pathname?.startsWith(`/main/projects/${project.id}/milestones`);
+    
     
 
     const onAddPhase = async (project: any) => {
@@ -111,7 +115,7 @@ export const ProjectNavbar = ({
                 <div>
                    
                     {isResourceRoute && (
-                        <Button onClick={auditModal.onOpen}>
+                        <Button onClick={resourceModal.onOpen}>
                             <div className="flex items-center gap-2">
                                 <Plus/>
                                 <p>Add resource</p>
@@ -150,15 +154,6 @@ export const ProjectNavbar = ({
                             </div>
                         </Button>
                     )}
-                    
-                    {pathname?.endsWith('/scope') && (
-                        <Button onClick={resourceModal.onOpen}>
-                            <div className="flex items-center gap-2">
-                                <Plus/>
-                                <p>Add scope</p>
-                            </div>
-                        </Button>
-                    )}
                     {pathname?.endsWith('/stakeholders') && (
                         <Button onClick={stakeholderModal.onOpen}>
                             <div className="flex items-center">
@@ -176,8 +171,8 @@ export const ProjectNavbar = ({
                             </div>
                         </Button>
                     )}
-                    {pathname?.endsWith('/milestones') && (
-                        <Button onClick={resourceModal.onOpen}>
+                    {isMilestoneRoute && (
+                        <Button onClick={milestoneModal.onOpen}>
                             <div className="flex items-center gap-2">
                                 <Plus/>
                                 <p>Add milestones</p>
@@ -187,7 +182,7 @@ export const ProjectNavbar = ({
                 </div>
             ) : (
                 <div>
-                    {user.role === "AUDITOR" && isAuditRoute && (
+                    {(user.role === "AUDITOR") && isAuditRoute && (
                         <Button onClick={auditModal.onOpen}>
                             <div className="flex items-center gap-2">
                                 <Plus/>

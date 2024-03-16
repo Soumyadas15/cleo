@@ -27,10 +27,6 @@ export const AuditClient = ({
         return(
             <EmptyState 
                 title="No audits yet"
-                subtitle="Start auditing project"
-                showButton = {user.role === "AUDITOR"}
-                buttonLabel="Create"
-                onClick={auditModal.onOpen}
             />
         )
 
@@ -39,20 +35,9 @@ export const AuditClient = ({
 
     return (
         <div className="w-full h-full scrollbar-hide">
-            {user.role === "AUDITOR" ? (
-                <>
-                <div className="h-full overflow-hidden overflow-y-scroll scrollbar-hide">
-                    <AuditTable audits={audits} project={project} user={user}/>
-                </div>
-                </>
-                ) : (
-                    <div className="h-full overflow-hidden overflow-y-scroll scrollbar-hide">
-                       <AuditTable audits={audits} project={project} user={user}/>
-                    </div>
-                )
-            }
-            
+            <div className="h-full overflow-hidden overflow-y-scroll scrollbar-hide">
+                <AuditTable audits={audits} project={project} user={user}/>
+            </div>
         </div>
-        
     )
 }

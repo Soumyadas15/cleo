@@ -12,16 +12,16 @@ export async function POST(request: Request) {
             return new Response("User not authenticated", { status: 401 });
         }
 
-        if (currentUser.role !== "ADMIN") {
+        if (!(currentUser.role === "ADMIN" || currentUser.role === "AUDITOR")) {
             return new Response("You don't have the required permissions", { status: 401 });
         }
 
         const body = await request.json();
-        const { createdBy, name, description, scope, manager, client, auditor } = body;
+        const { createdBy, name, description, scope, manager, client, auditor, type, duration, budgetedHours } = body;
 
         console.log(body)
 
-        if (!createdBy || !name ||!description ||!scope ||!manager || !client || !auditor) {
+        if (!createdBy || !name ||!description ||!scope ||!manager || !client || !auditor  ||!type || !duration || !budgetedHours) {
             return new Response("Missing required fields", { status: 400 });
         }
 
@@ -32,6 +32,10 @@ export async function POST(request: Request) {
                 description: description,
                 scope: scope,
                 userId: createdBy,
+                projectType: type,
+                type: type,
+                duration: duration,
+                budgetedHours: budgetedHours,
             }
         })
 
@@ -43,6 +47,17 @@ export async function POST(request: Request) {
         if (!projectAuditor || !projectClient || !projectClient) {
             return new Response("Users not found", { status: 400 });
         }
+
+        await db.member.create({
+            //@ts-ignore
+            data: {
+                role: 'ADMIN',
+                userId: currentUser?.id,
+                projectId: project.id,
+                name: currentUser?.name,
+                imageUrl: currentUser?.imageUrl,
+            }
+        });
         
         await db.member.create({
             //@ts-ignore
@@ -50,6 +65,8 @@ export async function POST(request: Request) {
                 role: 'MANAGER',
                 userId: projectManager?.id,
                 projectId: project.id,
+                name: projectManager?.name,
+                imageUrl: projectManager?.imageUrl,
             }
         });
 
@@ -61,6 +78,8 @@ export async function POST(request: Request) {
                 role: 'CLIENT',
                 userId: projectClient?.id,
                 projectId: project.id,
+                name: projectClient?.name,
+                imageUrl: projectClient?.imageUrl,
             }
         });
 
@@ -70,6 +89,8 @@ export async function POST(request: Request) {
                 role: 'AUDITOR',
                 userId: projectAuditor?.id,
                 projectId: project.id,
+                name: projectAuditor?.name,
+                imageUrl: projectAuditor?.imageUrl,
             }
         });
 
@@ -104,7 +125,56 @@ export async function POST(request: Request) {
         })
 
 
-        return new Response(JSON.stringify(currentUser), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        return new Response(JSON.stringify(project), { status: 200, headers: { 'Content-Type': 'application/json' } });
+
+    } catch (error) {
+        if (error instanceof Error) {
+            throw error;
+        } else {
+            throw new Error('Error creating member');
+        }
+    }
+}
+
+
+export async function PUT(request: Request) {
+    try  {
+
+        const currentUser = await initialProfile();
+        if (!currentUser) {
+            return new Response("User not authenticated", { status: 401 });
+        }
+
+        if (!(currentUser.role === "ADMIN" || currentUser.role === "AUDITOR")) {
+            return new Response("You don't have the required permissions", { status: 401 });
+        }
+
+        const body = await request.json();
+        const { projectId, name, description, scope, type, duration, budgetedHours } = body;
+
+        console.log(body)
+
+        if (!projectId || !name ||!description ||!scope  ||!type || !duration || !budgetedHours) {
+            return new Response("Missing required fields", { status: 400 });
+        }
+
+        const updatedPproject = await db.project.update({
+            where : {
+                id: projectId,
+            },
+            //@ts-ignore
+            data: {
+                name: name,
+                description: description,
+                scope: scope,
+                projectType: type,
+                type: type,
+                duration: duration,
+                budgetedHours: budgetedHours,
+            }
+        })
+
+        return new Response(JSON.stringify(updatedPproject), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
     } catch (error) {
         if (error instanceof Error) {

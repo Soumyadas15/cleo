@@ -10,6 +10,11 @@ import { initialProfile } from "@/lib/initial-profile";
 import StakeholderModal from "@/components/modals/createModals/StakeholderModal";
 import RiskModal from "@/components/modals/createModals/RiskModal";
 import VersionHistoryModal from "@/components/modals/createModals/VersionHistoryModal";
+import MilestoneModal from "@/components/modals/createModals/MilestoneModal";
+import getMembers from "@/actions/getMembers/getMembers";
+import { ProjectMembers } from "@/components/pages/projects/ProjectMembers";
+import { ProjectHeader } from "@/components/pages/projects/ProjectHeader";
+import EditProjectModal from "@/components/modals/editModals/EditProjectModal";
 
 interface IParams {
     projectId?: string;
@@ -25,6 +30,7 @@ export default async function ProjectLayout({
 
     const project = await getProjectById(params);
     const user = await initialProfile();
+    const members = await getMembers(params);
 
     return (  
         <>
@@ -36,16 +42,23 @@ export default async function ProjectLayout({
         <StakeholderModal project={project} user={user}/>
         <RiskModal project={project} user={user}/>
         <VersionHistoryModal project={project} user={user}/>
+        <MilestoneModal project={project} user={user}/>
+        <EditProjectModal project={project!}/>
 
         <div className="p-5 h-full w-full flex flex-col justify-between scrollbar-hide">
-            <div className="h-[5%] flex items-center">
-                <Heading title={`${project?.name}`}/>
+            <div className="h-[7.5%]">
+                <ProjectHeader 
+                    //@ts-ignore
+                    project={project} 
+                    //@ts-ignore
+                    members={members}
+                />
             </div>
-            <div className="h-[5%] flex items-center">
+            <div className="h-[7.5%] flex items-center">
                 <ProjectNavbar project={project} user={user}/>
             </div>
             
-            <div className="w-full h-[90%] flex justify-start pt-5 overflow-hidden overflow-y-scroll scrollbar-hide">
+            <div className="w-full h-[85%] flex justify-start pt-5 overflow-hidden overflow-y-scroll scrollbar-hide">
                 {children}
             </div>
             

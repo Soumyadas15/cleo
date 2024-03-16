@@ -30,7 +30,7 @@ export const SidebarItem = ({
         <div  
             onClick={handleClick}
             className={`p-2 rounded-[5px] text-sm hover:bg-neutral-300/30 dark:hover:bg-neutral-600/20 transition cursor-pointer flex gap-2 items-center
-                    ${isActive ? 'dark:bg-blue-500/60 bg-neutral-300' : ''}
+                    ${isActive ? 'dark:bg-blue-500/60 bg-neutral-300 font-bold' : ''}
         `}
             style={{ transform: clicked ? 'scale(0.9)' : 'scale(1)' }}
         >

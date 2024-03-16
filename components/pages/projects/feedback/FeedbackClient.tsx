@@ -23,10 +23,6 @@ export const FeedbacksClient = ({
         return(
             <EmptyState 
                 title="No feedbacks yet"
-                subtitle="Add a feedback"
-                showButton = {user.role === "MANAGER"}
-                buttonLabel="Create"
-                onClick={feedbackModal.onOpen}
             />
         )
 

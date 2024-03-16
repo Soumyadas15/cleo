@@ -14,14 +14,8 @@ import Input from "../../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
 import { ProgressBar } from "../../ProgressBar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
 import Textarea from "@/components/reusable/Textarea";
 import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
-import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns"
 import DateInput from "@/components/reusable/DateInput";
 
 enum STEPS {
@@ -81,7 +75,7 @@ const AuditModal = ({
     axios.post('/api/audits', data)
         .then(() => {
             router.refresh();
-            toast.success('Done');
+            toast.success('Success! Email has been sent to client');
         }) .catch((error) => {
             toast.error(error.response.data);
         }) .finally(() => {

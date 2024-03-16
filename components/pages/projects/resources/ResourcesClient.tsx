@@ -28,10 +28,6 @@ export const ResourcesClient = ({
             <div className="w-full h-full">
                 <EmptyState 
                     title="No resources yet"
-                    subtitle="Add a resource"
-                    showButton = {user.role === "MANAGER"}
-                    buttonLabel="Create"
-                    onClick={resourceModal.onOpen}
                 />
             </div>
             

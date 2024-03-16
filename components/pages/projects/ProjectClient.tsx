@@ -37,7 +37,7 @@ export const ProjectClient = ({
 
     return (
         <div className="w-full h-full">
-            <div className="w-full h-[8%]">
+            <div className="w-full h-[8%] flex items-center justify-between">
                 <Heading 
                     title={`${heading}`}
                 />

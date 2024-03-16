@@ -28,10 +28,6 @@ export const MomsClient = ({
         return(
             <EmptyState 
                 title="No MoMs yet"
-                subtitle="Add MoM"
-                showButton = {user.role === "MANAGER"}
-                buttonLabel="Add"
-                onClick={momClient.onOpen}
             />
         )
 

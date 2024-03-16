@@ -68,12 +68,16 @@ model User {
 
 model Project {
   id String @id @default(uuid())
+
+  type String
   name String
   description String @db.Text @default("Lorem ipsum")
   scope String @db.Text @default("Lorem ipsum")
-
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  duration String
+  budgetedHours String
+  projectType String
 
   members Member[]
   audits Audit[]
@@ -110,6 +114,8 @@ model Project {
 model Member {
   id String @id @default(uuid())
   role UserRole @default(CLIENT)
+  name String?
+  imageUrl String?
 
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -348,13 +354,14 @@ model Escalation_matrix {
 model Milestone {
   id String @id @default(uuid())
 
+  phase           String
   title           String
   startDate       DateTime
   completionDate DateTime
-  approvalDate    DateTime?
+  approvalDate    DateTime
   status          String
-  revisedCompletionDate DateTime?
-  comments        String?
+  revisedCompletionDate DateTime
+  comments        String
 
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId       String

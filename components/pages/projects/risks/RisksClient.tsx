@@ -28,10 +28,6 @@ export const RisksClient = ({
             <div className="w-full h-full">
                 <EmptyState 
                     title="No risk profile yet"
-                    subtitle="Add a risk"
-                    showButton = {user.role === "MANAGER"}
-                    buttonLabel="Create"
-                    onClick={resourceModal.onOpen}
                 />
             </div>
             

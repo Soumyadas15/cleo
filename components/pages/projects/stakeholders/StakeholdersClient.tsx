@@ -29,10 +29,6 @@ export const StakeholdersClient = ({
         return(
             <EmptyState 
                 title="No stakeholders yet"
-                subtitle="Add a stakeholder"
-                showButton = {(user.role === "MANAGER" || user.role === "ADMIN")}
-                buttonLabel="Add"
-                onClick={stakeholderModal.onOpen}
             />
         )
 

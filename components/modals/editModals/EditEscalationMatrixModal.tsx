@@ -12,10 +12,8 @@ import Heading from "../../reusable/Heading";
 import axios from "axios";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import Input from "@/components/reusable/Input";
 import { Escalation_matrix, Project, User } from "@prisma/client";
-import useEscalationMatrixModal from "@/hooks/createModalHooks/useEscalationMatrixModal";
 import useEditEscalationMatrixModal from "@/hooks/editModalHooks/useEditEscalationMatrixModal";
 
 interface EditEscalationMatrixModalProps {

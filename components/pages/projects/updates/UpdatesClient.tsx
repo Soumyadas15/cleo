@@ -28,10 +28,6 @@ export const UpdatesClient = ({
         return(
             <EmptyState 
                 title="No updates yet"
-                subtitle="Start adding updates"
-                showButton = {user.role === "AUDITOR"}
-                buttonLabel="Create"
-                onClick={updateModal.onOpen}
             />
         )
 

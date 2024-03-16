@@ -98,7 +98,7 @@ const EditAuditModal = ({
     axios.put('/api/audits', data)
         .then(() => {
             router.refresh();
-            toast.success('Done');
+            toast.success('Success! Email has been sent to client');
         }) .catch((error) => {
             toast.error(error.response.data);
         }) .finally(() => {

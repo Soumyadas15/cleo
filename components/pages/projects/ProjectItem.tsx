@@ -1,9 +1,11 @@
 "use client"
 
+import EditProjectModal from "@/components/modals/editModals/EditProjectModal";
 import DisplayText from "@/components/reusable/DisplayText";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown";
+import useEditProjectModal from "@/hooks/editModalHooks/useEditProjectModal";
 import { Project, User } from "@prisma/client";
 import axios from "axios";
 import { format } from 'date-fns';
@@ -23,10 +25,8 @@ export const ProjectItem = ({
 }: ProjectItemProps) => {
     const router = useRouter();
     const [clicked, setClicked] = useState(false);
-
+    
     const handleClick = () => {
-        setClicked(true);
-        setTimeout(() => setClicked(false), 150);
         router.push(`/main/projects/${project.id}/teams`);
     };
 
@@ -42,6 +42,7 @@ export const ProjectItem = ({
     };
 
     return (
+        <>
         <div 
             onClick={handleClick}
             className="transition"
@@ -58,36 +59,25 @@ export const ProjectItem = ({
                                 <DisplayText limit={80} title="Project description" text={project.description}/>
                             </CardDescription>
                         </div>
-                        {user.role === "ADMIN" ? (
+                        {user.role === "ADMIN" && (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <MoreHorizontal
                                         className="hover:opacity-50 hover:cursor-pointer transition font-bold"
-                                        onClick={(e) => e.stopPropagation()}
                                     />
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="bg-white dark:bg-black dark:border-none rounded-[5px]">
                                     <DropdownMenuLabel>Options</DropdownMenuLabel>
                                     <DropdownMenuSeparator/>
-                                    <DropdownMenuGroup>
-                                        <DropdownMenuItem 
-                                            className="rounded-[5px] focus:bg-neutral-100 dark:focus:bg-black hover:cursor-pointer"
-                                        >
-                                            <Pen className="mr-2 h-4 w-4"/>
-                                            <span>Edit</span>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem 
-                                            className="rounded-[5px] focus:bg-neutral-100 dark:focus:bg-black hover:cursor-pointer"
-                                            onClick={(e) => handleDeleteClick(e, project)}
-                                        >
-                                            <Trash className="mr-2 h-4 w-4 text-red-700 dark:text-500" />
-                                            <span className="text-red-700 dark:text-red-500">Delete</span>
-                                        </DropdownMenuItem>
-                                    </DropdownMenuGroup>
+                                    <DropdownMenuItem 
+                                        className="rounded-[5px] focus:bg-neutral-100 dark:focus:bg-black hover:cursor-pointer"
+                                        onClick={(e) => handleDeleteClick(e, project)}
+                                    >
+                                        <Trash className="mr-2 h-4 w-4 text-red-700 dark:text-500" />
+                                        <span className="text-red-700 dark:text-red-500">Delete</span>
+                                    </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
-                        ) : (
-                            <div></div>
                         )}
                     </div>
                 </CardHeader>
@@ -105,5 +95,7 @@ export const ProjectItem = ({
                 </CardFooter>
             </Card>
         </div>
-    )
+        
+        </>
+    );
 }

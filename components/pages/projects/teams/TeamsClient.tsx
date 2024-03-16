@@ -60,7 +60,6 @@ export const TeamsClient = ({
         return(
             <EmptyState 
                 title="No teams yet"
-                subtitle="Sart by addding a phase"
                 showButton = {user.role === "MANAGER" || user.role === "ADMIN"}
                 buttonLabel="Add"
                 onClick={() => {onAdd(project)}}

@@ -1,11 +1,11 @@
 "use client"
 
-import { Briefcase, Plus, Settings, User, UserRoundPlus } from "lucide-react"
+import { Briefcase, GitGraph, LayoutDashboardIcon, Plus, Settings, User, UserRoundPlus } from "lucide-react"
 import { SidebarItem } from "./SidebarItem"
-import { Button } from "../reusable/Button"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import useCreateModal from "@/hooks/useLoginModal"
+import { Button } from "../ui/button"
 
 
 interface SidebarProps {
@@ -32,14 +32,11 @@ export const Sidebar = ({
                     <div className="text-md leading-5 font-bold">Customer <br/>success</div>
                 </div>
                 <div className="flex flex-col h-[20%] w-full">
-                    {user.role === "ADMIN" ? (
-                            <Button
-                                onClick={createModal.onOpen}
-                                label="Add project" 
-                                color="bg-cyan-500" 
-                                className="p-2  rounded-[5px] flex items-center text-sm text-white w-full" 
-                                icon={<Plus className="scale-[0.8]"/>}
-                            />
+                    {(user.role === "ADMIN" || user.role === "AUDITOR") ? (
+                            <Button className="flex items-center" onClick={createModal.onOpen}>
+                                <Plus className="scale-[0.8]"/>
+                                <div>Add project</div>
+                            </Button>
                         ) : (
                             <div></div>
                         )
@@ -65,7 +62,7 @@ export const Sidebar = ({
                     <SidebarItem 
                         label="Dashboard"  
                         to="main/dashboard"
-                        icon={ <UserRoundPlus/>}
+                        icon={ <LayoutDashboardIcon/>}
                         highlight="text-green-600"
                         isActive = {pathname?.startsWith('/main/dashboard')}
                     />

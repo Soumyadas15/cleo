@@ -7,7 +7,8 @@ interface TextareaProps {
     required?: boolean;
     register: UseFormRegister<FieldValues>;
     errors: FieldErrors;
-    minLength?: number; // Add minLength prop
+    minLength?: number;
+    height?: string;
 }
 
 const Textarea: React.FC<TextareaProps> = ({
@@ -17,20 +18,22 @@ const Textarea: React.FC<TextareaProps> = ({
     register,
     required,
     errors,
-    minLength = 20, // Default minLength to 0 if not provided
+    minLength = 20, 
+    height = 'h-[6rem]'
 }) => {
     return (
         <div className="w-full relative">
             <textarea
                 id={id}
                 disabled={disabled}
-                {...register(id, { required, minLength })} // Include minLength in validation rules
+                {...register(id, { required, minLength })}
                 placeholder=" "
                 className={`
                     peer
                     w-full
                     p-4
                     pt-6
+                    scrollbar-hide
                     font-light
                     text-neutral-800
                     dark:text-neutral-300
@@ -38,6 +41,7 @@ const Textarea: React.FC<TextareaProps> = ({
                     dark:bg-neutral-900
                     border-[1px]
                     rounded-[5px]
+                    ${height}
                     outline-none
                     transition
                     disabled:opacity-70

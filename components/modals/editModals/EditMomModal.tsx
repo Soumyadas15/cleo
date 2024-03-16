@@ -23,6 +23,7 @@ import { Calendar } from "../../ui/calendar";
 import useMomModal from "@/hooks/createModalHooks/useMomModal";
 import useEditMomModal from "@/hooks/editModalHooks/useEditMomModal";
 import { ProgressBar } from "../../ProgressBar";
+import { Mom } from "@prisma/client";
 
 enum STEPS {
   DURATION = 0,
@@ -32,7 +33,7 @@ enum STEPS {
 }
 
 interface EditMomModalProps {
-  mom: any;
+  mom: Mom;
   onClose: () => void;
 }
 const EditMomModal = ({
@@ -44,8 +45,8 @@ const EditMomModal = ({
   const editMomModal = useEditMomModal();
   const [step, setStep] = useState(STEPS.DURATION);
 
-  const [date, setDate] = useState<Date>();
-  const [closureDate, setClosureDate] = useState<Date>();
+  const [date, setDate] = useState<Date>(mom.date);
+
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -186,7 +187,7 @@ const EditMomModal = ({
                 mode="single"
                 selected={date}
                 onSelect={(date) => {
-                    setDate(date);
+                    setDate(date!);
                     setValue("date", date);
                 }}
                 initialFocus

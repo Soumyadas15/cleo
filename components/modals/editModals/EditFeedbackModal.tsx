@@ -24,6 +24,7 @@ import { Calendar } from "../../ui/calendar";
 import useFeedbackModal from "@/hooks/createModalHooks/useFeedbackModal";
 import useEditFeedbackModal from "@/hooks/editModalHooks/useEditFeedbackModal";
 import { ProgressBar } from "../../ProgressBar";
+import { Feedback } from "@prisma/client";
 
 enum STEPS {
   TYPE = 0,
@@ -33,7 +34,7 @@ enum STEPS {
 }
 
 interface EditFeedbackModalProps {
-  feedback: any;
+  feedback: Feedback;
   onClose: () => void;
 }
 const EditFeedbackModal = ({
@@ -45,8 +46,8 @@ const EditFeedbackModal = ({
   const editFeedbackModal = useEditFeedbackModal();
   const [step, setStep] = useState(STEPS.TYPE);
 
-  const [date, setDate] = useState<Date>();
-  const [closureDate, setClosureDate] = useState<Date>();
+  const [date, setDate] = useState<Date>(feedback.date);
+  const [closureDate, setClosureDate] = useState<Date>(feedback.closureDate);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -261,7 +262,7 @@ const EditFeedbackModal = ({
                 mode="single"
                 selected={date}
                 onSelect={(date) => {
-                    setDate(date);
+                    setDate(date!);
                     setValue("date", date);
                 }}
                 initialFocus
@@ -294,7 +295,7 @@ const EditFeedbackModal = ({
                 mode="single"
                 selected={closureDate}
                 onSelect={(date) => {
-                    setClosureDate(date);
+                    setClosureDate(date!);
                     setValue("closureDate", date);
                 }}
                 initialFocus

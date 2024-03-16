@@ -22,12 +22,16 @@ import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns"
+import DateInput from "@/components/reusable/DateInput";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown";
+import useMilestoneModal from "@/hooks/createModalHooks/useMilestoneModal";
+import { DropdownInput } from "@/components/reusable/DropdownInput";
 
 enum STEPS {
-  DATE = 0,
-  REVIEW = 1,
-  COMMENTS = 2,
-  ACTION = 3,
+  PHASE = 0,
+  DATES = 1,
+  STATUS = 2,
+  COMMENTS = 3,
 }
 
 interface MilestoneModalProps {
@@ -40,10 +44,15 @@ const MilestoneModal = ({
 }: MilestoneModalProps) => {
 
   const router = useRouter();
-  const auditModal = useAuditModal();
-  const [step, setStep] = useState(STEPS.DATE);
+  const milestoneModal = useMilestoneModal();
+  const [step, setStep] = useState(STEPS.PHASE);
   const [isLoading, setIsLoading] = useState(false);
-  const [date, setDate] = useState<Date>();
+  const [startDate, setStartDate] = useState<Date>();
+  const [completionDate, setCompletionDate] = useState<Date>();
+  const [approvalDate, setApprovalDate] = useState<Date>();
+  const [revisedCompletionDate, setRevisedCompletionDate] = useState<Date>();
+  const [status, setStatus] = useState("Status");
+
 
   const {
     register,
@@ -54,12 +63,12 @@ const MilestoneModal = ({
   } = useForm<FieldValues>({
     defaultValues: {
       projectId: project?.id,
-      auditedBy: user?.id,
-      reviewedSection: '',
-      reviewedBy: '',
+      phase: '',
+      startDate: undefined,
+      completionDate: undefined,
+      approvalDate: undefined,
       status: '',
-      actionItems: '',
-      date: undefined,
+      revisedCompletionDate: undefined,
       comments: '',
     }
   });
@@ -72,12 +81,12 @@ const MilestoneModal = ({
   }
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    if (step !== STEPS.ACTION){
+    if (step !== STEPS.COMMENTS){
       return onNext();
     }
     setIsLoading(true)
     console.log(data);
-    axios.post('/api/audits', data)
+    axios.post('/api/milestones', data)
         .then(() => {
             router.refresh();
             toast.success('Done');
@@ -85,12 +94,12 @@ const MilestoneModal = ({
             toast.error(error.response.data);
         }) .finally(() => {
             setIsLoading(false);
-            auditModal.onClose();
+            milestoneModal.onClose();
     })
   }
 
   const actionLabel = useMemo(() => {
-    if(step === STEPS.ACTION){
+    if(step === STEPS.COMMENTS){
         return 'Create'
     }
 
@@ -99,18 +108,45 @@ const MilestoneModal = ({
 
 
   const secondaryActionLabel = useMemo(() => {
-      if(step === STEPS.DATE){
+      if(step === STEPS.PHASE){
           return undefined;
       }
       return 'Back'
   }, [step]);
 
-  useEffect(() => {
-    if (date) {
-      setValue("date", date);
-    }
-  }, [date, setValue]);
 
+
+
+
+  useEffect(() => {
+    if (startDate) {
+      setValue("startDate", startDate);
+    }
+  }, [startDate, setValue]);
+
+  useEffect(() => {
+    if (completionDate) {
+      setValue("completionDate", completionDate);
+    }
+  }, [completionDate, setValue]);
+
+  useEffect(() => {
+    if (approvalDate) {
+      setValue("approvalDate", approvalDate);
+    }
+  }, [approvalDate, setValue]);
+
+  useEffect(() => {
+    if (revisedCompletionDate) {
+      setValue("revisedCompletionDate", revisedCompletionDate);
+    }
+  }, [revisedCompletionDate, setValue]);
+
+  const handleStatusSelect = (value: any) => {
+    setStatus(value);
+    setValue('status', value);
+  }
+  
 
   const progress = useMemo(() => {
     return (step / (Object.keys(STEPS).length / 2 - 1)) * 100;
@@ -120,86 +156,88 @@ const MilestoneModal = ({
   let bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading
-        title="Date"
+        title="Phase"
         subtitle=""
         center
       />
       <motion.div
-        key="date"
+        key="phase"
         initial={{ opacity: 0, x: "-50%" }}
         animate={{ opacity: 1, x: "0%" }}
         exit={{ opacity: 0, x: "100%" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant={"outline"}
-              className={cn(
-                "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                !date && "text-muted-foreground"
-              )}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? format(date, "PPP") : <span>Pick a date</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
+        <Input
+          id="phase"
+          label="Phase"
+          disabled={isLoading}
+          register={register}  
+          errors={errors}
+          required
+        />
       </motion.div>
     </div>
   )
 
-  if (step === STEPS.REVIEW){
+  if (step === STEPS.DATES){
     bodyContent = (
       <div className="flex flex-col gap-4">
         <Heading
-          title="Reviewes"
+          title="Dates"
           subtitle=""
           center
         />
-          <motion.div
-              key="reviewedSection"
-              initial={{ opacity: 0, x: "-50%" }}
-              animate={{ opacity: 1, x: "0%" }}
-              exit={{ opacity: 0, x: "100%" }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-            <Input
-              id="reviewedSection"
-              label="Reviewed section"
-              disabled={isLoading}
-              register={register}  
-              errors={errors}
-              required
-            />
-          </motion.div>
+        <motion.div
+          key="startDate"
+          initial={{ opacity: 0, x: "-50%" }}
+          animate={{ opacity: 1, x: "0%" }}
+          exit={{ opacity: 0, x: "100%" }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <DateInput
+            label="Start Date"
+            selectedDate={startDate}
+            onSelect={setStartDate}
+          />
+        </motion.div>
+        <motion.div
+          key="completionDate"
+          initial={{ opacity: 0, x: "-50%" }}
+          animate={{ opacity: 1, x: "0%" }}
+          exit={{ opacity: 0, x: "100%" }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <DateInput
+            label="Completion Date"
+            selectedDate={completionDate}
+            onSelect={setCompletionDate}
+          />
+        </motion.div>
+        <motion.div
+          key="approvalDate"
+          initial={{ opacity: 0, x: "-50%" }}
+          animate={{ opacity: 1, x: "0%" }}
+          exit={{ opacity: 0, x: "100%" }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <DateInput
+            label="Approval Date"
+            selectedDate={approvalDate}
+            onSelect={setApprovalDate}
+          />
+        </motion.div>
+      </div>
+    )
+  }
 
-          <motion.div
-              key="reviewedBy"
-              initial={{ opacity: 0, x: "-50%" }}
-              animate={{ opacity: 1, x: "0%" }}
-              exit={{ opacity: 0, x: "100%" }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-            <Input
-              id="reviewedBy"
-              label="Reviewed by"
-              disabled={isLoading}
-              register={register}  
-              errors={errors}
-              required
-            />
-          </motion.div>
-
-
+  if (step === STEPS.STATUS){
+    bodyContent = (
+      <div className="flex flex-col gap-4">
+        <Heading
+          title="Status"
+          subtitle=""
+          center
+        />
           <motion.div
               key="status"
               initial={{ opacity: 0, x: "-50%" }}
@@ -207,16 +245,25 @@ const MilestoneModal = ({
               exit={{ opacity: 0, x: "100%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <Input
-              id="status"
-              label="Status"
-              disabled={isLoading}
-              register={register}  
-              errors={errors}
-              required
+            <DropdownInput
+              label={status}
+              menuItems={['Delayed', 'On-time', 'Pending']}
+              onSelect={handleStatusSelect}
             />
-          </motion.div>
-          
+          </motion.div>      
+          <motion.div
+              key="revisedCompletionDate"
+              initial={{ opacity: 0, x: "-50%" }}
+              animate={{ opacity: 1, x: "0%" }}
+              exit={{ opacity: 0, x: "100%" }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <DateInput
+              label="Revised completion Date"
+              selectedDate={revisedCompletionDate}
+              onSelect={setRevisedCompletionDate}
+            />
+          </motion.div>  
       </div>
     )
   }
@@ -249,45 +296,15 @@ const MilestoneModal = ({
     )
   }
 
-  if (step === STEPS.ACTION){
-    bodyContent = (
-      <div className="flex flex-col gap-4">
-        <Heading
-          title="Action items"
-          subtitle=""
-          center
-        />
-        <motion.div
-            key="action"
-            initial={{ opacity: 0, x: "-50%" }}
-            animate={{ opacity: 1, x: "0%" }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="w-full"
-        >
-          <Textarea
-              id="actionItems"
-              label="Action items"
-              disabled={isLoading}
-              register={register}  
-              errors={errors}
-              required
-            />
-        </motion.div>
-        
-      </div>
-    )
-  }
-
   return (
     <Modal
       disabled={isLoading}
-      isOpen={auditModal.isOpen}
-      title="Project audit"
+      isOpen={milestoneModal.isOpen}
+      title="Milestone"
       actionLabel={actionLabel}
-      onClose={auditModal.onClose}
+      onClose={milestoneModal.onClose}
       secondaryActionLabel={secondaryActionLabel}
-      secondaryAction={step == STEPS.DATE ? undefined : onBack}
+      secondaryAction={step == STEPS.PHASE ? undefined : onBack}
       onSubmit={handleSubmit(onSubmit)}
       body={
         <div className="flex flex-col gap-6 items-center">
