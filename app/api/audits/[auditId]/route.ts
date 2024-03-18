@@ -23,8 +23,8 @@ export async function DELETE(request: Request, { params }: { params: IParams }) 
     }
 
     //@ts-ignore
-    if (currentUser.role !== "AUDITOR") {
-        return new Response("You don't have the required permissions", { status: 401 });
+    if (!(currentUser.role === "ADMIN" || currentUser.role === "AUDITOR")) {
+      return new Response('You dont have the necessary permissions', { status: 404 });
     }
     
     const { auditId } = params;

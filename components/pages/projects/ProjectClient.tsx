@@ -55,10 +55,6 @@ export const ProjectClient = ({
                     <div>
                         <EmptyState
                             title="No projects found"
-                            subtitle="Start by creating your first project"
-                            showButton={user.role === "ADMIN"}
-                            buttonLabel="Create"
-                            onClick={createModal.onOpen}
                         />
                     </div>
                 )}

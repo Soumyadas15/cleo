@@ -1,6 +1,6 @@
 "use client"
 
-import { Project } from "@prisma/client";
+import { Project, User } from "@prisma/client";
 import EmptyState from "../../EmptyState";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Pencil } from "lucide-react";
@@ -9,10 +9,12 @@ import EditScopeModal from "@/components/modals/editModals/EditScopeModal";
 
 interface ScopeClientProps {
     project: Project;
+    user: User;
 }
 
 export const ScopeClient = ({
     project,
+    user,
 }: ScopeClientProps) => {
 
     const editScopeModal =useEditScopeModal();
@@ -23,7 +25,11 @@ export const ScopeClient = ({
                 <CardHeader>
                     <div className="flex items-center gap-4">
                         <CardTitle>Project scope</CardTitle>
-                        <Pencil onClick={editScopeModal.onOpen} className="hover:cursor-pointer hover:opacity-75 transition"/>
+                        {(user.role === "AUDITOR" || user.role === "ADMIN") ? (
+                            <Pencil onClick={editScopeModal.onOpen} className="hover:cursor-pointer hover:opacity-75 transition"/>
+                        ) : (
+                            <div></div>
+                        )}
                     </div>
 
                 </CardHeader>

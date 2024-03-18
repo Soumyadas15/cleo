@@ -136,7 +136,7 @@ const EditSprintModal = ({
         center
       />
       <motion.div
-        key="date"
+        key="startDate"
         initial={{ opacity: 0, x: "-50%" }}
         animate={{ opacity: 1, x: "0%" }}
         exit={{ opacity: 0, x: "100%" }}
@@ -149,8 +149,8 @@ const EditSprintModal = ({
         />
       </motion.div>
 
-            <motion.div
-        key="date"
+      <motion.div
+        key="endDate"
         initial={{ opacity: 0, x: "-50%" }}
         animate={{ opacity: 1, x: "0%" }}
         exit={{ opacity: 0, x: "100%" }}

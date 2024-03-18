@@ -59,7 +59,7 @@ export const ProjectItem = ({
                                 <DisplayText limit={80} title="Project description" text={project.description}/>
                             </CardDescription>
                         </div>
-                        {user.role === "ADMIN" && (
+                        {(user.role === "ADMIN" || user.role === "AUDITOR") && (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <MoreHorizontal

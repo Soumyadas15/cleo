@@ -98,98 +98,96 @@ export const ProjectNavbar = ({
                     <ArrowRightIcon size={20} className="font-bold hover:cursor-pointer hover:opacity-75" onClick={toggleNavbar}/>
                 </div>
             </div>
-            {(user.role === "MANAGER" || user.role === "ADMIN") ? (
-                <div>
-                   
-                    {isResourceRoute && (
-                        <Button onClick={resourceModal.onOpen}>
-                            <div className="flex items-center gap-2">
-                                <Plus/>
-                                <p>Add resource</p>
-                            </div>
-                        </Button>
-                    )}
-                    {isFeedbackRoute && (
-                        <Button onClick={feedbackModal.onOpen}>
-                            <div className="flex items-center gap-2">
-                                <Plus/>
-                                <p>Add feedback</p>
-                            </div>
-                        </Button>
-                    )}
-                    {isUpdateRoute && (
-                        <Button onClick={updateModal.onOpen}>
-                            <div className="flex items-center gap-2">
-                                <Plus/>
-                                <p>Add update</p>
-                            </div>
-                        </Button>
-                    )}
-                    {isVersionRoute && (
-                        <Button onClick={versionHistoryModal.onOpen}>
-                            <div className="flex items-center gap-2">
-                                <Plus/>
-                                <p>Add version</p>
-                            </div>
-                        </Button>
-                    )}
-                    {isSprintRoute && (
-                        <Button onClick={sprintModal.onOpen}>
-                            <div className="flex items-center gap-2">
-                                <Plus/>
-                                <p>Add sprint</p>
-                            </div>
-                        </Button>
-                    )}
-                    {isMomRoute && (
-                        <Button onClick={momModal.onOpen}>
-                            <div className="flex items-center gap-2">
-                                <Plus/>
-                                <p>Add MoM</p>
-                            </div>
-                        </Button>
-                    )}
-                    {pathname?.endsWith('/stakeholders') && (
-                        <Button onClick={stakeholderModal.onOpen}>
-                            <div className="flex items-center">
-                                <Plus/>
-                                <p>Add stakeholder</p>
-                            </div>
-                        </Button>
-                    )}
-                   
-                    {isRiskRoute && (
-                        <Button onClick={riskModal.onOpen}>
-                            <div className="flex items-center gap-2">
-                                <Plus/>
-                                <p>Add risk</p>
-                            </div>
-                        </Button>
-                    )}
-                    {isMilestoneRoute && (
-                        <Button onClick={milestoneModal.onOpen}>
-                            <div className="flex items-center gap-2">
-                                <Plus/>
-                                <p>Add milestones</p>
-                            </div>
-                        </Button>
-                    )}
-                </div>
-            ) : (
-                <div>
-                    {(user.role === "AUDITOR") && isAuditRoute && (
-                        <Button onClick={auditModal.onOpen}>
-                            <div className="flex items-center gap-2">
-                                <Plus/>
-                                <p>Add audit</p>
-                            </div>
-                        </Button>
-                    )}
-                    {user.role === "CLIENT" && (
-                        <ClientDownloadButton project={project} user={user}/>
-                    )}
-                </div>
-            )}
+            <div>
+                {(user.role === "MANAGER" || user.role === "ADMIN") && (
+                    <>
+                        {isResourceRoute && (
+                            <Button onClick={resourceModal.onOpen}>
+                                <div className="flex items-center gap-2">
+                                    <Plus />
+                                    <p>Add resource</p>
+                                </div>
+                            </Button>
+                        )}
+                         {isFeedbackRoute && (
+                            <Button onClick={feedbackModal.onOpen}>
+                                <div className="flex items-center gap-2">
+                                    <Plus/>
+                                    <p>Add feedback</p>
+                                </div>
+                            </Button>
+                        )}
+                        {isUpdateRoute && (
+                            <Button onClick={updateModal.onOpen}>
+                                <div className="flex items-center gap-2">
+                                    <Plus/>
+                                    <p>Add update</p>
+                                </div>
+                            </Button>
+                        )}
+                        {isVersionRoute && (
+                            <Button onClick={versionHistoryModal.onOpen}>
+                                <div className="flex items-center gap-2">
+                                    <Plus/>
+                                    <p>Add version</p>
+                                </div>
+                            </Button>
+                        )}
+                        {isSprintRoute && (
+                            <Button onClick={sprintModal.onOpen}>
+                                <div className="flex items-center gap-2">
+                                    <Plus/>
+                                    <p>Add sprint</p>
+                                </div>
+                            </Button>
+                        )}
+                        {isMomRoute && (
+                            <Button onClick={momModal.onOpen}>
+                                <div className="flex items-center gap-2">
+                                    <Plus/>
+                                    <p>Add MoM</p>
+                                </div>
+                            </Button>
+                        )}
+                        {pathname?.endsWith('/stakeholders') && (
+                            <Button onClick={stakeholderModal.onOpen}>
+                                <div className="flex items-center">
+                                    <Plus/>
+                                    <p>Add stakeholder</p>
+                                </div>
+                            </Button>
+                        )}
+                    
+                        {isRiskRoute && (
+                            <Button onClick={riskModal.onOpen}>
+                                <div className="flex items-center gap-2">
+                                    <Plus/>
+                                    <p>Add risk</p>
+                                </div>
+                            </Button>
+                        )}
+                        {isMilestoneRoute && (
+                            <Button onClick={milestoneModal.onOpen}>
+                                <div className="flex items-center gap-2">
+                                    <Plus/>
+                                    <p>Add milestones</p>
+                                </div>
+                            </Button>
+                        )}
+                    </>
+                )}
+                {(user.role === "AUDITOR" || user.role === "ADMIN") && isAuditRoute && (
+                    <Button onClick={auditModal.onOpen}>
+                        <div className="flex items-center gap-2">
+                            <Plus />
+                            <p>Add audit</p>
+                        </div>
+                    </Button>
+                )}
+                {user.role === "CLIENT" && (
+                    <ClientDownloadButton project={project} user={user}/>
+                )}
+            </div>
         </div>
     )
 }

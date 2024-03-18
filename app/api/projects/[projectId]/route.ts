@@ -14,8 +14,8 @@ export async function DELETE(request: Request, { params }: { params: IParams }) 
         return new Response("User not authenticated", { status: 401 });
     }
 
-    if (currentUser.role !== "ADMIN") {
-        return new Response("You don't have the required permissions", { status: 401 });
+    if (!(currentUser.role === "ADMIN" || currentUser.role === "AUDITOR")) {
+      return new Response('You dont have the necessary permissions', { status: 404 });
     }
     
     const { projectId } = params;
