@@ -27,6 +27,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns"
 import { Audit } from "@prisma/client";
 import useEditAuditModal from "@/hooks/editModalHooks/useEditAuditModal";
+import DateInput from "@/components/reusable/DateInput";
 
 enum STEPS {
   DATE = 0,
@@ -48,7 +49,7 @@ const EditAuditModal = ({
   const editAuditModal = useEditAuditModal();
   const [step, setStep] = useState(STEPS.DATE);
   const [isLoading, setIsLoading] = useState(false);
-  const [date, setDate] = useState<Date>();
+  const [date, setDate] = useState<Date>(audit.date);
 
   const {
     register,
@@ -150,28 +151,11 @@ const EditAuditModal = ({
         exit={{ opacity: 0, x: "100%" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant={"outline"}
-              className={cn(
-                "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                !date && "text-muted-foreground"
-              )}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? format(date, "PPP") : <span>Pick a date</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
+       <DateInput
+          label="Audit date"
+          selectedDate={date}
+          onSelect={setDate}
+       />
       </motion.div>
     </div>
   )

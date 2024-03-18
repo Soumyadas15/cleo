@@ -42,6 +42,7 @@ export async function POST(req: Request) {
             createdAt: 'asc',
           },
         },
+        //@ts-ignore
         sprints: {
           orderBy: {
             createdAt: 'asc',
@@ -71,7 +72,7 @@ export async function POST(req: Request) {
           orderBy: {
             createdAt: 'asc',
           }
-        }
+        },
       },
     });
 
@@ -79,11 +80,14 @@ export async function POST(req: Request) {
       return new Response("Project not found", { status: 404 });
     }
 
+    //@ts-ignore
     const formattedAudits = project.audits.map(audit => ({
       Date: format(new Date(audit.createdAt), 'MM/dd/yyyy'),
       Body: audit.comments
     }));
 
+
+    //@ts-ignore
     const formattedResources = project.resources.map(resource => ({
       Name: resource.name,
       Start_Date: format(new Date(resource.startDate), 'MM/dd/yyyy'),
@@ -91,6 +95,7 @@ export async function POST(req: Request) {
       Body: resource.comment,
     }));
 
+    //@ts-ignore
     const formattedFedbacks = project.feedbacks.map(feedback => ({
       Date: format(new Date(feedback.date), 'MM/dd/yyyy'),
       Body: feedback.body,
@@ -98,29 +103,30 @@ export async function POST(req: Request) {
       Closure_Date: format(new Date(feedback.closureDate), 'MM/dd/yyyy'),
     }));
 
+    //@ts-ignore
     const formattedUpdates = project.updates.map(update => ({
       Date: format(new Date(update.date), 'MM/dd/yyyy'),
       Body: update.body,
     }));
-
+    //@ts-ignore
     const formattedSprints = project.sprints.map(sprint => ({
       Start_Date: format(new Date(sprint.startDate), 'MM/dd/yyyy'),
       End_Date: format(new Date(sprint.endDate), 'MM/dd/yyyy'),
       Status: sprint.status,
       Body: sprint.comments,
     }));
-
+    //@ts-ignore
     const formattedMoms = project.moms.map(mom => ({
       Date: format(new Date(mom.date), 'MM/dd/yyyy'),
       Body: mom.comments,
     }));
-
+    //@ts-ignore
     const stakeHolders = project.stakeholders.map(stakeholder => ({
       Title: stakeholder.title,
       Name: stakeholder.name,
       Contact: stakeholder.contact
     }));
-
+    //@ts-ignore
     const formattedMilestones = project.milestones.map(milestone => ({
       Title: milestone.title,
       Start_Date: format(new Date(milestone.startDate), 'MM/dd/yyyy'),
@@ -131,6 +137,7 @@ export async function POST(req: Request) {
       Comments: milestone.comments,
     }));
 
+    //@ts-ignore
     const formattedRiskProfile = project.risks.map(risk => ({
       Type: risk.type,
       Description: risk.description,
@@ -141,6 +148,7 @@ export async function POST(req: Request) {
       Closure_Date: risk.closureDate,
     }));
 
+    //@ts-ignore
     const formattedVersion = project.versions.map(version => ({
       Version: version.version,
       Type: version.changeType,
@@ -152,7 +160,8 @@ export async function POST(req: Request) {
       Approval_Date: format(new Date(version.approvalDate), 'MM/dd/yyyy'),
       Approved_By: version.approvedBy
     }));
-
+    
+    //@ts-ignore
     const responseData = {
       audits: formattedAudits,
       resources: formattedResources,

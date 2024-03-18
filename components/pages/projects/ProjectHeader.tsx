@@ -8,7 +8,7 @@ import useEditProjectModal from "@/hooks/editModalHooks/useEditProjectModal";
 
 interface ProjectHeaderProps {
     project: Project;
-    members: Member[];
+    members: any[];
     user: User;
 }
 

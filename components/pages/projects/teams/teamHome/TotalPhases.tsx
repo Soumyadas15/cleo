@@ -15,7 +15,7 @@ export const TotalPhases = ({
     phasesCreatedThisWeek
 }: TotalPhasesProps) => {
     return (
-        <Card className="h-full rounded-[5px] dark:bg-white/5 dark:border-none">
+        <Card className="h-full w-full rounded-[5px] dark:bg-white/5 dark:border-none">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-base font-normal">Total number of phases</CardTitle>
             </CardHeader>

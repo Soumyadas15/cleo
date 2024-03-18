@@ -53,20 +53,23 @@ export const TeamHome = ({
     resourcesCreatedThisWeek,
 }: TeamHomeProps) => {
     return (
-        <div className="w-full h-full">
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-2 h-full">
+        <div className="w-full h-full overflow-hidden">
+            <div className="flex items-center justify-between w-full h-full">
+              <div className="h-full w-[49.5%]">
                 <TotalPhases 
                     totalPhases={totalPhases} 
                     data={data} 
                     phasesCreatedThisWeek={phasesCreatedThisWeek}
                 />
+              </div>
+              <div className="h-full w-[49.5%]">
                 <TotalResources 
                     totalResources={totalResources} 
                     data={data} 
                     resourcesCreatedThisWeek={resourcesCreatedThisWeek}
                 />
+              </div>
             </div>
-            
         </div>
         
     )

@@ -24,11 +24,22 @@ export default async function getMembers(params: IParams){
             },
             orderBy: {
                 createdAt: 'desc'
+            },
+            include: {
+                user: {
+                    select: {
+                        imageUrl: true
+                    }
+                }
             }
         });
 
+        const membersWithImageUrl = members.map(member => ({
+            ...member,
+            profilePic: member.user?.imageUrl
+        }));
 
-        return members;
+        return membersWithImageUrl;
 
     } catch(error) {
         if (error instanceof Error) {

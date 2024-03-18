@@ -93,13 +93,13 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">
         <TableRow>
           <TableHead className="w-[100px] font-bold">Serial</TableHead>
-          <TableHead className="w-[180px] font-bold">Date</TableHead>
-          <TableHead className="font-bold w-[45rem]">Reviewed section</TableHead>
-          <TableHead className="font-bold w-[45rem]">Reviewed by</TableHead>
-          <TableHead className="font-bold w-[45rem]">Status</TableHead>
-          <TableHead className="font-bold w-[45rem]">Comments</TableHead>
-          <TableHead className="font-bold w-[45rem]">Action</TableHead>
-          {user.role === "AUDITOR" ? (
+          <TableHead className="w-[15rem] font-bold">Date</TableHead>
+          <TableHead className="font-bold w-[40rem]">Reviewed sec.</TableHead>
+          <TableHead className="font-bold w-[40rem]">Reviewed by</TableHead>
+          <TableHead className="font-bold w-[40rem]">Status</TableHead>
+          <TableHead className="font-bold w-[40rem]">Comments</TableHead>
+          <TableHead className="font-bold w-[40rem]">Action</TableHead>
+          {(user.role === "AUDITOR" || user.role === "ADMIN") ? (
             <TableHead className="font-bold">Actions</TableHead>
           ) : (
             <div></div>
@@ -124,7 +124,7 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
             <TableCell>
               <DisplayText title="Action" text={audit.actionItem} limit={30}/>
             </TableCell>
-            {user.role === "AUDITOR" && (
+            {(user.role === "AUDITOR" || user.role === "ADMIN") && (
               <TableCell className="flex items-center justify-start gap-5">
                 {sureToDeleteId === audit.id ? (
                   <>

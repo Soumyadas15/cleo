@@ -101,6 +101,7 @@ useEffect(() => {
             toast.error(error.response.data);
         }) .finally(() => {
             setIsLoading(false);
+            editProjectModal.onClose();
     })
   }
 

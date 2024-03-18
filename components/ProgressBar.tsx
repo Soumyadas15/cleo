@@ -16,7 +16,7 @@ export const ProgressBar = ({
     <div className="relative w-full mb-6">
       <div className="w-full bg-gray-200 dark:bg-neutral-700 h-[1.5px] rounded-full overflow-hidden">
         <motion.div
-          className=" h-2 rounded-full"
+          className="bg-blue-500 h-2 rounded-full"
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -34,7 +34,7 @@ export const ProgressBar = ({
           }}
         >
           <AnimatePresence mode="wait">
-            {currentStep > index ? (
+            {currentStep >= index ? (
               <motion.span
                 key="tick"
                 initial={{ opacity: 0 }}

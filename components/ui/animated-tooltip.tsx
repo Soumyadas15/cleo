@@ -11,7 +11,7 @@ import {
 import { Member } from "@prisma/client";
 
 interface AnimatedTooltipProps {
-  items: Member[];
+  items: any[];
 }
 
 export const AnimatedTooltip = ({ items }: AnimatedTooltipProps) => {
@@ -74,7 +74,7 @@ export const AnimatedTooltip = ({ items }: AnimatedTooltipProps) => {
                 onMouseMove={handleMouseMove}
                 height={100}
                 width={100}
-                src={item.imageUrl!}
+                src={item.profilePic}
                 alt={item.name!}
                 className="object-cover !m-0 !p-0 object-top rounded-full h-14 w-14 group-hover:scale-105 group-hover:z-30 relative transition duration-500"
             />
