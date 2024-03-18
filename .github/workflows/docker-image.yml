@@ -35,6 +35,8 @@ jobs:
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
           LOCAL_DATABASE_URL: ${{ secrets.LOCAL_DATABASE_URL }}
           REMOTE_DATABASE_URL: ${{ secrets.REMOTE_DATABASE_URL }}
+          NODEMAILER_PIN: ${{ secrets.NODEMAILER_PIN }}
+          NODEMAILER_EMAIL: ${{ secrets.NODEMAILER_EMAIL }}
         run: |
           docker compose build
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
@@ -71,6 +73,8 @@ jobs:
             echo "AUTH0_CLIENT_SECRET=${{ secrets.AUTH0_CLIENT_SECRET }}" >> .env
             echo "LOCAL_DATABASE_URL=${{ secrets.LOCAL_DATABASE_URL }}" >> .env
             echo "REMOTE_DATABASE_URL=${{ secrets.REMOTE_DATABASE_URL }}" >> .env
+            echo "NODEMAILER_PIN=${{ secrets.NODEMAILER_PIN }}" >> .env
+            echo "NODEMAILER_EMAIL=${{ secrets.NODEMAILER_EMAIL }}" >> .env
             sudo docker compose down --rmi all --volumes || true
             sudo docker compose pull
             sudo docker compose up -d --no-build
