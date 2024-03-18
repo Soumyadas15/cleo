@@ -48,12 +48,13 @@ const AuditModal = ({
     reset
   } = useForm<FieldValues>({
     defaultValues: {
+      userId: user.id,
       projectId: project?.id,
       auditedBy: user?.id,
       reviewedSection: '',
       reviewedBy: '',
       status: '',
-      actionItems: '',
+      actionItem: '',
       date: undefined,
       comments: '',
     }
@@ -70,18 +71,23 @@ const AuditModal = ({
     if (step !== STEPS.ACTION){
       return onNext();
     }
-    setIsLoading(true)
+    setIsLoading(true);
+    data.date = '2024-03-18T12:00:00Z'
     console.log(data);
-    axios.post('/api/audits', data)
+    axios.post('http://127.0.0.1:3001/audits', data)
         .then(() => {
             router.refresh();
             toast.success('Success! Email has been sent to client');
-        }) .catch((error) => {
-            toast.error(error.response.data);
+        }).catch((error) => {
+            if (error.response && error.response.data && error.response.data.error) {
+                toast.error(error.response.data.error);
+            } else {
+                toast.error("An error occurred");
+            }
         }) .finally(() => {
-            setIsLoading(false);
-            auditModal.onClose();
-    })
+              setIsLoading(false);
+              auditModal.onClose();
+      })
   }
 
   const actionLabel = useMemo(() => {
@@ -244,7 +250,7 @@ const AuditModal = ({
             className="w-full"
         >
           <Textarea
-              id="actionItems"
+              id="actionItem"
               label="Action items"
               disabled={isLoading}
               register={register}  

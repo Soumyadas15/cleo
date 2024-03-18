@@ -31,9 +31,10 @@ export const ProjectItem = ({
     };
 
     const handleDeleteClick = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>, project: any) => {
-        e.stopPropagation();
         try {
-            await axios.delete(`/api/projects/${project.id}`);
+            await axios.delete(`http://127.0.0.1:3001/projects/${project.id}`, {
+                data: { userId: user.id }
+            });
             router.refresh();
             toast.success("Project deleted");
         } catch (error : any) {

@@ -25,7 +25,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns"
-import { Audit } from "@prisma/client";
+import { Audit, User } from "@prisma/client";
 import useEditAuditModal from "@/hooks/editModalHooks/useEditAuditModal";
 import DateInput from "@/components/reusable/DateInput";
 
@@ -38,10 +38,12 @@ enum STEPS {
 
 interface EditAuditModalProps {
   audit: Audit;
+  user: User;
   onClose: () => void;
 }
 const EditAuditModal = ({
   audit,
+  user,
   onClose,
 }: EditAuditModalProps) => {
 
@@ -72,6 +74,7 @@ const EditAuditModal = ({
 
   useEffect(() => {
     reset({
+      userId: user.id,
       auditId: audit?.id,
       reviewedSection: audit.reviewedSection,
       reviewedBy: audit.reviewedBy,
@@ -96,17 +99,21 @@ const EditAuditModal = ({
     }
     setIsLoading(true)
     console.log(data);
-    axios.put('/api/audits', data)
+    axios.put(`http://127.0.0.1:3001/audits/${audit.id}`, data)
         .then(() => {
             router.refresh();
             toast.success('Success! Email has been sent to client');
-        }) .catch((error) => {
-            toast.error(error.response.data);
+        }).catch((error) => {
+            if (error.response && error.response.data && error.response.data.error) {
+                toast.error(error.response.data.error);
+            } else {
+                toast.error("An error occurred");
+            }
         }) .finally(() => {
-            setIsLoading(false);
-            editAuditModal.onClose();
-            onClose();
-    })
+              setIsLoading(false);
+              editAuditModal.onClose();
+              onClose();
+      })
   }
 
   const actionLabel = useMemo(() => {

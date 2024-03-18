@@ -28,7 +28,7 @@ import { DropdownMenu,
         DropdownMenuTrigger 
 } from "@/components/ui/dropdown";
 import useRiskModal from "@/hooks/createModalHooks/useRiskModal";
-import { Risk } from "@prisma/client";
+import { Risk, User } from "@prisma/client";
 import useEditRiskModal from "@/hooks/editModalHooks/useEditRiskModal";
 
 enum STEPS {
@@ -43,10 +43,12 @@ enum STEPS {
 
 interface EditRiskModalProps {
    risk: Risk;
+   user: User;
    onClose: () => void;
 }
 const EditRiskModal = ({
     risk,
+    user,
     onClose
 }: EditRiskModalProps) => {
 
@@ -72,6 +74,7 @@ const EditRiskModal = ({
     reset
     } = useForm<FieldValues>({
         defaultValues: {
+            userId: user.id,
             riskId: risk.id,
             type: risk.type,
             description: risk.description,
@@ -85,6 +88,7 @@ const EditRiskModal = ({
 
     useEffect(() => {
         reset({
+            userId: user.id,
             riskId: risk.id,
             type: risk.type,
             description: risk.description,
@@ -136,16 +140,19 @@ const EditRiskModal = ({
     }
     setIsLoading(true)
     console.log(data);
-    axios.put('/api/risks', data)
+    axios.put(`http://127.0.0.1:3001/risks/${risk.id}`, data)
         .then(() => {
             router.refresh();
-            toast.success('Risk added');
+            toast.success('Success');
         }) .catch((error) => {
-            toast.error(error.response.data);
+            if (error.response && error.response.data && error.response.data.error) {
+                toast.error(error.response.data.error);
+            } else {
+                toast.error("An error occurred");
+            }
         }) .finally(() => {
-            setIsLoading(false);
-            editRiskModal.onClose();
-            onClose();
+              setIsLoading(false);
+              editRiskModal.onClose()
     })
   }
 

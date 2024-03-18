@@ -55,11 +55,15 @@ export const RiskTable = ({
   const clickDelete = async (risk: any) => {
     setIsLoading(true);
     try {
-      await axios.delete(`/api/risks/${risk.id}`);
+      await axios.delete(`/api/risks/${risk.id}`, { data : {userId: user.id }});
       router.refresh();
       toast.success("Risk deleted");
-    } catch (error: any) {
-      toast.error(error.response.data);
+    } catch (error : any) {
+      if (error.response && error.response.data && error.response.data.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("An error occurred");
+      }
     } finally {
       setIsLoading(false);
       setSureToDeleteId(null);
@@ -78,7 +82,7 @@ export const RiskTable = ({
   return (
     <>
       {editRiskId && (
-        <EditRiskModal risk={risks.find((res: any) => res.id === editRiskId)} onClose={closeEditModal}/>
+        <EditRiskModal user={user} risk={risks.find((res: any) => res.id === editRiskId)} onClose={closeEditModal}/>
       )}
       <Table className="scrollbar-hide">
         <TableHeader className="bg-neutral-200 border-none dark:bg-neutral-800">

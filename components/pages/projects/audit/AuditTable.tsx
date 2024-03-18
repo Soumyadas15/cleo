@@ -64,11 +64,15 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
   const clickDelete = async (audit: any) => {
     setIsLoading(true);
     try {
-      await axios.delete(`/api/audits/${audit.id}`);
-      toast.success("Deleted audit");
+      await axios.delete(`/api/audits/${audit.id}`, { data: { userId: user.id } });
+      toast.success("Audit deleted");
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.response.data);
+    } catch (error : any) {
+      if (error.response && error.response.data && error.response.data.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("An error occurred");
+      }
     } finally {
       setIsLoading(false);
       setSureToDeleteId(null);
@@ -87,7 +91,7 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
   return (
     <>
     {editAuditId && (
-        <EditAuditModal audit={audits.find((res: any) => res.id === editAuditId)} onClose={closeEditModal}/>
+        <EditAuditModal user={user} audit={audits.find((res: any) => res.id === editAuditId)} onClose={closeEditModal}/>
     )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">

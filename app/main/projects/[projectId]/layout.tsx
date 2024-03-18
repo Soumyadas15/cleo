@@ -44,7 +44,7 @@ export default async function ProjectLayout({
         <RiskModal project={project} user={user}/>
         <VersionHistoryModal project={project} user={user}/>
         <MilestoneModal project={project} user={user}/>
-        <EditProjectModal project={project!}/>
+        <EditProjectModal project={project!} user={user}/>
         <SprintModal project={project} user={user}/>
 
         <div className="p-5 h-full w-full flex flex-col justify-between scrollbar-hide">

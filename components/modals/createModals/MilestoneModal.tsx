@@ -62,6 +62,7 @@ const MilestoneModal = ({
     reset
   } = useForm<FieldValues>({
     defaultValues: {
+      userId: user.id,
       projectId: project?.id,
       phase: '',
       startDate: undefined,
@@ -86,16 +87,20 @@ const MilestoneModal = ({
     }
     setIsLoading(true)
     console.log(data);
-    axios.post('/api/milestones', data)
+    axios.post('http://127.0.0.1:3001/milestones', data)
         .then(() => {
             router.refresh();
             toast.success('Done');
         }) .catch((error) => {
-            toast.error(error.response.data);
+            if (error.response && error.response.data && error.response.data.error) {
+                toast.error(error.response.data.error);
+            } else {
+                toast.error("An error occurred");
+            }
         }) .finally(() => {
-            setIsLoading(false);
-            milestoneModal.onClose();
-    })
+              setIsLoading(false);
+              milestoneModal.onClose();
+      })
   }
 
   const actionLabel = useMemo(() => {

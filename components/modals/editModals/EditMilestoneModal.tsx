@@ -17,7 +17,7 @@ import { ProgressBar } from "../../ProgressBar";
 import Textarea from "@/components/reusable/Textarea";
 import DateInput from "@/components/reusable/DateInput";
 import { DropdownInput } from "@/components/reusable/DropdownInput";
-import { Milestone } from "@prisma/client";
+import { Milestone, User } from "@prisma/client";
 import useEditMilestoneModal from "@/hooks/editModalHooks/useMilestoneModal";
 
 enum STEPS {
@@ -29,10 +29,12 @@ enum STEPS {
 
 interface EditMilestoneModalProps {
     milestone: Milestone;
+    user: User;
     onClose: () => void;
 }
 const EditMilestoneModal = ({
     milestone,
+    user,
     onClose
 }: EditMilestoneModalProps) => {
 
@@ -55,6 +57,7 @@ const EditMilestoneModal = ({
     reset
   } = useForm<FieldValues>({
     defaultValues: {
+      userId: user.id,
       milestoneId: milestone?.id,
       phase: milestone.phase,
       startDate: milestone.startDate,
@@ -68,6 +71,7 @@ const EditMilestoneModal = ({
 
     useEffect(() => {
         reset({
+            userId: user.id,
             milestoneId: milestone?.id,
             phase: milestone.phase,
             startDate: milestone.startDate,
@@ -93,16 +97,20 @@ const EditMilestoneModal = ({
     }
     setIsLoading(true)
     console.log(data);
-    axios.put('/api/milestones', data)
+    axios.put(`http://127.0.0.1:3001/milestones/${milestone.id}`, data)
         .then(() => {
             router.refresh();
             toast.success('Done');
-        }) .catch((error) => {
-            toast.error(error.response.data);
+        }).catch((error) => {
+            if (error.response && error.response.data && error.response.data.error) {
+                toast.error(error.response.data.error);
+            } else {
+                toast.error("An error occurred");
+            }
         }) .finally(() => {
-            setIsLoading(false);
-            editMilestoneModal.onClose();
-    })
+              setIsLoading(false);
+              editMilestoneModal.onClose();
+      })
   }
 
   const actionLabel = useMemo(() => {

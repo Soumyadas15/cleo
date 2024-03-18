@@ -13,15 +13,10 @@ import Heading from "../../reusable/Heading";
 import Input from "../../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
-import useSuccessModal from "@/hooks/useSuccessModal";
-import useCreateModal from "@/hooks/useLoginModal";
-import { useModal } from "@/hooks/useModalStore";
 import { ProgressBar } from "../../ProgressBar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown";
-import { Button } from "@/components/ui/button";
 import Textarea from "@/components/reusable/Textarea";
 import { DropdownInput } from "@/components/reusable/DropdownInput";
-import { Project } from "@prisma/client";
+import { Project, User } from "@prisma/client";
 import useEditProjectModal from "@/hooks/editModalHooks/useEditProjectModal";
 
 enum STEPS {
@@ -33,9 +28,11 @@ enum STEPS {
 
 interface EditProjectModalProps {
   project: Project;
+  user: User;
 }
 const EditProjectModal = ({
   project,
+  user
 }: EditProjectModalProps) => {
 
   const router = useRouter();
@@ -68,6 +65,7 @@ const EditProjectModal = ({
 
 useEffect(() => {
     reset({
+        userId: user.id,
         projectId: project.id,
         type: project.type,
         name: project.name,
@@ -93,16 +91,20 @@ useEffect(() => {
     }
     setIsLoading(true)
     console.log(data);
-    axios.put('/api/projects', data)
+    axios.put(`http://127.0.0.1:3001/projects/${project.id}`, data)
         .then(() => {
             router.refresh();
             toast.success('Done');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            editProjectModal.onClose();
-    })
+        }).catch((error) => {
+            if (error.response && error.response.data && error.response.data.error) {
+                toast.error(error.response.data.error);
+            } else {
+                toast.error("An error occurred");
+            }
+        }).finally(() => {
+              setIsLoading(false);
+              editProjectModal.onClose();
+      })
   }
 
   const actionLabel = useMemo(() => {

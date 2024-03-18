@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { 
   FieldValues, 
   SubmitHandler, 
@@ -13,21 +13,12 @@ import Heading from "../../reusable/Heading";
 import Input from "../../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
-import useCreateModal from "@/hooks/useLoginModal";
-import useSuccessModal from "@/hooks/useSuccessModal";
-import createProjectMember from "@/actions/createProjectMember";
-import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
 import Textarea from "../../reusable/Textarea";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
 import { Button } from "../../ui/button";
-import { cn } from "@/lib/utils";
-import { format } from 'date-fns';
-import { Calendar } from "../../ui/calendar";
-import { ProgressBar } from "../../ProgressBar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown";
 import useRiskModal from "@/hooks/createModalHooks/useRiskModal";
 import DateInput from "@/components/reusable/DateInput";
+import { ProgressBar } from "@/components/ProgressBar";
 
 enum STEPS {
   TYPE = 0,
@@ -70,6 +61,7 @@ const RiskModal = ({
     reset
     } = useForm<FieldValues>({
         defaultValues: {
+            userId: user.id,
             projectId: project.id,
             type: riskType,
             description: '',
@@ -118,15 +110,19 @@ const RiskModal = ({
     }
     setIsLoading(true)
     console.log(data);
-    axios.post('/api/risks', data)
+    axios.post('http://127.0.0.1:3001/risks', data)
         .then(() => {
             router.refresh();
             toast.success('Risk added');
         }) .catch((error) => {
-            toast.error(error.response.data);
+            if (error.response && error.response.data && error.response.data.error) {
+                toast.error(error.response.data.error);
+            } else {
+                toast.error("An error occurred");
+            }
         }) .finally(() => {
-            setIsLoading(false);
-            riskModal.onClose()
+              setIsLoading(false);
+              riskModal.onClose()
     })
   }
 

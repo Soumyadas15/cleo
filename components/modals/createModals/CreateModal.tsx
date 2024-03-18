@@ -97,16 +97,20 @@ const CreateModal = ({
     }
     setIsLoading(true)
     console.log(data);
-    axios.post('/api/projects', data)
+    axios.post('http://127.0.0.1:3001/projects', data)
         .then(() => {
             router.refresh();
             toast.success('Done');
-        }) .catch((error) => {
-            toast.error(error.response.data);
+        }).catch((error) => {
+            if (error.response && error.response.data && error.response.data.error) {
+                toast.error(error.response.data.error);
+            } else {
+                toast.error("An error occurred");
+            }
         }) .finally(() => {
-            setIsLoading(false);
-            formToggle();
-    })
+              setIsLoading(false);
+              formToggle();
+      })
   }
 
   const actionLabel = useMemo(() => {

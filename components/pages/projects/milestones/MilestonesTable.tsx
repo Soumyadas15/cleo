@@ -48,11 +48,15 @@ import useEditMilestoneModal from "@/hooks/editModalHooks/useMilestoneModal";
     const clickDelete = async (milestone: any) => {
       setIsLoading(true);
       try {
-        await axios.delete(`/api/milestones/${milestone.id}`);
+        await axios.delete(`/api/milestones/${milestone.id}`, { data: { userId: user.id } });
         toast.success("Milestone deleted");
         router.refresh();
-      } catch (error: any) {
-        toast.error(error.response.data);
+      } catch (error : any) {
+        if (error.response && error.response.data && error.response.data.error) {
+          toast.error(error.response.data.error);
+        } else {
+          toast.error("An error occurred");
+        }
       } finally {
         setIsLoading(false);
         setSureToDeleteId(null);
@@ -71,7 +75,7 @@ import useEditMilestoneModal from "@/hooks/editModalHooks/useMilestoneModal";
     return (
       <>
       {editMilestoneId && (
-          <EditMilestoneModal milestone={milestones.find((res: any) => res.id === editMilestoneId)} onClose={closeEditModal}/>
+          <EditMilestoneModal user={user} milestone={milestones.find((res: any) => res.id === editMilestoneId)} onClose={closeEditModal}/>
       )}
       <Table className="">
         <TableHeader className="bg-neutral-200 dark:bg-neutral-800">
