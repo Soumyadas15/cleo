@@ -4,7 +4,7 @@ COPY package.json ./
 RUN npm install
 COPY . .
 RUN touch .env
-RUN echo "BACKEND_SERVER=http://cleo.centralindia.cloudapp.azure.com:4000" > .env
+RUN echo "NEXT_PUBLIC_BACKEND_SERVER=http://cleo.centralindia.cloudapp.azure.com:4000" > .env
 RUN npx prisma generate
 RUN npm run build
 RUN npm prune --production
