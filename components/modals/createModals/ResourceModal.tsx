@@ -13,17 +13,8 @@ import Heading from "../../reusable/Heading";
 import Input from "../../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
-import useCreateModal from "@/hooks/useLoginModal";
-import useSuccessModal from "@/hooks/useSuccessModal";
-import createProjectMember from "@/actions/createProjectMember";
 import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
 import Textarea from "../../reusable/Textarea";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { Button } from "../../ui/button";
-import { cn } from "@/lib/utils";
-import { format } from 'date-fns';
-import { Calendar } from "../../ui/calendar";
 import { ProgressBar } from "../../ProgressBar";
 import DateInput from "@/components/reusable/DateInput";
 
@@ -63,6 +54,7 @@ const ResourceModal = ({
     reset
     } = useForm<FieldValues>({
         defaultValues: {
+            userId: user.id,
             projectId: project.id,
             name: '',
             role: '',
@@ -95,18 +87,25 @@ const ResourceModal = ({
     if (step !== STEPS.DATES){
       return onNext();
     }
-    setIsLoading(true)
-    console.log(data);
-    axios.post('/api/resources', data)
-        .then(() => {
+    setIsLoading(true);
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+        await axios.post(`${backendServer}/resources`, data);
+        router.refresh();
+        toast.success('Success');
+    } catch (firstError) {
+        try {
+            await axios.post(`/api/resources`, data);;
             router.refresh();
-            toast.success('Resource added');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            resourceModal.onClose()
-    })
+            toast.success('Success');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        resourceModal.onClose();
+    }
   }
 
   const actionLabel = useMemo(() => {

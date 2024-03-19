@@ -13,14 +13,7 @@ import Heading from "../../reusable/Heading";
 import Input from "../../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
-import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
 import Textarea from "../../reusable/Textarea";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { Button } from "../../ui/button";
-import { cn } from "@/lib/utils";
-import { format } from 'date-fns';
-import { Calendar } from "../../ui/calendar";
 import useFeedbackModal from "@/hooks/createModalHooks/useFeedbackModal";
 import { ProgressBar } from "../../ProgressBar";
 import DateInput from "@/components/reusable/DateInput";
@@ -61,6 +54,7 @@ const FeedbackModal = ({
     reset
     } = useForm<FieldValues>({
         defaultValues: {
+            userId: user.id,
             projectId: project.id,
             type: '',
             body: '',
@@ -93,18 +87,25 @@ const FeedbackModal = ({
     if (step !== STEPS.DATES){
       return onNext();
     }
-    setIsLoading(true)
-    console.log(data);
-    axios.post('/api/feedbacks', data)
-        .then(() => {
+    setIsLoading(true);
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+        await axios.post(`${backendServer}/feedbacks`, data);
+        router.refresh();
+        toast.success('Success');
+    } catch (firstError) {
+        try {
+            await axios.post(`/api/feedbacks`, data);;
             router.refresh();
             toast.success('Success');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            feedbackModal.onClose()
-    })
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        feedbackModal.onClose();
+    }
   }
 
   const actionLabel = useMemo(() => {

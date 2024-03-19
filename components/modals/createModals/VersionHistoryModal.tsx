@@ -14,14 +14,7 @@ import Input from "../../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
 import { ProgressBar } from "../../ProgressBar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
 import Textarea from "@/components/reusable/Textarea";
-import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
-import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns"
 import useVersionHistoryModal from "@/hooks/createModalHooks/useVersionHistoryModal";
 import DateInput from "@/components/reusable/DateInput";
 
@@ -56,6 +49,7 @@ const VersionHistoryModal = ({
     reset
   } = useForm<FieldValues>({
     defaultValues: {
+      userId: user.id,
       projectId: project?.id,
       version: '',
       type: '',
@@ -79,18 +73,25 @@ const VersionHistoryModal = ({
     if (step !== STEPS.PEOPLE){
       return onNext();
     }
-    setIsLoading(true)
-    console.log(data);
-    axios.post('/api/versions', data)
-        .then(() => {
+    setIsLoading(true);
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+        await axios.post(`${backendServer}/versions`, data);
+        router.refresh();
+        toast.success('Success');
+    } catch (firstError) {
+        try {
+            await axios.post(`/api/versions`, data);;
             router.refresh();
-            toast.success('Done');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            versionHistoryModal.onClose();
-    })
+            toast.success('Success');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        versionHistoryModal.onClose();
+    }
   }
 
   const actionLabel = useMemo(() => {

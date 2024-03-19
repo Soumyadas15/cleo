@@ -48,6 +48,7 @@ const UpdateModal = ({
     reset
   } = useForm<FieldValues>({
     defaultValues: {
+      userId: user.id,
       projectId: project?.id,
       date: undefined,
       body: '',
@@ -60,19 +61,33 @@ const UpdateModal = ({
     }
   }, [date, setValue]);
 
+
+
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
-    axios.post('/api/updates', data)
-        .then(() => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+        await axios.post(`${backendServer}/updates`, data);
+        router.refresh();
+        toast.success('Success');
+    } catch (firstError) {
+        try {
+            await axios.post(`/api/updates`, data);;
             router.refresh();
-            toast.success('Done');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            updateModal.onClose();
-    })
+            toast.success('Success (using backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        updateModal.onClose();
+    }
   };
+
+
+
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
