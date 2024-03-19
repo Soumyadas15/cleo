@@ -30,6 +30,7 @@ services:
       - ${SERVER_PORT}
     ports:
       - 80:${SERVER_PORT}
+      - 3001:3001
     command: >
       sh -c "
       npm run start"
@@ -43,6 +44,8 @@ services:
       AUTH0_CLIENT_SECRET: ${AUTH0_CLIENT_SECRET}
       NODEMAILER_PIN: ${NODEMAILER_PIN}
       NODEMAILER_EMAIL: ${NODEMAILER_EMAIL}
+      BACKEND_SERVER: ${BACKEND_SERVER}
+      NEXT_PUBLIC_BACKEND_URL: ${NEXT_PUBLIC_BACKEND_URL}
 
     depends_on:
       postgresdb:
