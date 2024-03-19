@@ -37,6 +37,7 @@ jobs:
           REMOTE_DATABASE_URL: ${{ secrets.REMOTE_DATABASE_URL }}
           NODEMAILER_PIN: ${{ secrets.NODEMAILER_PIN }}
           NODEMAILER_EMAIL: ${{ secrets.NODEMAILER_EMAIL }}
+          NEXT_PUBLIC_BACKEND_URL: "${{ secrets.AUTH0_BASE_URL }}:3001"
         run: |
           docker compose build
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
@@ -75,6 +76,8 @@ jobs:
             echo "REMOTE_DATABASE_URL=${{ secrets.REMOTE_DATABASE_URL }}" >> .env
             echo "NODEMAILER_PIN=${{ secrets.NODEMAILER_PIN }}" >> .env
             echo "NODEMAILER_EMAIL=${{ secrets.NODEMAILER_EMAIL }}" >> .env
+            ehco "NEXT_PUBLIC_BACKEND_URL=${{ secrets.AUTH0_BASE_URL }}:3001" >> .env
+            echo "BACKEND_SERVER=${{ secrets.AUTH0_BASE_URL }}:4000" >> .env
             sudo docker compose down --rmi all --volumes || true
             sudo docker compose pull
             sudo docker compose up -d --no-build
