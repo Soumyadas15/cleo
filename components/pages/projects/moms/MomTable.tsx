@@ -69,15 +69,22 @@ export const MomTable = ({
 
   const clickDelete = async (mom: any) => {
     setIsLoading(true);
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
     try {
-      await axios.delete(`/api/moms/${mom.id}`);
+      await axios.delete(`${backendServer}/moms/${mom.id}`, { data: { userId: user.id }});
       router.refresh();
-      toast.success("MoM deleted");
-    } catch (error: any) {
-      toast.error(error.response.data);
+      toast.success('MoM deleted');
+    } catch (firstError) {
+        try {
+            await axios.delete(`/api/moms/${mom.id}`);
+            router.refresh();
+            toast.success('MoM deleted (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
     } finally {
-      setIsLoading(false);
-      setSureToDeleteId(null);
+        setIsLoading(false);
     }
   };
 
@@ -93,7 +100,7 @@ export const MomTable = ({
   return (
     <>
     {editMomId && (
-        <EditMomModal mom={moms.find((res: any) => res.id === editMomId)} onClose={closeEditModal}/>
+        <EditMomModal user={user} mom={moms.find((res: any) => res.id === editMomId)} onClose={closeEditModal}/>
       )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">

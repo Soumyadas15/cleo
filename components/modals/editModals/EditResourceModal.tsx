@@ -24,9 +24,11 @@ import { format } from 'date-fns';
 import { Calendar } from "../../ui/calendar";
 import useEditResourceModal from "@/hooks/editModalHooks/useEditResourceModal";
 import { ProgressBar } from "../../ProgressBar";
+import { User } from "@prisma/client";
 
 interface EditResourceModalProps {
   resource?: any;
+  user: User;
   onClose: () => void;
 }
 
@@ -39,6 +41,7 @@ enum STEPS {
 
 const EditResourceModal = ({
   resource,
+  user,
   onClose
 }: EditResourceModalProps) => {
 
@@ -63,6 +66,7 @@ const EditResourceModal = ({
     reset
     } = useForm<FieldValues>({
         defaultValues: {
+            userId: user.id,
             resourceId: resource.id,
             name: resource.name,
             role: resource.role,
@@ -73,6 +77,7 @@ const EditResourceModal = ({
 
   useEffect(() => {
       reset({
+        userId: user.id,
         resourceId: resource.id,
         name: resource.name,
         role: resource.role,
@@ -112,18 +117,25 @@ const EditResourceModal = ({
       return onNext();
     }
     setIsLoading(true);
-    console.log(data);
-    axios.put('/api/resources', data)
-        .then(() => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+      await axios.put(`${backendServer}/resources/${resource.id}`, data);
+      router.refresh();
+      toast.success('Resource updated');
+    } catch (firstError) {
+        try {
+            await axios.put(`/api/resources`, data);
             router.refresh();
-            toast.success('Resource updated');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            editResourceModal.onClose();
-            onClose()
-    })
+            toast.success('Resource updated (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        editResourceModal.onClose();
+        onClose();
+    }
   }
   
 

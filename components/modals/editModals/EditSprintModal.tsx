@@ -19,8 +19,9 @@ import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import DateInput from "@/components/reusable/DateInput";
 import { DropdownInput } from "@/components/reusable/DropdownInput";
 import useSprintModal from "@/hooks/createModalHooks/useSprintModal";
-import { Sprint } from "@prisma/client";
+import { Sprint, User } from "@prisma/client";
 import useEditSprintModal from "@/hooks/editModalHooks/useEditSprintModal";
+import { user } from "@nextui-org/react";
 
 enum STEPS {
   DATES = 0,
@@ -30,10 +31,12 @@ enum STEPS {
 
 interface EditSprintModalProps {
   sprint: Sprint;
+  user: User;
   onClose: () => void;
 }
 const EditSprintModal = ({
   sprint,
+  user,
   onClose
 }: EditSprintModalProps) => {
 
@@ -53,6 +56,7 @@ const EditSprintModal = ({
     reset
   } = useForm<FieldValues>({
     defaultValues: {
+      userId: user.id,
       sprintId: sprint?.id,
       startDate: sprint.startDate,
       endDate: sprint.endDate,
@@ -62,6 +66,7 @@ const EditSprintModal = ({
   });
   useEffect(() => {
     reset({
+        userId: user.id,
         sprintId: sprint?.id,
         startDate: sprint.startDate,
         endDate: sprint.endDate,
@@ -82,17 +87,25 @@ const EditSprintModal = ({
       return onNext();
     }
     setIsLoading(true)
-    console.log(data);
-    axios.put('/api/sprints', data)
-        .then(() => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+      await axios.put(`${backendServer}/sprints/${sprint.id}`, data);
+      router.refresh();
+      toast.success('Sprint updated');
+    } catch (firstError) {
+        try {
+            await axios.put(`/api/sprints`, data);
             router.refresh();
-            toast.success('Success!');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            editSprintModal.onClose();
-    })
+            toast.success('Sprint updated (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        editSprintModal.onClose();
+        onClose();
+    }
   }
 
   const actionLabel = useMemo(() => {

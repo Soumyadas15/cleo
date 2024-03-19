@@ -59,15 +59,20 @@ export const UpdateTable = ({ project, updates, user }: UpdateTableProps) => {
 
   const clickDelete = async (update: any) => {
     setIsLoading(true);
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
     try {
-      await axios.delete(`/api/updates/${update.id}`);
-      toast.success("Deleted update");
-      router.refresh();
-    } catch (error: any) {
-      toast.error(error.response.data);
-    } finally {
-      setIsLoading(false);
-      setSureToDeleteId(null);
+        await axios.delete(`${backendServer}/updates/${update.id}`, { data: { userId: user.id }});
+        router.refresh();
+        toast.success('Update deleted');
+    } catch (firstError) {
+        try {
+            await axios.delete(`/api/updates/${update.id}`);
+            router.refresh();
+            toast.success('Update deleted (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
     }
   };
 
@@ -83,7 +88,7 @@ export const UpdateTable = ({ project, updates, user }: UpdateTableProps) => {
   return (
     <>
     {editUpdateId && (
-          <EditUpdateModal update={updates.find((res: any) => res.id === editUpdateId)} onClose={closeEditModal} />
+          <EditUpdateModal user={user} update={updates.find((res: any) => res.id === editUpdateId)} onClose={closeEditModal} />
     )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">

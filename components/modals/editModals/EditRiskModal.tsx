@@ -139,21 +139,25 @@ const EditRiskModal = ({
       return onNext();
     }
     setIsLoading(true)
-    console.log(data);
-    axios.put(`${process.env.BACKEND_SERVER}/risks/${risk.id}`, data)
-        .then(() => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+      await axios.put(`${backendServer}/risks/${risk.id}`, data);
+      router.refresh();
+      toast.success('Risk updated');
+    } catch (firstError) {
+        try {
+            await axios.put(`/api/risks`, data);
             router.refresh();
-            toast.success('Success');
-        }) .catch((error) => {
-            if (error.response && error.response.data && error.response.data.error) {
-                toast.error(error.response.data.error);
-            } else {
-                toast.error("An error occurred");
-            }
-        }) .finally(() => {
-              setIsLoading(false);
-              editRiskModal.onClose()
-    })
+            toast.success('Resource updated (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        editRiskModal.onClose();
+        onClose();
+    }
   }
 
   const actionLabel = useMemo(() => {

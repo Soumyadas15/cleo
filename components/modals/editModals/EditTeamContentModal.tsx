@@ -17,6 +17,8 @@ import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
 import Textarea from "../../reusable/Textarea";
 import { ProgressBar } from "../../ProgressBar";
 import useEditTeamContentModal from "@/hooks/editModalHooks/useEditTeamContentModal";
+import { user } from "@nextui-org/react";
+import { User } from "@prisma/client";
 
 enum STEPS {
   RESOURCES = 0,
@@ -27,10 +29,12 @@ enum STEPS {
 
 interface EditTeamContentModalProps {
   teamContent: any;
+  user: User;
   onClose: () => void
 }
 const EditTeamContentModal = ({
     teamContent,
+    user,
     onClose
 }: EditTeamContentModalProps) => {
 
@@ -51,6 +55,7 @@ const EditTeamContentModal = ({
     reset
     } = useForm<FieldValues>({
         defaultValues: {
+            userId: user.id,
             teamContentId: teamContent.id,
             resources: teamContent.resources,
             role: teamContent.role,
@@ -60,6 +65,7 @@ const EditTeamContentModal = ({
 
   useEffect(() => {
       reset({
+        userId: user.id,
         teamContentId: teamContent.id,
         resources: teamContent.resources,
         role: teamContent.role,
@@ -82,17 +88,25 @@ const EditTeamContentModal = ({
     }
     setIsLoading(true)
     console.log(data);
-    axios.put('/api/teams/team-content', data)
-        .then(() => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+      await axios.put(`${backendServer}/team-ceontent/${teamContent.id}`, data);
+      router.refresh();
+      toast.success('Team content updated');
+    } catch (firstError) {
+        try {
+            await axios.put(`/api/teams/team-content`, data);
             router.refresh();
-            toast.success('Success');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            editTeamContentModal.onClose();
-            onClose()
-    })
+            toast.success('Team content updated (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        editTeamContentModal.onClose();
+        onClose();
+    }
   }
 
   const actionLabel = useMemo(() => {

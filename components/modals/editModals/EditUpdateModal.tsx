@@ -14,16 +14,19 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import useEditUpdateModal from "@/hooks/editModalHooks/useEditUpdateModa";
-import { Update } from "@prisma/client";
+import { Update, User } from "@prisma/client";
 import DateInput from "@/components/reusable/DateInput";
+import { user } from "@nextui-org/react";
 
 interface EditUpdateModalProps {
   update: Update;
+  user: User;
   onClose: () => void;
 }
 
 const EditUpdateModal = ({
   update,
+  user,
   onClose
 }: EditUpdateModalProps) => {
 
@@ -42,6 +45,7 @@ const EditUpdateModal = ({
     reset
   } = useForm<FieldValues>({
     defaultValues: {
+      userId: user.id,
       updateId: update?.id,
       date: update.date,
       body: update.body,
@@ -50,6 +54,7 @@ const EditUpdateModal = ({
 
   useEffect(() => {
     reset({
+      userId: user.id,
       updateId: update?.id,
       date: update.date,
       body: update.body,
@@ -64,17 +69,25 @@ const EditUpdateModal = ({
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true);
-    axios.put('/api/updates', data)
-        .then(() => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+      await axios.put(`${backendServer}/updates/${update.id}`, data);
+      router.refresh();
+      toast.success('Update updated');
+    } catch (firstError) {
+        try {
+            await axios.put(`/api/updates`, data);
             router.refresh();
-            toast.success('Update edited successfully');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            editUpdateModal.onClose();
-            onClose()
-    })
+            toast.success('Update updated (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        editUpdateModal.onClose();
+        onClose();
+    }
   };
   
 

@@ -44,24 +44,35 @@ import useEditMilestoneModal from "@/hooks/editModalHooks/useMilestoneModal";
         setEditMilestoneId(milestone.id);
         editMiletoneModal.onOpen();
     };
+
+
+
+
   
     const clickDelete = async (milestone: any) => {
       setIsLoading(true);
+      const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
       try {
-        await axios.delete(`${process.env.BACKEND_SERVER}/milestones/${milestone.id}`, { data: { userId: user.id } });
-        toast.success("Milestone deleted");
+        await axios.delete(`${backendServer}/milestones/${milestone.id}`, { data: { userId: user.id }});
         router.refresh();
-      } catch (error : any) {
-        if (error.response && error.response.data && error.response.data.error) {
-          toast.error(error.response.data.error);
-        } else {
-          toast.error("An error occurred");
-        }
+        toast.success('Milestone deleted');
+      } catch (firstError) {
+          try {
+              await axios.delete(`/api/milestones/${milestone.id}`);
+              router.refresh();
+              toast.success('Milestone deleted (backup)');
+          } catch (secondError : any) {
+              const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+              toast.error(errorMessage);
+          }
       } finally {
-        setIsLoading(false);
-        setSureToDeleteId(null);
+          setIsLoading(false);
       }
     };
+
+
+
+
   
     const toggleSureToDelete = (milestoneId: string) => {
       setSureToDeleteId(sureToDeleteId === milestoneId ? null : milestoneId);

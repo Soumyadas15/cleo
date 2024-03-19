@@ -61,11 +61,12 @@ const EditAuditModal = ({
     reset
   } = useForm<FieldValues>({
     defaultValues: {
+      userId: user.id,
       auditId: audit?.id,
       reviewedSection: audit.reviewedSection,
       reviewedBy: audit.reviewedBy,
       status: audit.status,
-      actionItems: audit.actionItem,
+      actionItem: audit.actionItem,
       date: audit.date,
       comments: audit.comments,
     }
@@ -79,7 +80,7 @@ const EditAuditModal = ({
       reviewedSection: audit.reviewedSection,
       reviewedBy: audit.reviewedBy,
       status: audit.status,
-      actionItems: audit.actionItem,
+      actionItem: audit.actionItem,
       date: audit.date,
       comments: audit.comments,
     });
@@ -97,23 +98,27 @@ const EditAuditModal = ({
     if (step !== STEPS.ACTION){
       return onNext();
     }
+    console.log(data)
     setIsLoading(true)
-    console.log(data);
-    axios.put(`${process.env.BACKEND_SERVER}/audits/${audit.id}`, data)
-        .then(() => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+        await axios.put(`${backendServer}/audits/${audit.id}`, data);
+        router.refresh();
+        toast.success('Success');
+    } catch (firstError) {
+        try {
+            await axios.put(`/api/audits/${audit.id}`, data);;
             router.refresh();
-            toast.success('Success! Email has been sent to client');
-        }).catch((error) => {
-            if (error.response && error.response.data && error.response.data.error) {
-                toast.error(error.response.data.error);
-            } else {
-                toast.error("An error occurred");
-            }
-        }) .finally(() => {
-              setIsLoading(false);
-              editAuditModal.onClose();
-              onClose();
-      })
+            toast.success('Success (using backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        editAuditModal.onClose();
+        onClose();
+    }
   }
 
   const actionLabel = useMemo(() => {
@@ -276,7 +281,7 @@ const EditAuditModal = ({
             className="w-full"
         >
           <Textarea
-              id="actionItems"
+              id="actionItem"
               label="Action items"
               disabled={isLoading}
               register={register}  

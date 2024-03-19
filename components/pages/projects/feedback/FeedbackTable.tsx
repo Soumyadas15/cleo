@@ -68,15 +68,22 @@ export const FeedbackTable = ({
 
   const clickDelete = async (feedback: any) => {
     setIsLoading(true);
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
     try {
-      await axios.delete(`/api/feedbacks/${feedback.id}`);
-      toast.success("Feedback deleted");
+      await axios.delete(`${backendServer}/feedbacks/${feedback.id}`, { data: { userId: user.id }});
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.response.data);
+      toast.success('Feedback deleted');
+    } catch (firstError) {
+        try {
+            await axios.delete(`/api/feedbacks/${feedback.id}`);
+            router.refresh();
+            toast.success('Feedback deleted (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
     } finally {
-      setIsLoading(false);
-      setSureToDeleteId(null);
+        setIsLoading(false);
     }
   };
 
@@ -92,7 +99,7 @@ export const FeedbackTable = ({
   return (
     <>
     {editFeedbackId && (
-        <EditFeedbackModal feedback={feedbacks.find((res: any) => res.id === editFeedbackId)} onClose={closeEditModal}/>
+        <EditFeedbackModal user={user} feedback={feedbacks.find((res: any) => res.id === editFeedbackId)} onClose={closeEditModal}/>
     )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">

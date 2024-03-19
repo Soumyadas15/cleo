@@ -52,6 +52,7 @@ const EditProjectModal = ({
     reset
 } = useForm<FieldValues>({
     defaultValues: {
+        userId: user.id,
         projectId: project.id,
         type: project.type,
         name: project.name,
@@ -91,20 +92,25 @@ useEffect(() => {
     }
     setIsLoading(true)
     console.log(data);
-    axios.put(`${process.env.BACKEND_SERVER}/projects/${project.id}`, data)
-        .then(() => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+      await axios.put(`${backendServer}/projects/${project.id}`, data);
+      router.refresh();
+      toast.success('Project updated');
+    } catch (firstError) {
+        try {
+            await axios.put(`/api/projects`, data);
             router.refresh();
-            toast.success('Done');
-        }).catch((error) => {
-            if (error.response && error.response.data && error.response.data.error) {
-                toast.error(error.response.data.error);
-            } else {
-                toast.error("An error occurred");
-            }
-        }).finally(() => {
-              setIsLoading(false);
-              editProjectModal.onClose();
-      })
+            toast.success('Project updated (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        editProjectModal.onClose();
+        
+    }
   }
 
   const actionLabel = useMemo(() => {

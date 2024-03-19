@@ -64,16 +64,25 @@ const EditScopeModal = ({
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true)
     console.log(data);
-    axios.put('/api/projects', data)
-        .then(() => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+      await axios.put(`${backendServer}/projects/${project.id}`, data);
+      router.refresh();
+      toast.success('Scope updated');
+    } catch (firstError) {
+        try {
+            await axios.put(`/api/projects`, data);
             router.refresh();
-            toast.success('Success');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            editScopeModal.onClose();
-    })
+            toast.success('Scope updated (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        editScopeModal.onClose();
+        
+    }
   }
 
   useEffect(() => {

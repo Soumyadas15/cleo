@@ -49,14 +49,20 @@ export const SprintTable = ({ project, sprints, user }: SprintTableProps) => {
   };
 
   const clickDelete = async (sprint: any) => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
     try {
-      await axios.delete(`/api/sprints/${sprint.id}`);
-      toast.success("Deleted sprint");
+      await axios.delete(`${backendServer}/sprints/${sprint.id}`, { data: { userId: user.id }});
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.response.data);
-    } finally {
-      setSureToDeleteId(null);
+      toast.success('Sprint deleted');
+    } catch (firstError) {
+        try {
+            await axios.delete(`/api/sprints/${sprint.id}`);
+            router.refresh();
+            toast.success('Sprint deleted (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
     }
   };
 
@@ -76,6 +82,7 @@ export const SprintTable = ({ project, sprints, user }: SprintTableProps) => {
          //@ts-ignore
           sprint={sprints.find((res: any) => res.id === editSprintId)} 
           onClose={closeEditModal}
+          user={user}
         />
     )}
     <Table className="">

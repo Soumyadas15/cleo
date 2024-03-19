@@ -54,19 +54,22 @@ export const RiskTable = ({
 
   const clickDelete = async (risk: any) => {
     setIsLoading(true);
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
     try {
-      await axios.delete(`${process.env.BACKEND_SERVER}/risks/${risk.id}`, { data : {userId: user.id }});
+      await axios.delete(`${backendServer}/risks/${risk.id}`, { data: { userId: user.id }});
       router.refresh();
-      toast.success("Risk deleted");
-    } catch (error : any) {
-      if (error.response && error.response.data && error.response.data.error) {
-        toast.error(error.response.data.error);
-      } else {
-        toast.error("An error occurred");
-      }
+      toast.success('Risk deleted');
+    } catch (firstError) {
+        try {
+            await axios.delete(`/api/risks/${risk.id}`);
+            router.refresh();
+            toast.success('Risk deleted (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
     } finally {
-      setIsLoading(false);
-      setSureToDeleteId(null);
+        setIsLoading(false);
     }
   };
 

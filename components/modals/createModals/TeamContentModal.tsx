@@ -74,7 +74,7 @@ const TeamContentModal = ({
     axios.post('/api/teams/team-content', data)
         .then(() => {
             router.refresh();
-            toast.success('Success');
+            toast.success('Success (backup)');
         }) .catch((error) => {
             toast.error(error.response.data);
         }) .finally(() => {

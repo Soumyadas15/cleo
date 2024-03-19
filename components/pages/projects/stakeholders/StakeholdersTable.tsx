@@ -45,15 +45,20 @@ export const StakeholdersTable = ({ project, stakeholders, user }: StakeholdersT
 
     const clickDelete = async (stakeholder: any) => {
         setIsLoading(true);
+        const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
         try {
-            await axios.delete(`/api/stakeholders/${stakeholder.id}`);
+            await axios.delete(`${backendServer}/stakeholders/${stakeholder.id}`, { data: { userId: user.id }});
             router.refresh();
-            toast.success("Stakeholder deleted");
-        } catch (error: any) {
-            toast.error(error.response.data);
-        } finally {
-            setIsLoading(false);
-            setSureToDeleteId(null);
+            toast.success('Stakeholder deleted');
+        } catch (firstError) {
+            try {
+                await axios.delete(`/api/stakeholders/${stakeholder.id}`);
+                router.refresh();
+                toast.success('Stakeholder deleted (backup)');
+            } catch (secondError : any) {
+                const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+                toast.error(errorMessage);
+            }
         }
     };
 
@@ -69,7 +74,7 @@ export const StakeholdersTable = ({ project, stakeholders, user }: StakeholdersT
     return (
         <>
         {editStakeholderId && (
-            <EditStakeholderModal stakeholder={stakeholders.find((res: any) => res.id === editStakeholderId)} onClose={closeEditModal} />
+            <EditStakeholderModal user={user} stakeholder={stakeholders.find((res: any) => res.id === editStakeholderId)} onClose={closeEditModal} />
         )}
         <Table className="scrollbar-hide">
             <TableHeader className="bg-neutral-200 border-none dark:bg-neutral-800">

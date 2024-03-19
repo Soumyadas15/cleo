@@ -15,14 +15,17 @@ import toast from "react-hot-toast";
 import Input from "@/components/reusable/Input";
 import { Escalation_matrix, Project, User } from "@prisma/client";
 import useEditEscalationMatrixModal from "@/hooks/editModalHooks/useEditEscalationMatrixModal";
+import { user } from "@nextui-org/react";
 
 interface EditEscalationMatrixModalProps {
   matrix: Escalation_matrix;
+  user: User;
   onClose: () => void;
 }
 
 const EditEscalationMatrixModal = ({
   matrix,
+  user,
   onClose
 }: EditEscalationMatrixModalProps) => {
 
@@ -44,6 +47,7 @@ const EditEscalationMatrixModal = ({
     reset
   } = useForm<FieldValues>({
     defaultValues: {
+      userId: user.id,
       matrixId: matrix?.id,
       level: matrix.level,
       name: matrix.name,
@@ -53,6 +57,7 @@ const EditEscalationMatrixModal = ({
 
   useEffect(() => {
     reset({
+      userId: user.id,
       matrixId: matrix?.id,
       level: matrix.level,
       name: matrix.name,
@@ -74,18 +79,25 @@ const EditEscalationMatrixModal = ({
 
     console.log(data);
 
-    axios.put('/api/escalation', data)
-        .then(() => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+      await axios.put(`${backendServer}/escalation/${matrix.id}`, data);
+      router.refresh();
+      toast.success('Escalation matrix updated');
+    } catch (firstError) {
+        try {
+            await axios.put(`/api/escalation`, data);
             router.refresh();
-            toast.success('Success');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            reset();
-            editEscalationMatrixModal.onClose();
-            onClose();
-    })
+            toast.success('Escalation matrix updated (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        editEscalationMatrixModal.onClose();
+        onClose();
+    }
   };
 
   const bodyContent = (

@@ -71,6 +71,7 @@ const AuditModal = ({
     if (step !== STEPS.ACTION){
       return onNext();
     }
+    console.log(data)
     setIsLoading(true);
     const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
     try {
@@ -81,7 +82,7 @@ const AuditModal = ({
         try {
             await axios.post(`/api/audits`, data);;
             router.refresh();
-            toast.success('Success');
+            toast.success('Success (backup)');
         } catch (secondError : any) {
             const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
             toast.error(errorMessage);

@@ -19,7 +19,7 @@ const DisplayText = ({
 
   return (
     <>
-      {text.length > limit ? (
+      {text?.length > limit ? (
         <div>
           {showFulltext ? (
             <div>{text}</div>

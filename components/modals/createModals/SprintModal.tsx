@@ -85,7 +85,7 @@ const SprintModal = ({
         try {
             await axios.post(`/api/sprints`, data);;
             router.refresh();
-            toast.success('Success');
+            toast.success('Success (backup)');
         } catch (secondError : any) {
             const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
             toast.error(errorMessage);

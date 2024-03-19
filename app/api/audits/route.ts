@@ -21,9 +21,9 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { projectId, date, comments, reviewedBy, reviewedSection, status, actionItems  } = body;
+    const { projectId, userId, date, comments, reviewedBy, reviewedSection, status, actionItem  } = body;
 
-    if (!projectId || !date || !comments ||!reviewedBy || !reviewedSection || !status || !actionItems) {
+    if (!projectId || !date || !comments ||!reviewedBy || !reviewedSection || !status || !actionItem) {
       return new Response('Missing required fields', { status: 400 });
     }
 
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
           reviewedBy: reviewedBy,
           reviewedSection: reviewedSection,
           status: status,
-          actionItem: actionItems,
+          actionItem: actionItem,
         }
     }) 
 
@@ -120,9 +120,9 @@ export async function GET(request: Request) {
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
-    const { auditId, date, comments, reviewedBy, reviewedSection, status, actionItems  } = body;
+    const { auditId, date, comments, reviewedBy, reviewedSection, status, actionItem  } = body;
 
-    if (!auditId || !date || !comments ||!reviewedBy || !reviewedSection || !status || !actionItems) {
+    if (!auditId || !date || !comments ||!reviewedBy || !reviewedSection || !status || !actionItem) {
       return new Response('Missing required fields', { status: 400 });
     }
 
@@ -147,7 +147,7 @@ export async function PUT(request: Request) {
         reviewedSection: reviewedSection,
         reviewedBy: reviewedBy,
         status: status,
-        actionItem: actionItems,
+        actionItem: actionItem,
       },
     });
 

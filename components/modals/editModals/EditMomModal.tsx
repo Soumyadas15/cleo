@@ -23,7 +23,7 @@ import { Calendar } from "../../ui/calendar";
 import useMomModal from "@/hooks/createModalHooks/useMomModal";
 import useEditMomModal from "@/hooks/editModalHooks/useEditMomModal";
 import { ProgressBar } from "../../ProgressBar";
-import { Mom } from "@prisma/client";
+import { Mom, User } from "@prisma/client";
 
 enum STEPS {
   DURATION = 0,
@@ -34,10 +34,12 @@ enum STEPS {
 
 interface EditMomModalProps {
   mom: Mom;
+  user: User;
   onClose: () => void;
 }
 const EditMomModal = ({
   mom,
+  user,
   onClose
 }: EditMomModalProps) => {
 
@@ -61,6 +63,7 @@ const EditMomModal = ({
     reset
     } = useForm<FieldValues>({
         defaultValues: {
+            userId: user.id,
             momId: mom.id,
             duration: mom.duration,
             date: mom.date,
@@ -70,6 +73,7 @@ const EditMomModal = ({
 
     useEffect(() => {
       reset({
+        userId: user.id,
         momId: mom.id,
         duration: mom.duration,
         date: mom.date,
@@ -99,19 +103,26 @@ const EditMomModal = ({
     if (step !== STEPS.COMMENTS){
       return onNext();
     }
-    setIsLoading(true)
-    console.log(data);
-    axios.put('/api/moms', data)
-        .then(() => {
+    setIsLoading(true);
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+      await axios.put(`${backendServer}/moms/${mom.id}`, data);
+      router.refresh();
+      toast.success('MoM updated');
+    } catch (firstError) {
+        try {
+            await axios.put(`/api/moms`, data);
             router.refresh();
-            toast.success('Success');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            editMomModal.onClose();
-            onClose();
-    })
+            toast.success('MoM updated (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        editMomModal.onClose();
+        onClose();
+    }
   }
 
   const actionLabel = useMemo(() => {

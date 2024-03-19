@@ -13,16 +13,18 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Input from "@/components/reusable/Input";
-import { Stakeholder } from "@prisma/client";
+import { Stakeholder, User } from "@prisma/client";
 import useEditStakeholderModal from "@/hooks/editModalHooks/useEditStakeholderModal";
 
 interface EditStakeholderModalProps {
     stakeholder: Stakeholder;
+    user: User;
     onClose: () => void;
 }
 
 const EditStakeholderModal = ({
     stakeholder,
+    user,
     onClose
 }: EditStakeholderModalProps) => {
 
@@ -40,6 +42,7 @@ const EditStakeholderModal = ({
     reset
   } = useForm<FieldValues>({
     defaultValues: {
+      userId: user.id,
       stakeholderId: stakeholder.id,
       title: stakeholder.title,
       name: stakeholder.name,
@@ -49,6 +52,7 @@ const EditStakeholderModal = ({
 
   useEffect(() => {
     reset({
+        userId: user.id,
         stakeholderId: stakeholder.id,
         title: stakeholder.title,
         name: stakeholder.name,
@@ -60,17 +64,25 @@ const EditStakeholderModal = ({
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
     setIsLoading(true);
-    axios.put('/api/stakeholders', data)
-        .then(() => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+      await axios.put(`${backendServer}/stakeholders/${stakeholder.id}`, data);
+      router.refresh();
+      toast.success('Stakeholder updated');
+    } catch (firstError) {
+        try {
+            await axios.put(`/api/stakeholders`, data);
             router.refresh();
-            toast.success('Success');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            editStakeholderModal.onClose();
-            onClose();
-    })
+            toast.success('Stakeholder updated (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        editStakeholderModal.onClose();
+        onClose();
+    }
   };
 
   const bodyContent = (

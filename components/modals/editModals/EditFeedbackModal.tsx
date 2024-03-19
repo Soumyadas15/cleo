@@ -24,7 +24,7 @@ import { Calendar } from "../../ui/calendar";
 import useFeedbackModal from "@/hooks/createModalHooks/useFeedbackModal";
 import useEditFeedbackModal from "@/hooks/editModalHooks/useEditFeedbackModal";
 import { ProgressBar } from "../../ProgressBar";
-import { Feedback } from "@prisma/client";
+import { Feedback, User } from "@prisma/client";
 
 enum STEPS {
   TYPE = 0,
@@ -35,10 +35,12 @@ enum STEPS {
 
 interface EditFeedbackModalProps {
   feedback: Feedback;
+  user: User;
   onClose: () => void;
 }
 const EditFeedbackModal = ({
   feedback,
+  user,
   onClose
 }: EditFeedbackModalProps) => {
 
@@ -62,6 +64,7 @@ const EditFeedbackModal = ({
     reset
     } = useForm<FieldValues>({
         defaultValues: {
+            userId: user.id,
             feedbackId: feedback.id,
             type: feedback.type,
             body: feedback.body,
@@ -72,6 +75,7 @@ const EditFeedbackModal = ({
 
   useEffect(() => {
       reset({
+        userId: user.id,
         feedbackId: feedback.id,
         type: feedback.type,
         body: feedback.body,
@@ -110,18 +114,25 @@ const EditFeedbackModal = ({
       return onNext();
     }
     setIsLoading(true)
-    console.log(data);
-    axios.put('/api/feedbacks', data)
-        .then(() => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+      await axios.put(`${backendServer}/feedbacks/${feedback.id}`, data);
+      router.refresh();
+      toast.success('Feedback updated');
+    } catch (firstError) {
+        try {
+            await axios.put(`/api/feedbacks`, data);
             router.refresh();
-            toast.success('Success');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            editFeedbackModal.onClose();
-            onClose();
-    })
+            toast.success('Feedback updated (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        editFeedbackModal.onClose();
+        onClose();
+    }
   }
 
   const actionLabel = useMemo(() => {

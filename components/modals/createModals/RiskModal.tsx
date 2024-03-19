@@ -118,7 +118,7 @@ const RiskModal = ({
         try {
             await axios.post(`/api/risks`, data);;
             router.refresh();
-            toast.success('Success');
+            toast.success('Success (backup)');
         } catch (secondError : any) {
             const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
             toast.error(errorMessage);

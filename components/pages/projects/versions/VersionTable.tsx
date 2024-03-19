@@ -15,17 +15,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown"
 
-import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import useDeleteAuditModal from "@/hooks/useDeleteAuditModal";
-import useEditAuditModal from "@/hooks/editModalHooks/useEditAuditModal";
 import axios from "axios";
 import { format } from "date-fns";
 import { MoreHorizontal, Pen, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import EditAuditModal from "@/components/modals/editModals/EditAuditModal";
-import DisplayText from "@/components/reusable/DisplayText";
 import { Version } from "@prisma/client";
 import EditVersionHistoryModal from "@/components/modals/editModals/EditVersionHistoryModal";
 import useEditVersionHistoryModal from "@/hooks/editModalHooks/useEditVersionHistoryModal";
@@ -57,15 +53,20 @@ export const VersionTable = ({ project, versions, user }: VersionTableProps) => 
 
   const clickDelete = async (version: any) => {
     setIsLoading(true);
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
     try {
-      await axios.delete(`/api/versions/${version.id}`);
-      toast.success("Version deleted");
-      router.refresh();
-    } catch (error: any) {
-      toast.error(error.response.data);
-    } finally {
-      setIsLoading(false);
-      setSureToDeleteId(null);
+        await axios.delete(`${backendServer}/versions/${version.id}`, { data: { userId: user.id }});
+        router.refresh();
+        toast.success('Update deleted');
+    } catch (firstError) {
+        try {
+            await axios.delete(`/api/versions/${version.id}`);
+            router.refresh();
+            toast.success('Update deleted (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
     }
   };
 
@@ -81,7 +82,7 @@ export const VersionTable = ({ project, versions, user }: VersionTableProps) => 
   return (
     <>
     {editVersionId && (
-        <EditVersionHistoryModal version={versions.find((res: any) => res.id === editVersionId)} onClose={closeEditModal}/>
+        <EditVersionHistoryModal user={user} version={versions.find((res: any) => res.id === editVersionId)} onClose={closeEditModal}/>
     )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">

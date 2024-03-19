@@ -31,14 +31,20 @@ export const ProjectItem = ({
     };
 
     const handleDeleteClick = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>, project: any) => {
+        const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
         try {
-            await axios.delete(`${process.env.BACKEND_SERVER}/projects/${project.id}`, {
-                data: { userId: user.id }
-            });
-            router.refresh();
-            toast.success("Project deleted");
-        } catch (error : any) {
-            toast.error(error.response.data);
+            await axios.delete(`${backendServer}/projects/${project.id}`, { data: { userId: user.id }});
+            router.push('/main/projects');
+            toast.success('Project deleted');
+        } catch (firstError) {
+            try {
+                await axios.delete(`/api/projects/${project.id}`);
+                router.push('/main/projects');
+                toast.success('Project deleted');
+            } catch (secondError : any) {
+                const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+                toast.error(errorMessage);
+            }
         }
     };
 

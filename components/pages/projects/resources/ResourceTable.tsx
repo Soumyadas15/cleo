@@ -64,15 +64,22 @@ export const ResourceTable = ({
 
   const clickDelete = async (resource: any) => {
     setIsLoading(true);
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
     try {
-      await axios.delete(`/api/resources/${resource.id}`);
+      await axios.delete(`${backendServer}/resources/${resource.id}`, { data: { userId: user.id }});
       router.refresh();
-      toast.success("Resource deleted");
-    } catch (error: any) {
-      toast.error(error.response.data);
+      toast.success('Resource deleted');
+    } catch (firstError) {
+        try {
+            await axios.delete(`/api/resources/${resource.id}`);
+            router.refresh();
+            toast.success('Resource deleted (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
     } finally {
-      setIsLoading(false);
-      setSureToDeleteId(null);
+        setIsLoading(false);
     }
   };
 
@@ -88,7 +95,7 @@ export const ResourceTable = ({
   return (
     <>
       {editResourceId && (
-        <EditResourceModal resource={resources.find((res: any) => res.id === editResourceId)} onClose={closeEditModal}/>
+        <EditResourceModal user={user} resource={resources.find((res: any) => res.id === editResourceId)} onClose={closeEditModal}/>
       )}
       <Table className="scrollbar-hide">
         <TableHeader className="bg-neutral-200 border-none dark:bg-neutral-800">

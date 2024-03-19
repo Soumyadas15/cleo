@@ -24,7 +24,8 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns"
 import useVersionHistoryModal from "@/hooks/createModalHooks/useVersionHistoryModal";
 import useEditVersionHistoryModal from "@/hooks/editModalHooks/useEditVersionHistoryModal";
-import { Version } from "@prisma/client";
+import { User, Version } from "@prisma/client";
+import { user } from "@nextui-org/react";
 
 enum STEPS {
   TYPE = 0,
@@ -35,10 +36,12 @@ enum STEPS {
 
 interface EditVersionHistoryModalProps {
   version: Version;
+  user: User;
   onClose: () => void;
 }
 const EditVersionHistoryModal = ({
     version,
+    user,
     onClose
 }: EditVersionHistoryModalProps) => {
 
@@ -57,6 +60,7 @@ const EditVersionHistoryModal = ({
     reset
   } = useForm<FieldValues>({
     defaultValues: {
+      user: user.id,
       versionId: version?.id,
       version: version.version,
       type: version.changeType,
@@ -71,6 +75,7 @@ const EditVersionHistoryModal = ({
 
   useEffect(() => {
     reset({
+        userId: user.id,
         versionId: version?.id,
         version: version.version,
         type: version.changeType,
@@ -95,18 +100,25 @@ const EditVersionHistoryModal = ({
       return onNext();
     }
     setIsLoading(true)
-    console.log(data);
-    axios.put('/api/versions', data)
-        .then(() => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+      await axios.put(`${backendServer}/versions/${version.id}`, data);
+      router.refresh();
+      toast.success('Version updated');
+    } catch (firstError) {
+        try {
+            await axios.put(`/api/versions`, data);
             router.refresh();
-            toast.success('Done');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            editVersionHistoryModal.onClose();
-            onClose();
-    })
+            toast.success('Version updated (backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        editVersionHistoryModal.onClose();
+        onClose();
+    }
   }
 
   const actionLabel = useMemo(() => {

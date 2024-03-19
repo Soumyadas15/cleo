@@ -64,15 +64,22 @@ export const EscalationMatrixTable = ({
   
     const clickDelete = async (data: any) => {
       setIsLoading(true);
+      const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
       try {
-        await axios.delete(`/api/escalation/${data.id}`);
-        toast.success("Success");
+        await axios.delete(`${backendServer}/escalation/${data.id}`, { data: { userId: user.id }});
         router.refresh();
-      } catch (error: any) {
-        toast.error(error.response.data);
+        toast.success('Escalation deleted');
+      } catch (firstError) {
+          try {
+              await axios.delete(`/api/escalation/${data.id}`);
+              router.refresh();
+              toast.success('Escalation deleted (backup)');
+          } catch (secondError : any) {
+              const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+              toast.error(errorMessage);
+          }
       } finally {
-        setIsLoading(false);
-        setSureToDeleteId(null);
+          setIsLoading(false);
       }
     };
   
@@ -88,7 +95,7 @@ export const EscalationMatrixTable = ({
     return (
       <>
       {editMatrixId && (
-          <EditEscalationMatrixModal matrix={matrices.find((res: any) => res.id === editMatrixId)} onClose={closeEditModal}/>
+          <EditEscalationMatrixModal user={user} matrix={matrices.find((res: any) => res.id === editMatrixId)} onClose={closeEditModal}/>
       )}
       <Table className="scrollbar-hide">
         <TableHeader className="bg-neutral-200 dark:bg-neutral-800">
