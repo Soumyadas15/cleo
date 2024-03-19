@@ -99,7 +99,7 @@ const EditAuditModal = ({
     }
     setIsLoading(true)
     console.log(data);
-    axios.put(`http://127.0.0.1:3001/audits/${audit.id}`, data)
+    axios.put(`${process.env.BACKEND_SERVER}/audits/${audit.id}`, data)
         .then(() => {
             router.refresh();
             toast.success('Success! Email has been sent to client');

@@ -64,7 +64,7 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
   const clickDelete = async (audit: any) => {
     setIsLoading(true);
     try {
-      await axios.delete(`/api/audits/${audit.id}`, { data: { userId: user.id } });
+      await axios.delete(`${process.env.BACKEND_SERVER}/audits/${audit.id}`, { data: { userId: user.id } });
       toast.success("Audit deleted");
       router.refresh();
     } catch (error : any) {

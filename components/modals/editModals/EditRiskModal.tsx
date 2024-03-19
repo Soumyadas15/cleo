@@ -140,7 +140,7 @@ const EditRiskModal = ({
     }
     setIsLoading(true)
     console.log(data);
-    axios.put(`http://127.0.0.1:3001/risks/${risk.id}`, data)
+    axios.put(`${process.env.BACKEND_SERVER}/risks/${risk.id}`, data)
         .then(() => {
             router.refresh();
             toast.success('Success');

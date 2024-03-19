@@ -91,26 +91,35 @@ const CreateModal = ({
       setStep((value) => value + 1);
   }
 
+  /**
+ * Creates a new project in the backend.
+ * @param data - The project data to create.
+ * If one API fails, another will work as backup
+ */
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (step !== STEPS.AUDITOR){
-      return onNext();
+        return onNext();
     }
-    setIsLoading(true)
-    console.log(data);
-    axios.post('http://127.0.0.1:3001/projects', data)
-        .then(() => {
+    setIsLoading(true);
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+        await axios.post(`${backendServer}/projects`, data);
+        router.refresh();
+        toast.success('Success');
+    } catch (firstError) {
+        try {
+            await axios.post(`/api/projects`, data);;
             router.refresh();
-            toast.success('Done');
-        }).catch((error) => {
-            if (error.response && error.response.data && error.response.data.error) {
-                toast.error(error.response.data.error);
-            } else {
-                toast.error("An error occurred");
-            }
-        }) .finally(() => {
-              setIsLoading(false);
-              formToggle();
-      })
+            toast.success('Success');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        formToggle();
+    }
   }
 
   const actionLabel = useMemo(() => {

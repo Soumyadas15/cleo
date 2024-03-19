@@ -32,7 +32,7 @@ export const ProjectItem = ({
 
     const handleDeleteClick = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>, project: any) => {
         try {
-            await axios.delete(`http://127.0.0.1:3001/projects/${project.id}`, {
+            await axios.delete(`${process.env.BACKEND_SERVER}/projects/${project.id}`, {
                 data: { userId: user.id }
             });
             router.refresh();

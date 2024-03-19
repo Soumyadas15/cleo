@@ -55,7 +55,7 @@ export const RiskTable = ({
   const clickDelete = async (risk: any) => {
     setIsLoading(true);
     try {
-      await axios.delete(`/api/risks/${risk.id}`, { data : {userId: user.id }});
+      await axios.delete(`${process.env.BACKEND_SERVER}/risks/${risk.id}`, { data : {userId: user.id }});
       router.refresh();
       toast.success("Risk deleted");
     } catch (error : any) {

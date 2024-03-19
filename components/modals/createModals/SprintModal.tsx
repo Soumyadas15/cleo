@@ -51,6 +51,7 @@ const SprintModal = ({
     reset
   } = useForm<FieldValues>({
     defaultValues: {
+      userId: user.id,
       projectId: project?.id,
       startDate: undefined,
       endDate: undefined,
@@ -66,23 +67,38 @@ const SprintModal = ({
       setStep((value) => value + 1);
   }
 
+
+
+
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (step !== STEPS.COMMENTS){
       return onNext();
     }
-    setIsLoading(true)
-    console.log(data);
-    axios.post('/api/sprints', data)
-        .then(() => {
+    setIsLoading(true);
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+        await axios.post(`${backendServer}/sprints`, data);
+        router.refresh();
+        toast.success('Success');
+    } catch (firstError) {
+        try {
+            await axios.post(`/api/sprints`, data);;
             router.refresh();
-            toast.success('Success!');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            sprintModal.onClose();
-    })
+            toast.success('Success');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        sprintModal.onClose();
+    }
   }
+
+
+
+
 
   const actionLabel = useMemo(() => {
     if(step === STEPS.COMMENTS){

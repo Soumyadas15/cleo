@@ -108,22 +108,25 @@ const RiskModal = ({
     if (step !== STEPS.CLOSURE){
       return onNext();
     }
-    setIsLoading(true)
-    console.log(data);
-    axios.post('http://127.0.0.1:3001/risks', data)
-        .then(() => {
+    setIsLoading(true);
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+        await axios.post(`${backendServer}/risks`, data);
+        router.refresh();
+        toast.success('Success');
+    } catch (firstError) {
+        try {
+            await axios.post(`/api/risks`, data);;
             router.refresh();
-            toast.success('Risk added');
-        }) .catch((error) => {
-            if (error.response && error.response.data && error.response.data.error) {
-                toast.error(error.response.data.error);
-            } else {
-                toast.error("An error occurred");
-            }
-        }) .finally(() => {
-              setIsLoading(false);
-              riskModal.onClose()
-    })
+            toast.success('Success');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        riskModal.onClose();
+    }
   }
 
   const actionLabel = useMemo(() => {

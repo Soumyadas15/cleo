@@ -9,17 +9,9 @@ import {
 import { motion } from 'framer-motion';
 import Modal from "../Modal";
 import Heading from "../../reusable/Heading";
-import Textarea from "../../reusable/Textarea";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { Button } from "../../ui/button";
-import { Calendar } from "../../ui/calendar";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import useStakeholderModal from "@/hooks/createModalHooks/useStakeholderModal";
 import Input from "@/components/reusable/Input";
 
@@ -47,6 +39,7 @@ const StakeholderModal = ({
     reset
   } = useForm<FieldValues>({
     defaultValues: {
+      userId: user.id,
       projectId: project?.id,
       title: '',
       name: '',
@@ -55,20 +48,34 @@ const StakeholderModal = ({
   });
 
 
+
+
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
     setIsLoading(true);
-    axios.post('/api/stakeholders', data)
-        .then(() => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+        await axios.post(`${backendServer}/stakeholders`, data);
+        router.refresh();
+        toast.success('Success');
+    } catch (firstError) {
+        try {
+            await axios.post(`/api/stakeholders`, data);;
             router.refresh();
-            toast.success('Stakeholder added');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            stakeholderModal.onClose();
-    })
+            toast.success('Success');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        stakeholderModal.onClose();
+    }
   };
+
+
+
 
   const bodyContent = (
     <div className="flex flex-col gap-4">

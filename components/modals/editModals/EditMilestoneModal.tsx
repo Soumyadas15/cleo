@@ -97,7 +97,7 @@ const EditMilestoneModal = ({
     }
     setIsLoading(true)
     console.log(data);
-    axios.put(`http://127.0.0.1:3001/milestones/${milestone.id}`, data)
+    axios.put(`${process.env.BACKEND_SERVER}/milestones/${milestone.id}`, data)
         .then(() => {
             router.refresh();
             toast.success('Done');

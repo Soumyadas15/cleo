@@ -48,7 +48,7 @@ import useEditMilestoneModal from "@/hooks/editModalHooks/useMilestoneModal";
     const clickDelete = async (milestone: any) => {
       setIsLoading(true);
       try {
-        await axios.delete(`/api/milestones/${milestone.id}`, { data: { userId: user.id } });
+        await axios.delete(`${process.env.BACKEND_SERVER}/milestones/${milestone.id}`, { data: { userId: user.id } });
         toast.success("Milestone deleted");
         router.refresh();
       } catch (error : any) {

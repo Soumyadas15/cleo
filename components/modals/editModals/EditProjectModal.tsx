@@ -91,7 +91,7 @@ useEffect(() => {
     }
     setIsLoading(true)
     console.log(data);
-    axios.put(`http://127.0.0.1:3001/projects/${project.id}`, data)
+    axios.put(`${process.env.BACKEND_SERVER}/projects/${project.id}`, data)
         .then(() => {
             router.refresh();
             toast.success('Done');

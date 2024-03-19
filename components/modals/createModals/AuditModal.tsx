@@ -72,22 +72,24 @@ const AuditModal = ({
       return onNext();
     }
     setIsLoading(true);
-    data.date = '2024-03-18T12:00:00Z'
-    console.log(data);
-    axios.post('http://127.0.0.1:3001/audits', data)
-        .then(() => {
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+        await axios.post(`${backendServer}/audits`, data);
+        router.refresh();
+        toast.success('Success');
+    } catch (firstError) {
+        try {
+            await axios.post(`/api/audits`, data);;
             router.refresh();
-            toast.success('Success! Email has been sent to client');
-        }).catch((error) => {
-            if (error.response && error.response.data && error.response.data.error) {
-                toast.error(error.response.data.error);
-            } else {
-                toast.error("An error occurred");
-            }
-        }) .finally(() => {
-              setIsLoading(false);
-              auditModal.onClose();
-      })
+            toast.success('Success');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        auditModal.onClose();
+    }
   }
 
   const actionLabel = useMemo(() => {

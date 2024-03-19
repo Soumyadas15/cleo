@@ -13,15 +13,7 @@ import Heading from "../../reusable/Heading";
 import Input from "../../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
-import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
 import Textarea from "../../reusable/Textarea";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { Button } from "../../ui/button";
-import { cn } from "@/lib/utils";
-import { format } from 'date-fns';
-import { Calendar } from "../../ui/calendar";
-import useFeedbackModal from "@/hooks/createModalHooks/useFeedbackModal";
 import useMomModal from "@/hooks/createModalHooks/useMomModal";
 import { ProgressBar } from "../../ProgressBar";
 import DateInput from "@/components/reusable/DateInput";
@@ -62,6 +54,7 @@ const MomModal = ({
     reset
     } = useForm<FieldValues>({
         defaultValues: {
+            userId: user.id,
             projectId: project.id,
             duration: '',
             date: undefined,
@@ -89,23 +82,37 @@ const MomModal = ({
       setStep((value) => value + 1);
   }
 
+
+
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (step !== STEPS.COMMENTS){
       return onNext();
     }
-    setIsLoading(true)
-    console.log(data);
-    axios.post('/api/moms', data)
-        .then(() => {
+    setIsLoading(true);
+    const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    try {
+        await axios.post(`${backendServer}/moms`, data);
+        router.refresh();
+        toast.success('Success');
+    } catch (firstError) {
+        try {
+            await axios.post(`/api/moms`, data);;
             router.refresh();
-            toast.success('Success');
-        }) .catch((error) => {
-            toast.error(error.response.data);
-        }) .finally(() => {
-            setIsLoading(false);
-            momModal.onClose()
-    })
+            toast.success('Success (using backup)');
+        } catch (secondError : any) {
+            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+            toast.error(errorMessage);
+        }
+    } finally {
+        setIsLoading(false);
+        momModal.onClose();
+    }
   }
+
+
+
+
 
   const actionLabel = useMemo(() => {
     if(step === STEPS.COMMENTS){
