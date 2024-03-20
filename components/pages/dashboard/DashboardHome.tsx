@@ -18,16 +18,20 @@ export const DashboardHome = ({
     auditors
 }: DashboardHomeProps) => {
     return (
-        <div className="h-full w-full  flex flex-col justify-between">
-            <div className="h-[25%]  grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-2">
+        <div className="h-full w-full flex  flex-col justify-between">
+            <div className="h-[25%] w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-2">
                 <DashboardCard primaryLabel={projects.length} header='Total projects'/>
                 <DashboardCard primaryLabel={auditors} header='No. of auditors'/>
                 <DashboardCard primaryLabel={managers} header='No. of managers'/>
                 <DashboardCard primaryLabel={clients} header='No. of clients'/>
             </div>
-            <div className="h-[74%]  grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-2">
-                <DashboardChart/>
-                <DashboardProjects projects={projects}/>
+            <div className="h-[74%] w-full flex items-center justify-between">
+                <div className="h-full w-[49.6%]">
+                    <DashboardChart/>
+                </div>
+                <div className="h-full w-[49.6%]">
+                    <DashboardProjects projects={projects}/>
+                </div>
             </div>
         </div>
     )

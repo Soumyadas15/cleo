@@ -3,13 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { CalendarIcon } from "@radix-ui/react-icons";
 import axios from "axios";
 import { addDays, format } from "date-fns";
 import { DownloadIcon } from "lucide-react";
@@ -41,28 +35,18 @@ export function CalendarDateRangePicker({
   const [loading, setLoading] = React.useState(false);
   const [loading2, setLoading2] = React.useState(false);
 
-  const jsonData: any[] = [
-    { id: 1, name: 'John Doe', age: 30 },
-    { id: 2, name: 'Jane Smith', age: 25 },
-    // Add more data as needed
-  ];
-
-  const handleGeneratePDF = () => {
-    const pdfDoc = generatePDF(jsonData);
-    pdfDoc.save('data.pdf');
-  };
-
   const rangeData = {
-    startDate: date?.from,
-    endDate: date?.to,
+    startDate: date?.from?.toISOString(),
+    endDate: date?.to?.toISOString(),
     projectId: project.id
   };
 
-  const handleDownloadPDF = async () => {
+  const handleDownloadPDFAll = async () => {
+    console.log(rangeData)
     setLoading2(true);
     try {
       const response = await axios.post('/api/pdf', rangeData);
-      const pdfData = response.data; // Assuming the API returns data for PDF generation
+      const pdfData = response.data;
       const pdfDoc = generatePDF(pdfData);
       pdfDoc.save('data.pdf');
       toast.success('PDF generated successfully');
@@ -71,6 +55,23 @@ export function CalendarDateRangePicker({
       toast.error("Error generating PDF");
     } finally {
       setLoading2(false);
+    }
+  };
+
+  const handleDownloadPDFwithDateRange = async () => {
+    console.log(rangeData)
+    setLoading(true);
+    try {
+      const response = await axios.post('/api/pdf/with-date', rangeData);
+      const pdfData = response.data;
+      const pdfDoc = generatePDF(pdfData);
+      pdfDoc.save('data.pdf');
+      toast.success('PDF generated successfully');
+      console.log(pdfData)
+    } catch (error : any) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
   
@@ -114,10 +115,10 @@ export function CalendarDateRangePicker({
                     </div>
                     
                     <div className="w-full flex flex-col items-center justify-between mt-4">
-                        <Button className=" w-full mb-2">
+                        <Button className=" w-full mb-2" onClick={handleDownloadPDFwithDateRange}>
                           {loading ? 'Downloading...' : `Download report for ${formattedDateRange}`}
                         </Button>
-                        <Button variant={'outline'} className="w-full" onClick={handleDownloadPDF}>
+                        <Button variant={'outline'} className="w-full" onClick={handleDownloadPDFAll}>
                           {loading2 ? 'Downloading...' : `Download full report`}
                         </Button>
                     </div>

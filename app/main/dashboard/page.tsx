@@ -22,7 +22,7 @@ const DashboardPage = async () => {
     }
 
     return (
-        <div className="p-5 h-full w-full">
+        <div className="p-5 h-full w-full scrollbar-hide">
             <DashboardHome projects={projects} clients={clients} auditors={auditors} managers={managers}/>
         </div>
     )
