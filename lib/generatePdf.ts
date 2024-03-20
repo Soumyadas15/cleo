@@ -5,7 +5,7 @@ interface DataItem {
   [key: string]: any;
 }
 
-export function generatePDF(data: DataItem[], startDate?: Date, endDate?: Date) {
+export function generatePdf(data: DataItem[], startDate?: Date, endDate?: Date) {
   const doc = new jsPDF();
   let firstTableSkipped = false;
 

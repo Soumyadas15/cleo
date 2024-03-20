@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Project } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { generatePDF } from "@/lib/generatePdf";
+import { generatePdf } from "@/lib/generatePdf";
 
 
 interface CalendarDateRangePickerProps {
@@ -47,7 +47,7 @@ export function CalendarDateRangePicker({
     try {
       const response = await axios.post('/api/pdf', rangeData);
       const pdfData = response.data;
-      const pdfDoc = generatePDF(pdfData);
+      const pdfDoc = generatePdf(pdfData);
       pdfDoc.save('data.pdf');
       toast.success('PDF generated successfully');
       console.log(pdfData)
@@ -65,7 +65,7 @@ export function CalendarDateRangePicker({
       const response = await axios.post('/api/pdf/with-date', rangeData);
       const pdfData = response.data;
       const { startDate, endDate } = rangeData; 
-      const pdfDoc = generatePDF(pdfData, startDate, endDate);
+      const pdfDoc = generatePdf(pdfData, startDate, endDate);
       pdfDoc.save('data.pdf');
       toast.success('PDF generated successfully');
       console.log(pdfData)
