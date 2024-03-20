@@ -5,13 +5,22 @@ interface DataItem {
   [key: string]: any;
 }
 
-export function generatePDF(data: DataItem[]) {
+export function generatePDF(data: DataItem[], startDate?: Date, endDate?: Date) {
   const doc = new jsPDF();
   let firstTableSkipped = false;
 
   Object.keys(data).forEach((key, index) => {
     //@ts-ignore
-    const tableData = data[key];
+    let tableData = data[key];
+
+    if (startDate && endDate) {
+      tableData = tableData.filter((item: any) => {
+        const itemDate = item?.CreatedAt ? new Date(item.CreatedAt) : null;
+        return itemDate && itemDate >= startDate && itemDate <= endDate;
+      });
+    }
+
+    // Check if any data remains after filtering or if it's the first table
     if (tableData.length > 0 || (index === 0 && !firstTableSkipped)) {
       const tableColumn = Object.keys(tableData[0]);
       const tableRows: any[] = [];
@@ -37,7 +46,8 @@ export function generatePDF(data: DataItem[]) {
       doc.autoTable({
         head: [tableColumn],
         body: tableRows,
-        startY: 20 // Adjust the startY position if needed
+        startY: 20, // Adjust the startY position if needed
+        autoSize: true // Automatically adjust column widths based on content
       });
     }
   });

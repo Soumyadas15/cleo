@@ -22,28 +22,31 @@ export const Notifications = ({
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <Bell/>
-                {(count !== 0) ? (
-                    <div className="absolute pl-1 pr-1 bg-red-600 rounded-full bottom-5 left-2 flex items-center justify-center text-white font-semibold text-sm">
-                        {count}
-                    </div>
-                ) : (
-                    <div></div>
-                )}
+                <div className="relative">
+                    <Bell/>
+                    {(count !== 0) ? (
+                        <div className="absolute p-1 w-5 h-5 bottom-3 bg-red-600 rounded-full left-2 flex items-center justify-center text-white font-semibold text-sm">
+                            {count}
+                        </div>
+                    ) : (
+                        <div></div>
+                    )}
+                </div>
+                
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 max-w-56 bg-white rounded-[5px] dark:border-none dark:bg-black">
+            <DropdownMenuContent className="w-56 max-w-56 bg-white dark:border-none dark:bg-neutral-800 rounded-[5px]">
                 <DropdownMenuLabel>
                     Notifications
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator></DropdownMenuSeparator>
                 <DropdownMenuGroup>
                     {notifications.length === 0 ? (
-                        <DropdownMenuItem className="text-neutral-600 dark:text-neutral-300">
+                        <DropdownMenuItem className="focus:bg-neutral-200 dark:focus:bg-neutral-700 hover:cursor-pointer">
                             No notifications
                         </DropdownMenuItem>
                     ) : (
                         notifications.map((notification: any, index: number) => (
-                            <DropdownMenuItem key={index}>
+                            <DropdownMenuItem key={index} className="focus:bg-neutral-200 dark:focus:bg-neutral-700 hover:cursor-pointer">
                                 <NotificationItem notification={notification} />
                             </DropdownMenuItem>
                         ))

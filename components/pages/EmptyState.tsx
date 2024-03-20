@@ -13,6 +13,7 @@ interface EmptyStateProps {
   subtitle?: string;
   showButton?: boolean;
   buttonLabel?: string;
+  fontSize?: string;
   onClick?: () => void;
 }
 
@@ -21,6 +22,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
     subtitle,
     showButton,
     buttonLabel,
+    fontSize,
     onClick
 }) => {
     const router = useRouter();
@@ -41,6 +43,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
                 center
                 title={title!}
                 subtitle={subtitle}
+                fontSize={fontSize}
             />
             <div className="">
                 {showButton && (

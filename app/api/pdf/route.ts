@@ -83,7 +83,8 @@ export async function POST(req: Request) {
     //@ts-ignore
     const formattedAudits = project.audits.map(audit => ({
       Date: format(new Date(audit.createdAt), 'MM/dd/yyyy'),
-      Body: audit.comments
+      Body: audit.comments,
+      CreatedAt: audit.createdAt
     }));
 
 
@@ -158,7 +159,8 @@ export async function POST(req: Request) {
       Revision_Date: format(new Date(version.revisionDate), 'MM/dd/yyyy'),
       //@ts-ignore
       Approval_Date: format(new Date(version.approvalDate), 'MM/dd/yyyy'),
-      Approved_By: version.approvedBy
+      Approved_By: version.approvedBy,
+      CreatedAt: version.createdAt
     }));
     
     //@ts-ignore

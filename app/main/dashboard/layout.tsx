@@ -1,4 +1,5 @@
 import getProjectsByUsertId from "@/actions/getProjects/getProjectByUserId";
+import EmptyState from "@/components/pages/EmptyState";
 import { ProjectClient } from "@/components/pages/projects/ProjectClient";
 import { initialProfile } from "@/lib/initial-profile";
 import type { Metadata } from "next";
@@ -20,8 +21,20 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }>) {
 
-    const user = await initialProfile()
-    const projects = await getProjectsByUsertId()
+    const user = await initialProfile();
+    const projects = await getProjectsByUsertId();
+
+    if (user.role === "CLIENT"){
+        return (  
+            <div className="p-5 h-full w-full">
+                <EmptyState
+                    title="401"
+                    subtitle="Unauthorized access"
+                    fontSize="text-6xl"
+                />
+            </div>
+        );
+    }
 
   return (
     <div className=" h-full w-full overflow-hidden">

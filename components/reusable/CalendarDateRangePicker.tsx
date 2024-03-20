@@ -36,8 +36,8 @@ export function CalendarDateRangePicker({
   const [loading2, setLoading2] = React.useState(false);
 
   const rangeData = {
-    startDate: date?.from?.toISOString(),
-    endDate: date?.to?.toISOString(),
+    startDate: date?.from ? new Date(date.from) : undefined,
+    endDate: date?.to ? new Date(date.to) : undefined,
     projectId: project.id
   };
 
@@ -64,7 +64,8 @@ export function CalendarDateRangePicker({
     try {
       const response = await axios.post('/api/pdf/with-date', rangeData);
       const pdfData = response.data;
-      const pdfDoc = generatePDF(pdfData);
+      const { startDate, endDate } = rangeData; 
+      const pdfDoc = generatePDF(pdfData, startDate, endDate);
       pdfDoc.save('data.pdf');
       toast.success('PDF generated successfully');
       console.log(pdfData)
