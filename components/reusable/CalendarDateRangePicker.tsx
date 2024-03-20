@@ -51,8 +51,8 @@ export function CalendarDateRangePicker({
       pdfDoc.save('data.pdf');
       toast.success('PDF generated successfully');
       console.log(pdfData)
-    } catch (error) {
-      toast.error("Error generating PDF");
+    } catch (error : any) {
+      toast.error(error.message);
     } finally {
       setLoading2(false);
     }
