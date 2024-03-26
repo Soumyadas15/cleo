@@ -117,7 +117,7 @@ const closeEditModal = () => {
 
             <TableCell>{teamContent.role}</TableCell>
 
-            <TableCell>{teamContent.availability} %</TableCell>
+            <TableCell>{teamContent.availability}</TableCell>
 
             <TableCell>{teamContent.duration} months</TableCell>
 
