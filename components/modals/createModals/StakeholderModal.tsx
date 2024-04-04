@@ -125,6 +125,7 @@ const StakeholderModal = ({
           register={register}
           errors={errors}
           required
+          type="email"
         />
       </motion.div>
 

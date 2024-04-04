@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown";
 import useEditProjectModal from "@/hooks/editModalHooks/useEditProjectModal";
-import { Project, User } from "@prisma/client";
+import { Project, User, Workflow } from "@prisma/client";
 import axios from "axios";
 import { format } from 'date-fns';
 import { Calendar, MoreHorizontal, Pen, Trash } from "lucide-react";
@@ -14,17 +14,19 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-interface ProjectItemProps {
+interface FlowItemProps {
     user: User;
     project: Project;
+    flow: Workflow;
     redirect?: string;
 }
 
-export const ProjectItem = ({ 
+export const FlowItem = ({ 
     project,
     user,
-    redirect = `/main/projects/${project.id}/teams`,
-}: ProjectItemProps) => {
+    flow,
+    redirect = `/main/flows/${project.id}/${flow.id}`,
+}: FlowItemProps) => {
     const router = useRouter();
     const [clicked, setClicked] = useState(false);
     
@@ -32,23 +34,6 @@ export const ProjectItem = ({
         router.push(redirect);
     };
 
-    const handleDeleteClick = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>, project: any) => {
-        const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
-        try {
-            await axios.delete(`${backendServer}/projects/${project.id}`, { data: { userId: user.id }});
-            router.push('/main/projects');
-            toast.success('Project deleted');
-        } catch (firstError) {
-            try {
-                await axios.delete(`/api/projects/${project.id}`);
-                router.push('/main/projects');
-                toast.success('Project deleted');
-            } catch (secondError : any) {
-                const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
-                toast.error(errorMessage);
-            }
-        }
-    };
 
     return (
         <>
@@ -62,10 +47,10 @@ export const ProjectItem = ({
                     <div className="flex items-start justify-between">
                         <div className="flex flex-col">
                             <CardTitle className="text-lg font-semibold">
-                                {project.name}
+                                {flow.name}
                             </CardTitle>
                             <CardDescription className="text-neutral-400 w-[90%]">
-                                <DisplayText limit={80} title="Project description" text={project.description}/>
+                                <DisplayText limit={80} title="Project description" text={flow.description}/>
                             </CardDescription>
                         </div>
                         {(user.role === "ADMIN" || user.role === "AUDITOR") && (
@@ -80,7 +65,7 @@ export const ProjectItem = ({
                                     <DropdownMenuSeparator/>
                                     <DropdownMenuItem 
                                         className="rounded-[5px] focus:bg-neutral-100 dark:focus:bg-black hover:cursor-pointer"
-                                        onClick={(e) => handleDeleteClick(e, project)}
+                                        
                                     >
                                         <Trash className="mr-2 h-4 w-4 text-red-700 dark:text-500" />
                                         <span className="text-red-700 dark:text-red-500">Delete</span>

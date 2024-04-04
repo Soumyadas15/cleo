@@ -1,6 +1,9 @@
 import { db } from "@/lib/db";
 import { getUserProfileData } from "./profile-service";
 import { redirect } from "next/navigation";
+import getManagementToken from "@/actions/mgt-token";
+import getUser from "./get-user";
+import { getUserRoles } from "./get-role";
 
 
 class AuthenticationError extends Error {
@@ -13,7 +16,7 @@ class AuthenticationError extends Error {
 export const initialProfile = async () => {
   try {
     const user = await getUserProfileData();
-    // Assume getUserProfileData throws an error if the user is not authenticated
+
 
     const existingProfile = await db.user.findUnique({
       where: {
@@ -21,26 +24,34 @@ export const initialProfile = async () => {
       },
     });
 
+    
+
     if (existingProfile) {
       return existingProfile;
     }
 
-    let userEmail = isEmail(user.nickname) ? user.nickname : user.name;
+    const token = await getManagementToken();
+    const myUser = await getUser(user.sub, token);
+    const myRole = await getUserRoles(user.sub, token);
+    
+    let userEmail = isEmail(myUser.nickname) ? myUser.nickname : myUser.name;
 
     const profile = await db.user.upsert({
       where: {
         userId: user.sub,
       },
       update: {
-        name: user.name,
-        imageUrl: user.picture,
+        name: myUser.name,
+        imageUrl: myUser.picture,
         email: userEmail,
+        role: myRole[0].name,
       },
       create: {
         userId: user.sub,
-        name: user.name,
-        imageUrl: user.picture,
+        name: myUser.name,
+        imageUrl: myUser.picture,
         email: userEmail,
+        role: myRole[0].name,
       },
     });
 

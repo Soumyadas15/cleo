@@ -16,7 +16,7 @@ export const Sidebar = ({
     user,
 }: SidebarProps) => {
 
-    const createModal = useCreateModal()
+    const createModal = useCreateModal();
     const pathname = usePathname();
     const router = useRouter();
 
@@ -64,6 +64,15 @@ export const Sidebar = ({
                             icon={ <LayoutDashboardIcon/>}
                             highlight="text-green-600"
                             isActive = {pathname?.startsWith('/main/dashboard')}
+                        />
+                    )}
+                    {user.role !== "CLIENT" && (
+                        <SidebarItem 
+                            label="Flows"  
+                            to="main/flows"
+                            icon={ <GitGraph/>}
+                            highlight="text-green-600"
+                            isActive = {pathname?.startsWith('/main/flows')}
                         />
                     )}
                     <SidebarItem 

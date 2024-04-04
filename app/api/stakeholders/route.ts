@@ -1,3 +1,6 @@
+import createAuth0Account from "@/actions/createAuth0Account";
+import createUserAccount from "@/actions/createUserAccount";
+import getManagementToken from "@/actions/mgt-token";
 import { db } from "@/lib/db";
 import { initialProfile } from "@/lib/initial-profile";
 
@@ -27,6 +30,15 @@ export async function POST(request: Request) {
             id: projectId,
         }
     })
+
+    const token = await getManagementToken();
+
+    await createAuth0Account(
+      contact, 
+      name, 
+      'http://res.cloudinary.com/demiptppx/image/upload/v1710936855/jpwf3x7kdx1gigrpsopm.png', 
+      token
+    )
 
     if (!project) {
         return new Response('Project not found', { status: 400 });
