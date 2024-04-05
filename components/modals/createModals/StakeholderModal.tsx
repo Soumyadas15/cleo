@@ -14,10 +14,12 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import useStakeholderModal from "@/hooks/createModalHooks/useStakeholderModal";
 import Input from "@/components/reusable/Input";
+import { DropdownInput } from "@/components/reusable/DropdownInput";
+import { User } from "@prisma/client";
 
 interface StakeholderModalProps {
   project: any;
-  user: any;
+  user: User;
 }
 
 const StakeholderModal = ({
@@ -29,6 +31,7 @@ const StakeholderModal = ({
   const router = useRouter();
   const stakeholderModal = useStakeholderModal();
   const [isLoading, setIsLoading] = useState(false);
+  const [role, setRole] = useState("CLIENT");
 
 
   const {
@@ -39,9 +42,10 @@ const StakeholderModal = ({
     reset
   } = useForm<FieldValues>({
     defaultValues: {
+      sub: user.userId,
       userId: user.id,
       projectId: project?.id,
-      title: '',
+      title: role,
       name: '',
       contact: ''
     }
@@ -55,24 +59,39 @@ const StakeholderModal = ({
     console.log(data);
     setIsLoading(true);
     const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
-    try {
-        await axios.post(`${backendServer}/stakeholders`, data);
-        router.refresh();
-        toast.success('Success');
-    } catch (firstError) {
-        try {
-            await axios.post(`/api/stakeholders`, data);;
+    // try {
+    //     await axios.post(`${backendServer}/stakeholders`, data);
+    //     router.refresh();
+    //     toast.success('Success');
+    // } catch (firstError) {
+    //     try {
+    //         await axios.post(`/api/stakeholders`, data);;
+    //         router.refresh();
+    //         toast.success('Success (backup)');
+    //     } catch (secondError : any) {
+    //         const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
+    //         toast.error(errorMessage);
+    //     }
+    // } finally {
+    //     setIsLoading(false);
+    //     stakeholderModal.onClose();
+    // }
+    axios.post('/api/stakeholders', data)
+        .then(() => {
             router.refresh();
-            toast.success('Success (backup)');
-        } catch (secondError : any) {
-            const errorMessage = (secondError.response && secondError.response.data && secondError.response.data.error) || "An error occurred";
-            toast.error(errorMessage);
-        }
-    } finally {
-        setIsLoading(false);
-        stakeholderModal.onClose();
-    }
+            toast.success('Success');
+        }) .catch((error) => {
+            toast.error(error.response.data);
+        }) .finally(() => {
+            setIsLoading(false);
+            stakeholderModal.onClose()
+    })
   };
+
+  const handleRoleSelect = (value: any) => {
+    setRole(value);
+    setValue('title', value);
+  }
 
 
 
@@ -87,13 +106,11 @@ const StakeholderModal = ({
         exit={{ opacity: 0, x: "100%" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <Input
-          id="title"
-          label="Title"
-          register={register}
-          errors={errors}
-          required
-        />
+         <DropdownInput
+            label={role}
+            menuItems={['CLIENT', 'MANAGER', 'AUDITOR']}
+            onSelect={handleRoleSelect}
+          />
       </motion.div>
 
       <motion.div

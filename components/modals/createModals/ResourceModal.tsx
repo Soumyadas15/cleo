@@ -41,6 +41,8 @@ const ResourceModal = ({
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
 
+  const [isEndDateSmaller, setIsEndDateSmaller] = useState<boolean>(false);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -57,6 +59,7 @@ const ResourceModal = ({
             userId: user.id,
             projectId: project.id,
             name: '',
+            assignability: 0,
             role: '',
             comment: '',
             startDate: undefined,
@@ -70,8 +73,12 @@ const ResourceModal = ({
     }, [startDate, setValue]);
 
     useEffect(() => {
-        if (endDate) {
-        setValue("endDate", endDate);
+        if (endDate! < startDate!){
+          setIsEndDateSmaller(true);
+        }
+        else {
+          setIsEndDateSmaller(false);
+          setValue("endDate", endDate);
         }
     }, [endDate, setValue]);
 
@@ -87,6 +94,8 @@ const ResourceModal = ({
     if (step !== STEPS.DATES){
       return onNext();
     }
+    data.assignability = parseInt(data.assignability);
+    console.log(data)
     setIsLoading(true);
     const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
     try {
@@ -153,6 +162,26 @@ const ResourceModal = ({
             required
           />
         </motion.div>
+
+        <motion.div
+            key="assignability"
+            initial={{ opacity: 0, x: "-50%" }}
+            animate={{ opacity: 1, x: "0%" }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <Input
+            id="assignability"
+            label="Assignability"
+            disabled={isLoading}
+            register={register}  
+            errors={errors}
+            required
+            type="number"
+          />
+        </motion.div>
+
+
     </div>
   )
 
@@ -246,6 +275,7 @@ const ResourceModal = ({
               selectedDate={endDate}
               onSelect={setEndDate}
             />
+            {isEndDateSmaller ? <span className="text-sm font-semibold text-red-600">End date cannot be earlier than start date</span> : <span></span>}
         </motion.div>
       </div>
     )
@@ -255,7 +285,7 @@ const ResourceModal = ({
 
   return (
     <Modal
-      disabled={isLoading}
+      disabled={isLoading || isEndDateSmaller}
       isOpen={resourceModal.isOpen}
       title="Add resource"
       actionLabel={actionLabel}

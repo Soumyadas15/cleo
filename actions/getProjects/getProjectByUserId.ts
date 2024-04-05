@@ -1,8 +1,8 @@
 import { db } from '@/lib/db';
-import { initialProfile } from '@/lib/initial-profile'; // Adjust the import statement to match the correct path
-import getUserById from '../getUsers/getUserById';
+import { initialProfile } from '@/lib/initial-profile';
+import { Member, Project } from '@prisma/client';
 
-export default async function getProjectsByUsertId() {
+export default async function getProjectsByUserId(): Promise<Project[]> {
     try {
         const user = await initialProfile();
 
@@ -10,51 +10,31 @@ export default async function getProjectsByUsertId() {
             return [];
         }
 
-        let projects;
-        
-        if (user.role === 'ADMIN') {
-            projects = await db.project.findMany({
-                where: {
-                    userId: user.id
-                },
-                orderBy: {
-                    createdAt: 'desc',
-                }
-            });
-        } 
-        else if (user.role === 'MANAGER') {
-            projects = await db.project.findMany({
-                where: {
-                    projectManagerId: user.id
-                },
-                orderBy: {
-                    createdAt: 'desc',
-                }
-            });
-        } 
-        else if (user.role === 'AUDITOR') {
-            projects = await db.project.findMany({
-                where: {
-                    auditorId: user.id
-                },
-                orderBy: {
-                    createdAt: 'desc',
-                }
-            });
-        } 
-        else if (user.role === 'CLIENT') {
-            projects = await db.project.findMany({
-                where: {
-                    clientId: user.id
-                },
-                orderBy: {
-                    createdAt: 'desc',
-                }
-            });
+        let projects: Project[] = [];
+
+        // Fetch all the memberships associated with the user
+        const userMemberships: Member[] = await db.member.findMany({
+            where: {
+                userId: user.id
+            },
+            include: {
+                project: true
+            }
+        });
+
+        if (userMemberships.length === 0) {
+            return [];
         }
 
-        return projects
-        
+        userMemberships.forEach((member: Member) => {
+            //@ts-ignore
+            projects.push(member.project);
+        });
+
+        projects.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+        return projects;
+
     } catch (error) {
         if (error instanceof Error) {
             throw error;

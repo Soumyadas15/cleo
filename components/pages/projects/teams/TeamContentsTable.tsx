@@ -112,7 +112,7 @@ const closeEditModal = () => {
 
             <TableCell className="font-medium">{index}</TableCell>
 
-            <TableCell className="font-medium">{teamContent.resources} %</TableCell>
+            <TableCell className="font-medium">{teamContent.resources}</TableCell>
             
 
             <TableCell>{teamContent.role}</TableCell>

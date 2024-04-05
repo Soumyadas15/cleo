@@ -4,7 +4,13 @@ import { db } from '@/lib/db';
 import getUserByEmail from './getUsers/getUserByEmail';
 import axios from 'axios';
 
-export default async function createAuth0Account(email: string,  name: string, imageUrl: string, accessToken: string) {
+export default async function createAuth0Account(
+    email: string,  
+    name: string, 
+    password: string, 
+    imageUrl: string, 
+    accessToken: string
+) {
     
     const url = `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users`;
     const data = {
@@ -12,17 +18,12 @@ export default async function createAuth0Account(email: string,  name: string, i
         nickname: name,
         picture: imageUrl,
         connection: 'Username-Password-Authentication',
-        password: 'Test@1234567890', 
+        password: password, 
     };
-
-    try {
-        const response = await axios.post(url, data, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
-    } catch (error) {
-        console.error('Error:', error);
-        throw error;
-    }
+    const response = await axios.post(url, data, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+    return response.data
 }

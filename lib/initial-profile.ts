@@ -17,7 +17,6 @@ export const initialProfile = async () => {
   try {
     const user = await getUserProfileData();
 
-
     const existingProfile = await db.user.findUnique({
       where: {
         userId: user.sub,
@@ -33,6 +32,7 @@ export const initialProfile = async () => {
     const token = await getManagementToken();
     const myUser = await getUser(user.sub, token);
     const myRole = await getUserRoles(user.sub, token);
+    console.log(myRole)
     
     let userEmail = isEmail(myUser.nickname) ? myUser.nickname : myUser.name;
 

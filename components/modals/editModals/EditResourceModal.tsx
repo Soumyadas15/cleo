@@ -14,7 +14,6 @@ import Heading from "../../reusable/Heading";
 import Input from "../../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
-import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
 import Textarea from "../../reusable/Textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
@@ -24,9 +23,12 @@ import { format } from 'date-fns';
 import { Calendar } from "../../ui/calendar";
 import useEditResourceModal from "@/hooks/editModalHooks/useEditResourceModal";
 import { ProgressBar } from "../../ProgressBar";
-import { User } from "@prisma/client";
+import { Project, User } from "@prisma/client";
+import DateInput from "@/components/reusable/DateInput";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 interface EditResourceModalProps {
+  project: Project;
   resource?: any;
   user: User;
   onClose: () => void;
@@ -42,7 +44,8 @@ enum STEPS {
 const EditResourceModal = ({
   resource,
   user,
-  onClose
+  onClose,
+  project,
 }: EditResourceModalProps) => {
 
 
@@ -69,6 +72,7 @@ const EditResourceModal = ({
             userId: user.id,
             resourceId: resource.id,
             name: resource.name,
+            assignability: resource.assignability,
             role: resource.role,
             comment: resource.comment,
             startDate: resource.startDate,
@@ -80,6 +84,7 @@ const EditResourceModal = ({
         userId: user.id,
         resourceId: resource.id,
         name: resource.name,
+        assignability: resource.assignability,
         role: resource.role,
         comment: resource.comment,
         startDate: resource.startDate,
@@ -87,6 +92,7 @@ const EditResourceModal = ({
       });
   }, [resource, reset]);
   
+  const [showDateError, setShowDateError] = useState(false);
 
   useEffect(() => {
       if (resource.startDate) {
@@ -104,6 +110,16 @@ const EditResourceModal = ({
       }
   }, [resource.endDate, setValue]);
 
+  useEffect(() => {
+    if (startDate && endDate) {
+        if (endDate < startDate) {
+            setShowDateError(true);
+        } else {
+            setShowDateError(false);
+        }
+    }
+}, [startDate, endDate]);
+
 
   const onBack = () => {
       setStep((value) => value - 1);
@@ -116,6 +132,7 @@ const EditResourceModal = ({
     if (step !== STEPS.DATES){
       return onNext();
     }
+    data.assignability = parseInt(data.assignability);
     setIsLoading(true);
     const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
     try {
@@ -135,6 +152,7 @@ const EditResourceModal = ({
         setIsLoading(false);
         editResourceModal.onClose();
         onClose();
+        await mailUpdates(project.name, project.id) 
     }
   }
   
@@ -164,7 +182,7 @@ const EditResourceModal = ({
   let bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading
-        title="Resource name"
+        title="Details"
         subtitle=""
         center
       />
@@ -184,6 +202,25 @@ const EditResourceModal = ({
             required
           />
         </motion.div>
+
+        <motion.div
+            key="assignability"
+            initial={{ opacity: 0, x: "-50%" }}
+            animate={{ opacity: 1, x: "0%" }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <Input
+            id="assignability"
+            label="Assignability"
+            disabled={isLoading}
+            register={register}  
+            errors={errors}
+            required
+            type="number"
+          />
+        </motion.div>
+
     </div>
   )
 
@@ -292,31 +329,12 @@ const EditResourceModal = ({
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-            <Popover>
-            <PopoverTrigger asChild>
-                <Button
-                variant={"outline"}
-                className={cn(
-                    "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                    !endDate && "text-muted-foreground"
-                )}
-                >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {endDate ? format(endDate, "PPP") : <span>End date</span>}
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
-                <Calendar
-                mode="single"
-                selected={endDate}
-                onSelect={(date) => {
-                    setStartDate(date);
-                    setValue("endDate", date);
-                }}
-                initialFocus
-                />
-            </PopoverContent>
-            </Popover>
+            <DateInput
+              label="End Date"
+              selectedDate={endDate}
+              onSelect={setEndDate}
+            />
+            {showDateError ? <span className='text-red-600 text-sm font-semibold'>Feedback date should not exceed current date</span> : <span></span>}
         </motion.div>
       </div>
     )
@@ -324,7 +342,7 @@ const EditResourceModal = ({
 
   return (
     <Modal
-      disabled={isLoading}
+      disabled={isLoading || showDateError}
       isOpen={editResourceModal.isOpen}
       title="Edit resource"
       actionLabel={actionLabel}

@@ -5,14 +5,9 @@ import { db } from "@/lib/db";
 //@ts-ignore
 import { initialProfile } from "@/lib/initial-profile";
 
-interface IParams {
-    projectId?: string;
-}
-
-export default async function getMembers(params: IParams){
+export default async function getMembersByProjectId(projectId: string){
     try{
         const currentUser = await initialProfile()
-        const { projectId } = params; 
 
         if (!currentUser) {
             return new Response('User not found', { status: 404 });
@@ -30,6 +25,7 @@ export default async function getMembers(params: IParams){
                     select: {
                         imageUrl: true,
                         email: true,
+                        name: true,
                     }
                 }
             }
@@ -38,7 +34,8 @@ export default async function getMembers(params: IParams){
         const projectMembers = members.map(member => ({
             ...member,
             profilePic: member.user?.imageUrl,
-            email: member.user?.email
+            email: member.user?.email,
+            name: member.user?.name,
         }));
 
         return projectMembers;

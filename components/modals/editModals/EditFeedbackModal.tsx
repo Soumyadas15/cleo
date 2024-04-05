@@ -13,7 +13,6 @@ import Heading from "../../reusable/Heading";
 import Input from "../../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
-import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
 import Textarea from "../../reusable/Textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
@@ -21,10 +20,11 @@ import { Button } from "../../ui/button";
 import { cn } from "@/lib/utils";
 import { format } from 'date-fns';
 import { Calendar } from "../../ui/calendar";
-import useFeedbackModal from "@/hooks/createModalHooks/useFeedbackModal";
 import useEditFeedbackModal from "@/hooks/editModalHooks/useEditFeedbackModal";
 import { ProgressBar } from "../../ProgressBar";
 import { Feedback, User } from "@prisma/client";
+import { DropdownInput } from "@/components/reusable/DropdownInput";
+import DateInput from "@/components/reusable/DateInput";
 
 enum STEPS {
   TYPE = 0,
@@ -44,9 +44,13 @@ const EditFeedbackModal = ({
   onClose
 }: EditFeedbackModalProps) => {
 
+  const currentDate = new Date();
+
   const router = useRouter();
   const editFeedbackModal = useEditFeedbackModal();
   const [step, setStep] = useState(STEPS.TYPE);
+  const [feedbackType, setFeedbackType] = useState(feedback.type);
+  const [showDateError, setShowDateError] = useState(false);
 
   const [date, setDate] = useState<Date>(feedback.date);
   const [closureDate, setClosureDate] = useState<Date>(feedback.closureDate);
@@ -86,12 +90,14 @@ const EditFeedbackModal = ({
   }, [feedback, reset]);
 
   useEffect(() => {
-      if (feedback.date) {
-        const feedbackDate = new Date(feedback.date);
-        setDate(feedbackDate);
-        setValue("date", feedbackDate);
-      }
-  }, [feedback.date, setValue]);
+    if (date! > currentDate) {
+      setShowDateError(true);
+    }
+    else {
+      setShowDateError(false);
+      setValue("date", date);
+    }
+}, [date, setValue]);
 
   useEffect(() => {
       if (feedback.closureDate) {
@@ -155,6 +161,11 @@ const EditFeedbackModal = ({
     return (step / (Object.keys(STEPS).length / 2 - 1)) * 100;
   }, [step]);
 
+  const handleFeedbackTypeChange = (value : string) => {
+    setFeedbackType(value);
+    setValue('type', value);
+  }
+
 
 
   let bodyContent = (
@@ -171,13 +182,10 @@ const EditFeedbackModal = ({
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <Input
-            id="type"
-            label="Feedback type"
-            disabled={isLoading}
-            register={register}  
-            errors={errors}
-            required
+          <DropdownInput
+            label={feedbackType}
+            menuItems={["Complaint", "Appreciation", "Suggestion"]}
+            onSelect={handleFeedbackTypeChange}
           />
         </motion.div>
     </div>
@@ -187,7 +195,7 @@ const EditFeedbackModal = ({
     bodyContent = (
       <div className="flex flex-col gap-4">
         <Heading
-          title="Body"
+          title="Detailed feedback"
           subtitle=""
           center
         />
@@ -255,31 +263,12 @@ const EditFeedbackModal = ({
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-            <Popover>
-            <PopoverTrigger asChild>
-                <Button
-                variant={"outline"}
-                className={cn(
-                    "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                    !date && "text-muted-foreground"
-                )}
-                >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? format(date, "PPP") : <span>Start date</span>}
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
-                <Calendar
-                mode="single"
-                selected={date}
-                onSelect={(date) => {
-                    setDate(date!);
-                    setValue("date", date);
-                }}
-                initialFocus
-                />
-            </PopoverContent>
-            </Popover>
+            <DateInput
+              label="Fedback Date"
+              selectedDate={date}
+              onSelect={setDate}
+            />
+            {showDateError ? <span className='text-red-600 text-sm font-semibold'>Feedback date should not exceed current date</span> : <span></span>}
         </motion.div>
         <motion.div
             key="closureDate"
@@ -322,7 +311,7 @@ const EditFeedbackModal = ({
 
   return (
     <Modal
-      disabled={isLoading}
+      disabled={isLoading || showDateError}
       isOpen={editFeedbackModal.isOpen}
       title="Edit feedback"
       actionLabel={actionLabel}

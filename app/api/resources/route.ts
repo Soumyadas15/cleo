@@ -1,3 +1,5 @@
+import getMembersByProjectId from "@/actions/getMembers/getMembersByProjectId";
+import { mailUpdates } from "@/actions/mailUpdates";
 import { db } from "@/lib/db";
 import { initialProfile } from "@/lib/initial-profile";
 
@@ -15,7 +17,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { projectId, name, role, comment, startDate, endDate } = body;
+    const { projectId, name, role, comment, startDate, endDate, assignability } = body;
 
     if (!projectId ||!name ||!role ||!comment ||!startDate ||!endDate) {
       return new Response('Missing required fields', { status: 400 });
@@ -38,7 +40,8 @@ export async function POST(request: Request) {
             comment: comment,
             startDate: startDate,
             endDate: endDate,
-            projectId: projectId
+            projectId: projectId,
+            assignability: assignability
         }
     }) 
 

@@ -17,6 +17,7 @@ import Textarea from "../../reusable/Textarea";
 import useFeedbackModal from "@/hooks/createModalHooks/useFeedbackModal";
 import { ProgressBar } from "../../ProgressBar";
 import DateInput from "@/components/reusable/DateInput";
+import { DropdownInput } from "@/components/reusable/DropdownInput";
 
 enum STEPS {
   TYPE = 0,
@@ -37,9 +38,16 @@ const FeedbackModal = ({
   const router = useRouter();
   const feedbackModal = useFeedbackModal();
   const [step, setStep] = useState(STEPS.TYPE);
+  const [feedbackType, setFeedbackType] = useState('Complaint');
+  const [showDateError, setShowDateError] = useState(false);
+
+
+  const currentDate = new Date();
 
   const [date, setDate] = useState<Date>();
   const [closureDate, setClosureDate] = useState<Date>();
+
+  
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -64,8 +72,12 @@ const FeedbackModal = ({
     }})
 
     useEffect(() => {
-        if (date) {
-        setValue("date", date);
+        if (date! > currentDate) {
+          setShowDateError(true);
+        }
+        else {
+          setShowDateError(false);
+          setValue("date", date);
         }
     }, [date, setValue]);
 
@@ -128,6 +140,11 @@ const FeedbackModal = ({
     return (step / (Object.keys(STEPS).length / 2 - 1)) * 100;
   }, [step]);
 
+  const handleFeedbackTypeChange = (value : string) => {
+    setFeedbackType(value);
+    setValue('type', value);
+  }
+
 
 
   let bodyContent = (
@@ -144,13 +161,10 @@ const FeedbackModal = ({
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <Input
-            id="type"
-            label="Feedback type"
-            disabled={isLoading}
-            register={register}  
-            errors={errors}
-            required
+          <DropdownInput
+            label={feedbackType}
+            menuItems={["Complaint", "Appreciation", "Suggestion"]}
+            onSelect={handleFeedbackTypeChange}
           />
         </motion.div>
     </div>
@@ -160,7 +174,7 @@ const FeedbackModal = ({
     bodyContent = (
       <div className="flex flex-col gap-4">
         <Heading
-          title="Body"
+          title="Detailed feedback"
           subtitle=""
           center
         />
@@ -229,10 +243,11 @@ const FeedbackModal = ({
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
             <DateInput
-              label="Start Date"
+              label="Fedback Date"
               selectedDate={date}
               onSelect={setDate}
             />
+            {showDateError ? <span className='text-red-600 text-sm font-semibold'>Feedback date should not exceed current date</span> : <span></span>}
         </motion.div>
         <motion.div
             key="closureDate"
@@ -255,7 +270,7 @@ const FeedbackModal = ({
 
   return (
     <Modal
-      disabled={isLoading}
+      disabled={isLoading || showDateError}
       isOpen={feedbackModal.isOpen}
       title="Client feedback"
       actionLabel={actionLabel}

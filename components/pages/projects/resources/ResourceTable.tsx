@@ -95,7 +95,7 @@ export const ResourceTable = ({
   return (
     <>
       {editResourceId && (
-        <EditResourceModal user={user} resource={resources.find((res: any) => res.id === editResourceId)} onClose={closeEditModal}/>
+        <EditResourceModal project={project} user={user} resource={resources.find((res: any) => res.id === editResourceId)} onClose={closeEditModal}/>
       )}
       <Table className="scrollbar-hide">
         <TableHeader className="bg-neutral-200 border-none dark:bg-neutral-800">
@@ -103,6 +103,7 @@ export const ResourceTable = ({
             <TableHead className="w-[100px] font-bold">Serial</TableHead>
             <TableHead className="w-[150px] font-bold">Name</TableHead>
             <TableHead className="w-[150px] font-bold">Role</TableHead>
+            <TableHead className="w-[150px] font-bold">Assignability</TableHead>
             <TableHead className="w-[200px] font-bold">Start Date</TableHead>
             <TableHead className="w-[200px] font-bold">End Date</TableHead>
             <TableHead className="font-bold w-[45rem]">Comment</TableHead>
@@ -119,12 +120,9 @@ export const ResourceTable = ({
               <TableCell className="font-medium">{index}</TableCell>
               <TableCell className="font-medium">{resource.name}</TableCell>
               <TableCell>{resource.role}</TableCell>
-              <TableCell>
-                {format(new Date(resource.startDate), "MMM do yyyy")}
-              </TableCell>
-              <TableCell>
-                {format(new Date(resource.endDate), "MMM do yyyy")}
-              </TableCell>
+              <TableCell className="font-medium">{resource.assignability}</TableCell>
+              <TableCell>{format(new Date(resource.startDate), "MMM do yyyy")}</TableCell>
+              <TableCell>{format(new Date(resource.endDate), "MMM do yyyy")}</TableCell>
               <TableCell>
                 <DisplayText title="Comment" text={resource.comment} limit={150}/>
                 {resource.isEdited ? (

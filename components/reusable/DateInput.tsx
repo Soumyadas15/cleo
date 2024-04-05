@@ -12,9 +12,18 @@ interface DateInputProps {
   selectedDate: Date | undefined;
   onSelect: (date: Date) => void;
   disabled?: boolean;
+  validateMaxDate?: boolean;
 }
 
-const DateInput: React.FC<DateInputProps> = ({ label, selectedDate, onSelect, disabled }) => {
+const DateInput: React.FC<DateInputProps> = ({ 
+  label, 
+  selectedDate, 
+  onSelect, 
+  disabled,
+  validateMaxDate
+}) => {
+
+  
   return (
     <Popover>
       <PopoverTrigger asChild>

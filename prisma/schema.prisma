@@ -47,7 +47,7 @@ model User {
   userId String @unique
   name String
   imageUrl String @db.Text
-  email String @db.Text
+  email String @db.Text @unique
   role UserRole? @default(CLIENT)
 
   createdAt DateTime @default(now())
@@ -177,6 +177,7 @@ model Resource {
   
   role String
   name String
+  assignability Int @default(0)
   startDate DateTime @default(now())
   endDate DateTime @default(now())
   comment String @db.Text
