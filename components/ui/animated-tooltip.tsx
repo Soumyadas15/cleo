@@ -34,9 +34,13 @@ export const AnimatedTooltip = ({ items }: AnimatedTooltipProps) => {
     translateX.set(0);
   };
 
+  // Logic to handle items greater than 4
+  const visibleItems = items.slice(0, 4);
+  const remainingCount = items.length - visibleItems.length;
+
   return (
     <>
-      {items.map((item, idx) => (
+      {visibleItems.map((item, idx) => (
         <div
           className="-mr-4 relative group"
           key={item.name}
@@ -81,6 +85,11 @@ export const AnimatedTooltip = ({ items }: AnimatedTooltipProps) => {
           </div>
         </div>
       ))}
+      {remainingCount > 0 && (
+        <div className="flex items-center bg-white w-14 h-14 justify-center rounded-full group-hover:scale-105 group-hover:z-30">
+          +{remainingCount}
+        </div>
+      )}
     </>
   );
 };

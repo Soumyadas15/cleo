@@ -50,13 +50,13 @@ export const Sidebar = ({
                         isActive = {pathname?.startsWith('/main/projects')}
                         
                     />
-                    <SidebarItem 
+                    {/* <SidebarItem 
                         label="Managers"  
                         to="main/managers"
                         icon={ <User/>}
                         highlight="text-green-600"
                         isActive = {pathname?.startsWith('/main/managers')}
-                    />
+                    /> */}
                     {user.role !== "CLIENT" && (
                         <SidebarItem 
                             label="Dashboard"  
@@ -75,13 +75,13 @@ export const Sidebar = ({
                             isActive = {pathname?.startsWith('/main/flows')}
                         />
                     )}
-                    <SidebarItem 
+                    {/* <SidebarItem 
                         label="Settings"  
                         to="main/settings"
                         icon={ <Settings/>}
                         highlight="text-green-600"
                         isActive = {pathname?.startsWith('/main/settings')}
-                    />
+                    /> */}
                 </div>
                 
             </div>
