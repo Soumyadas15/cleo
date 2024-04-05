@@ -1,7 +1,7 @@
 "use client"
 
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { 
   FieldValues, 
   SubmitHandler, 
@@ -12,20 +12,13 @@ import { motion } from 'framer-motion';
 import Modal from "../Modal";
 import Heading from "../../reusable/Heading";
 import Input from "../../reusable/Input";
-import axios from 'axios';
-import toast from "react-hot-toast";
 import Textarea from "../../reusable/Textarea";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { Button } from "../../ui/button";
-import { cn } from "@/lib/utils";
-import { format } from 'date-fns';
-import { Calendar } from "../../ui/calendar";
 import useEditResourceModal from "@/hooks/editModalHooks/useEditResourceModal";
 import { ProgressBar } from "../../ProgressBar";
 import { Project, User } from "@prisma/client";
 import DateInput from "@/components/reusable/DateInput";
-import { mailUpdates } from "@/actions/mailUpdates";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 interface EditResourceModalProps {
   project: Project;
@@ -52,6 +45,7 @@ const EditResourceModal = ({
   const router = useRouter();
   const editResourceModal = useEditResourceModal();
   const [step, setStep] = useState(STEPS.DESCRIPTION);
+  const [showDateError, setShowDateError] = useState(false);
 
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
@@ -91,8 +85,7 @@ const EditResourceModal = ({
         endDate: resource.endDate,
       });
   }, [resource, reset]);
-  
-  const [showDateError, setShowDateError] = useState(false);
+
 
   useEffect(() => {
       if (resource.startDate) {
@@ -110,15 +103,24 @@ const EditResourceModal = ({
       }
   }, [resource.endDate, setValue]);
 
-  useEffect(() => {
-    if (startDate && endDate) {
-        if (endDate < startDate) {
-            setShowDateError(true);
-        } else {
-            setShowDateError(false);
-        }
+  const handleStartDateSelect = (value : any) => {
+    setStartDate(value);
+    setValue("startDate", value);
+  }
+
+  const handleEndDateSelect = (value : any) => {
+    if (endDate! < startDate!){
+      setShowDateError(true);
     }
-}, [startDate, endDate]);
+    else{
+      setShowDateError(false);
+      setEndDate(value);
+      setValue("endDate", value);
+    }
+    
+  }
+
+
 
 
   const onBack = () => {
@@ -133,6 +135,7 @@ const EditResourceModal = ({
       return onNext();
     }
     data.assignability = parseInt(data.assignability);
+    console.log(data)
     setIsLoading(true);
     const backendServer = process.env.NEXT_PUBLIC_BACKEND_SERVER;
     try {
@@ -152,7 +155,6 @@ const EditResourceModal = ({
         setIsLoading(false);
         editResourceModal.onClose();
         onClose();
-        await mailUpdates(project.name, project.id) 
     }
   }
   
@@ -296,31 +298,11 @@ const EditResourceModal = ({
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-            <Popover>
-            <PopoverTrigger asChild>
-                <Button
-                variant={"outline"}
-                className={cn(
-                    "w-full border-[1px] border-neutral-300 rounded-[5px] justify-start text-left font-normal",
-                    !startDate && "text-muted-foreground"
-                )}
-                >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {startDate ? format(startDate, "PPP") : <span>Start date</span>}
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 z-[9999] bg-neutral-200 rounded-[10px]" align="start">
-                <Calendar
-                mode="single"
-                selected={startDate}
-                onSelect={(date) => {
-                    setStartDate(date);
-                    setValue("startDate", date);
-                }}
-                initialFocus
-                />
-            </PopoverContent>
-            </Popover>
+            <DateInput
+              label="Start date"
+              selectedDate={startDate}
+              onSelect={handleStartDateSelect}
+            />
         </motion.div>
         <motion.div
             key="endDate"
@@ -330,9 +312,9 @@ const EditResourceModal = ({
             transition={{ duration: 0.3, ease: "easeInOut" }}
         >
             <DateInput
-              label="End Date"
+              label="End date"
               selectedDate={endDate}
-              onSelect={setEndDate}
+              onSelect={handleEndDateSelect}
             />
             {showDateError ? <span className='text-red-600 text-sm font-semibold'>Feedback date should not exceed current date</span> : <span></span>}
         </motion.div>
