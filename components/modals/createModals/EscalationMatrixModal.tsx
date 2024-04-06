@@ -16,6 +16,7 @@ import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import Input from "@/components/reusable/Input";
 import { Project, User } from "@prisma/client";
 import useEscalationMatrixModal from "@/hooks/createModalHooks/useEscalationMatrixModal";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 interface EscalationMatrixModalProps {
   project: Project;
@@ -77,6 +78,7 @@ const EscalationMatrixModal = ({
             reset();
             escalationMatrixModal.onClose();
     })
+    await mailUpdates(project.name, project.id)
   };
 
   const bodyContent = (

@@ -17,6 +17,7 @@ import { ProgressBar } from "../../ProgressBar";
 import Textarea from "@/components/reusable/Textarea";
 import useVersionHistoryModal from "@/hooks/createModalHooks/useVersionHistoryModal";
 import DateInput from "@/components/reusable/DateInput";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   TYPE = 0,
@@ -92,6 +93,7 @@ const VersionHistoryModal = ({
         setIsLoading(false);
         versionHistoryModal.onClose();
     }
+    await mailUpdates(project.name, project.id);
   }
 
   const actionLabel = useMemo(() => {

@@ -19,9 +19,10 @@ import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import DateInput from "@/components/reusable/DateInput";
 import { DropdownInput } from "@/components/reusable/DropdownInput";
 import useSprintModal from "@/hooks/createModalHooks/useSprintModal";
-import { Sprint, User } from "@prisma/client";
+import { Project, Sprint, User } from "@prisma/client";
 import useEditSprintModal from "@/hooks/editModalHooks/useEditSprintModal";
 import { user } from "@nextui-org/react";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   DATES = 0,
@@ -32,11 +33,13 @@ enum STEPS {
 interface EditSprintModalProps {
   sprint: Sprint;
   user: User;
+  project: Project;
   onClose: () => void;
 }
 const EditSprintModal = ({
   sprint,
   user,
+  project,
   onClose
 }: EditSprintModalProps) => {
 
@@ -106,6 +109,7 @@ const EditSprintModal = ({
         editSprintModal.onClose();
         onClose();
     }
+    await mailUpdates(project.name, project.id);
   }
 
   const actionLabel = useMemo(() => {

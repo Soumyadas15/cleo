@@ -16,6 +16,8 @@ import toast from "react-hot-toast";
 import Textarea from "../../reusable/Textarea";
 import { ProgressBar } from "../../ProgressBar";
 import useTeamContentModal from "@/hooks/createModalHooks/usePhaseContentModal";
+import { mailUpdates } from "@/actions/mailUpdates";
+import { Project } from "@prisma/client";
 
 enum STEPS {
   RESOURCES = 0,
@@ -26,10 +28,12 @@ enum STEPS {
 
 interface TeamContentModalProps {
   user: any;
+  project: Project;
   team: any
 }
 const TeamContentModal = ({
   user,
+  project,
   team
 }: TeamContentModalProps) => {
 
@@ -81,6 +85,7 @@ const TeamContentModal = ({
             setIsLoading(false);
             teamContentModal.onClose()
     })
+    await mailUpdates(project.name, project.id)
   }
 
   const actionLabel = useMemo(() => {

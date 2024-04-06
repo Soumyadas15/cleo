@@ -14,19 +14,22 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import useEditUpdateModal from "@/hooks/editModalHooks/useEditUpdateModa";
-import { Update, User } from "@prisma/client";
+import { Project, Update, User } from "@prisma/client";
 import DateInput from "@/components/reusable/DateInput";
 import { user } from "@nextui-org/react";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 interface EditUpdateModalProps {
   update: Update;
   user: User;
+  project: Project;
   onClose: () => void;
 }
 
 const EditUpdateModal = ({
   update,
   user,
+  project,
   onClose
 }: EditUpdateModalProps) => {
 
@@ -88,6 +91,7 @@ const EditUpdateModal = ({
         editUpdateModal.onClose();
         onClose();
     }
+    await mailUpdates(project.name, project.id)
   };
   
 

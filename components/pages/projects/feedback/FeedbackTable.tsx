@@ -99,7 +99,7 @@ export const FeedbackTable = ({
   return (
     <>
     {editFeedbackId && (
-        <EditFeedbackModal user={user} feedback={feedbacks.find((res: any) => res.id === editFeedbackId)} onClose={closeEditModal}/>
+        <EditFeedbackModal project={project} user={user} feedback={feedbacks.find((res: any) => res.id === editFeedbackId)} onClose={closeEditModal}/>
     )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">

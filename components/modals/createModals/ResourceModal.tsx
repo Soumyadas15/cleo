@@ -17,6 +17,7 @@ import useResourceModal from "@/hooks/createModalHooks/useResourceModal";
 import Textarea from "../../reusable/Textarea";
 import { ProgressBar } from "../../ProgressBar";
 import DateInput from "@/components/reusable/DateInput";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   DESCRIPTION = 0,
@@ -115,6 +116,7 @@ const ResourceModal = ({
         setIsLoading(false);
         resourceModal.onClose();
     }
+    await mailUpdates(project.name, project.id)
   }
 
   const actionLabel = useMemo(() => {

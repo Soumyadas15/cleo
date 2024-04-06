@@ -18,6 +18,7 @@ import useFeedbackModal from "@/hooks/createModalHooks/useFeedbackModal";
 import { ProgressBar } from "../../ProgressBar";
 import DateInput from "@/components/reusable/DateInput";
 import { DropdownInput } from "@/components/reusable/DropdownInput";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   TYPE = 0,
@@ -118,6 +119,7 @@ const FeedbackModal = ({
         setIsLoading(false);
         feedbackModal.onClose();
     }
+    await mailUpdates(project.name, project.id)
   }
 
   const actionLabel = useMemo(() => {

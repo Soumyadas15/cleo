@@ -22,9 +22,10 @@ import { format } from 'date-fns';
 import { Calendar } from "../../ui/calendar";
 import useEditFeedbackModal from "@/hooks/editModalHooks/useEditFeedbackModal";
 import { ProgressBar } from "../../ProgressBar";
-import { Feedback, User } from "@prisma/client";
+import { Feedback, Project, User } from "@prisma/client";
 import { DropdownInput } from "@/components/reusable/DropdownInput";
 import DateInput from "@/components/reusable/DateInput";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   TYPE = 0,
@@ -36,11 +37,13 @@ enum STEPS {
 interface EditFeedbackModalProps {
   feedback: Feedback;
   user: User;
+  project: Project;
   onClose: () => void;
 }
 const EditFeedbackModal = ({
   feedback,
   user,
+  project,
   onClose
 }: EditFeedbackModalProps) => {
 
@@ -139,6 +142,7 @@ const EditFeedbackModal = ({
         editFeedbackModal.onClose();
         onClose();
     }
+    await mailUpdates(project.name, project.id);
   }
 
   const actionLabel = useMemo(() => {

@@ -19,6 +19,7 @@ import { Project, User } from "@prisma/client";
 import DateInput from "@/components/reusable/DateInput";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 interface EditResourceModalProps {
   project: Project;
@@ -156,6 +157,7 @@ const EditResourceModal = ({
         editResourceModal.onClose();
         onClose();
     }
+    await mailUpdates(project.name, project.id);
   }
   
 

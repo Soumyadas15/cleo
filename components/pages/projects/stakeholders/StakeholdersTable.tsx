@@ -74,7 +74,7 @@ export const StakeholdersTable = ({ project, stakeholders, user }: StakeholdersT
     return (
         <>
         {editStakeholderId && (
-            <EditStakeholderModal user={user} stakeholder={stakeholders.find((res: any) => res.id === editStakeholderId)} onClose={closeEditModal} />
+            <EditStakeholderModal project={project} user={user} stakeholder={stakeholders.find((res: any) => res.id === editStakeholderId)} onClose={closeEditModal} />
         )}
         <Table className="scrollbar-hide">
             <TableHeader className="bg-neutral-200 border-none dark:bg-neutral-800">

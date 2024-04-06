@@ -16,16 +16,19 @@ import Input from "@/components/reusable/Input";
 import { Escalation_matrix, Project, User } from "@prisma/client";
 import useEditEscalationMatrixModal from "@/hooks/editModalHooks/useEditEscalationMatrixModal";
 import { user } from "@nextui-org/react";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 interface EditEscalationMatrixModalProps {
   matrix: Escalation_matrix;
   user: User;
+  project: Project;
   onClose: () => void;
 }
 
 const EditEscalationMatrixModal = ({
   matrix,
   user,
+  project,
   onClose
 }: EditEscalationMatrixModalProps) => {
 
@@ -98,6 +101,7 @@ const EditEscalationMatrixModal = ({
         editEscalationMatrixModal.onClose();
         onClose();
     }
+    await mailUpdates(project.name, project.id);
   };
 
   const bodyContent = (

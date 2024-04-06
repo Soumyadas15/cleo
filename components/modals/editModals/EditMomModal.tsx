@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { 
   FieldValues, 
   SubmitHandler, 
@@ -20,10 +20,10 @@ import { Button } from "../../ui/button";
 import { cn } from "@/lib/utils";
 import { format } from 'date-fns';
 import { Calendar } from "../../ui/calendar";
-import useMomModal from "@/hooks/createModalHooks/useMomModal";
 import useEditMomModal from "@/hooks/editModalHooks/useEditMomModal";
 import { ProgressBar } from "../../ProgressBar";
-import { Mom, User } from "@prisma/client";
+import { Mom, Project, User } from "@prisma/client";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   DURATION = 0,
@@ -35,11 +35,13 @@ enum STEPS {
 interface EditMomModalProps {
   mom: Mom;
   user: User;
+  project: Project;
   onClose: () => void;
 }
 const EditMomModal = ({
   mom,
   user,
+  project,
   onClose
 }: EditMomModalProps) => {
 
@@ -123,6 +125,7 @@ const EditMomModal = ({
         editMomModal.onClose();
         onClose();
     }
+    await mailUpdates(project.name, project.id);
   }
 
   const actionLabel = useMemo(() => {

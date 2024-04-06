@@ -26,6 +26,7 @@ import DateInput from "@/components/reusable/DateInput";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown";
 import useMilestoneModal from "@/hooks/createModalHooks/useMilestoneModal";
 import { DropdownInput } from "@/components/reusable/DropdownInput";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   PHASE = 0,
@@ -104,6 +105,7 @@ const MilestoneModal = ({
         setIsLoading(false);
         milestoneModal.onClose();
     }
+    await mailUpdates(project.name, project.id)
   }
 
   const actionLabel = useMemo(() => {

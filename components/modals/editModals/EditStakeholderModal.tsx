@@ -13,18 +13,21 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Input from "@/components/reusable/Input";
-import { Stakeholder, User } from "@prisma/client";
+import { Project, Stakeholder, User } from "@prisma/client";
 import useEditStakeholderModal from "@/hooks/editModalHooks/useEditStakeholderModal";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 interface EditStakeholderModalProps {
     stakeholder: Stakeholder;
     user: User;
+    project: Project;
     onClose: () => void;
 }
 
 const EditStakeholderModal = ({
     stakeholder,
     user,
+    project,
     onClose
 }: EditStakeholderModalProps) => {
 
@@ -83,6 +86,7 @@ const EditStakeholderModal = ({
         editStakeholderModal.onClose();
         onClose();
     }
+    await mailUpdates(project.name, project.id);
   };
 
   const bodyContent = (

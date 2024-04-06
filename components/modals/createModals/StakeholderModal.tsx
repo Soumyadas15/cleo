@@ -16,6 +16,7 @@ import useStakeholderModal from "@/hooks/createModalHooks/useStakeholderModal";
 import Input from "@/components/reusable/Input";
 import { DropdownInput } from "@/components/reusable/DropdownInput";
 import { User } from "@prisma/client";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 interface StakeholderModalProps {
   project: any;
@@ -86,6 +87,7 @@ const StakeholderModal = ({
             setIsLoading(false);
             stakeholderModal.onClose()
     })
+    await mailUpdates(project.name, project.id)
   };
 
   const handleRoleSelect = (value: any) => {

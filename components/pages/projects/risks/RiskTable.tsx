@@ -85,7 +85,7 @@ export const RiskTable = ({
   return (
     <>
       {editRiskId && (
-        <EditRiskModal user={user} risk={risks.find((res: any) => res.id === editRiskId)} onClose={closeEditModal}/>
+        <EditRiskModal project={project} user={user} risk={risks.find((res: any) => res.id === editRiskId)} onClose={closeEditModal}/>
       )}
       <Table className="scrollbar-hide">
         <TableHeader className="bg-neutral-200 border-none dark:bg-neutral-800">

@@ -18,7 +18,8 @@ import Textarea from "../../reusable/Textarea";
 import { ProgressBar } from "../../ProgressBar";
 import useEditTeamContentModal from "@/hooks/editModalHooks/useEditTeamContentModal";
 import { user } from "@nextui-org/react";
-import { User } from "@prisma/client";
+import { Project, User } from "@prisma/client";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   RESOURCES = 0,
@@ -30,11 +31,13 @@ enum STEPS {
 interface EditTeamContentModalProps {
   teamContent: any;
   user: User;
+  project: Project;
   onClose: () => void
 }
 const EditTeamContentModal = ({
     teamContent,
     user,
+    project,
     onClose
 }: EditTeamContentModalProps) => {
 
@@ -107,6 +110,7 @@ const EditTeamContentModal = ({
         editTeamContentModal.onClose();
         onClose();
     }
+    await mailUpdates(project.name, project.id);
   }
 
   const actionLabel = useMemo(() => {

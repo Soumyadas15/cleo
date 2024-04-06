@@ -17,8 +17,9 @@ import { ProgressBar } from "../../ProgressBar";
 import Textarea from "@/components/reusable/Textarea";
 import DateInput from "@/components/reusable/DateInput";
 import { DropdownInput } from "@/components/reusable/DropdownInput";
-import { Milestone, User } from "@prisma/client";
+import { Milestone, Project, User } from "@prisma/client";
 import useEditMilestoneModal from "@/hooks/editModalHooks/useMilestoneModal";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   PHASE = 0,
@@ -30,11 +31,13 @@ enum STEPS {
 interface EditMilestoneModalProps {
     milestone: Milestone;
     user: User;
+    project: Project;
     onClose: () => void;
 }
 const EditMilestoneModal = ({
     milestone,
     user,
+    project,
     onClose
 }: EditMilestoneModalProps) => {
 
@@ -115,6 +118,7 @@ const EditMilestoneModal = ({
         editMilestoneModal.onClose();
         onClose();
     }
+    await mailUpdates(project.name, project.id);
   }
 
   const actionLabel = useMemo(() => {

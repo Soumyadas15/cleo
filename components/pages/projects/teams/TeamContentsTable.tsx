@@ -87,7 +87,7 @@ const closeEditModal = () => {
   return (
     <>
     {editTeamContentId && (
-        <EditTeamContentModal user={user} teamContent={teamContents.find((res: any) => res.id === editTeamContentId)} onClose={closeEditModal} />
+        <EditTeamContentModal project={project} user={user} teamContent={teamContents.find((res: any) => res.id === editTeamContentId)} onClose={closeEditModal} />
     )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">

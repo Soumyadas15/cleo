@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import Textarea from "@/components/reusable/Textarea";
 import useEditScopeModal from "@/hooks/editModalHooks/useEditScopeModal";
 import { Project } from "@prisma/client";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 interface EditScopeModalProps {
     project: Project;
@@ -81,8 +82,8 @@ const EditScopeModal = ({
     } finally {
         setIsLoading(false);
         editScopeModal.onClose();
-        
     }
+    await mailUpdates(project.name, project.id);
   }
 
   useEffect(() => {

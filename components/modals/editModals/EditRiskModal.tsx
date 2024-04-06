@@ -28,8 +28,9 @@ import { DropdownMenu,
         DropdownMenuTrigger 
 } from "@/components/ui/dropdown";
 import useRiskModal from "@/hooks/createModalHooks/useRiskModal";
-import { Risk, User } from "@prisma/client";
+import { Project, Risk, User } from "@prisma/client";
 import useEditRiskModal from "@/hooks/editModalHooks/useEditRiskModal";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   TYPE = 0,
@@ -44,11 +45,13 @@ enum STEPS {
 interface EditRiskModalProps {
    risk: Risk;
    user: User;
+   project: Project;
    onClose: () => void;
 }
 const EditRiskModal = ({
     risk,
     user,
+    project,
     onClose
 }: EditRiskModalProps) => {
 
@@ -158,6 +161,7 @@ const EditRiskModal = ({
         editRiskModal.onClose();
         onClose();
     }
+    await mailUpdates(project.name, project.id);
   }
 
   const actionLabel = useMemo(() => {

@@ -88,7 +88,7 @@ export const UpdateTable = ({ project, updates, user }: UpdateTableProps) => {
   return (
     <>
     {editUpdateId && (
-          <EditUpdateModal user={user} update={updates.find((res: any) => res.id === editUpdateId)} onClose={closeEditModal} />
+          <EditUpdateModal project={project} user={user} update={updates.find((res: any) => res.id === editUpdateId)} onClose={closeEditModal} />
     )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">

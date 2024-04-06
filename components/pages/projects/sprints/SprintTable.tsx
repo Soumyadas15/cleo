@@ -79,7 +79,8 @@ export const SprintTable = ({ project, sprints, user }: SprintTableProps) => {
     <>
     {editSprintId && (
         <EditSprintModal 
-         //@ts-ignore
+          project={project}
+          //@ts-ignore
           sprint={sprints.find((res: any) => res.id === editSprintId)} 
           onClose={closeEditModal}
           user={user}

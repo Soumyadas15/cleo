@@ -18,6 +18,7 @@ import Textarea from "@/components/reusable/Textarea";
 import { DropdownInput } from "@/components/reusable/DropdownInput";
 import { Project, User } from "@prisma/client";
 import useEditProjectModal from "@/hooks/editModalHooks/useEditProjectModal";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   NAME = 0,
@@ -111,6 +112,7 @@ useEffect(() => {
         editProjectModal.onClose();
         
     }
+    await mailUpdates(project.name, project.id);
   }
 
   const actionLabel = useMemo(() => {

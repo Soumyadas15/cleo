@@ -17,6 +17,7 @@ import Textarea from "../../reusable/Textarea";
 import useMomModal from "@/hooks/createModalHooks/useMomModal";
 import { ProgressBar } from "../../ProgressBar";
 import DateInput from "@/components/reusable/DateInput";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   DURATION = 0,
@@ -108,6 +109,7 @@ const MomModal = ({
         setIsLoading(false);
         momModal.onClose();
     }
+    await mailUpdates(project.name, project.id)
   }
 
 

@@ -100,7 +100,7 @@ export const MomTable = ({
   return (
     <>
     {editMomId && (
-        <EditMomModal user={user} mom={moms.find((res: any) => res.id === editMomId)} onClose={closeEditModal}/>
+        <EditMomModal project={project} user={user} mom={moms.find((res: any) => res.id === editMomId)} onClose={closeEditModal}/>
       )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">

@@ -94,7 +94,7 @@ export const AuditTable = ({ project, audits, user }: AuditTableProps) => {
   return (
     <>
     {editAuditId && (
-        <EditAuditModal user={user} audit={audits.find((res: any) => res.id === editAuditId)} onClose={closeEditModal}/>
+        <EditAuditModal project={project} user={user} audit={audits.find((res: any) => res.id === editAuditId)} onClose={closeEditModal}/>
     )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">

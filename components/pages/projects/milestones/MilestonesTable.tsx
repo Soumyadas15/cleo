@@ -86,7 +86,7 @@ import useEditMilestoneModal from "@/hooks/editModalHooks/useMilestoneModal";
     return (
       <>
       {editMilestoneId && (
-          <EditMilestoneModal user={user} milestone={milestones.find((res: any) => res.id === editMilestoneId)} onClose={closeEditModal}/>
+          <EditMilestoneModal project={project} user={user} milestone={milestones.find((res: any) => res.id === editMilestoneId)} onClose={closeEditModal}/>
       )}
       <Table className="">
         <TableHeader className="bg-neutral-200 dark:bg-neutral-800">

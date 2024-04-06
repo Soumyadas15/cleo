@@ -17,6 +17,7 @@ import { ProgressBar } from "../../ProgressBar";
 import Textarea from "@/components/reusable/Textarea";
 import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import DateInput from "@/components/reusable/DateInput";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   DATE = 0,
@@ -91,6 +92,7 @@ const AuditModal = ({
         setIsLoading(false);
         auditModal.onClose();
     }
+    await mailUpdates(project.name, project.id)
   }
 
   const actionLabel = useMemo(() => {

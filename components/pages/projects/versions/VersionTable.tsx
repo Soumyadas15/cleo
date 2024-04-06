@@ -82,7 +82,7 @@ export const VersionTable = ({ project, versions, user }: VersionTableProps) => 
   return (
     <>
     {editVersionId && (
-        <EditVersionHistoryModal user={user} version={versions.find((res: any) => res.id === editVersionId)} onClose={closeEditModal}/>
+        <EditVersionHistoryModal project={project} user={user} version={versions.find((res: any) => res.id === editVersionId)} onClose={closeEditModal}/>
     )}
     <Table className="">
       <TableHeader className="bg-neutral-200 dark:bg-neutral-800">

@@ -24,8 +24,9 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns"
 import useVersionHistoryModal from "@/hooks/createModalHooks/useVersionHistoryModal";
 import useEditVersionHistoryModal from "@/hooks/editModalHooks/useEditVersionHistoryModal";
-import { User, Version } from "@prisma/client";
+import { Project, User, Version } from "@prisma/client";
 import { user } from "@nextui-org/react";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   TYPE = 0,
@@ -37,11 +38,13 @@ enum STEPS {
 interface EditVersionHistoryModalProps {
   version: Version;
   user: User;
+  project: Project;
   onClose: () => void;
 }
 const EditVersionHistoryModal = ({
     version,
     user,
+    project,
     onClose
 }: EditVersionHistoryModalProps) => {
 
@@ -119,6 +122,7 @@ const EditVersionHistoryModal = ({
         editVersionHistoryModal.onClose();
         onClose();
     }
+    await mailUpdates(project.name, project.id)
   }
 
   const actionLabel = useMemo(() => {

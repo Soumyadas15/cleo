@@ -13,21 +13,12 @@ import Heading from "../../reusable/Heading";
 import Input from "../../reusable/Input";
 import axios from 'axios';
 import toast from "react-hot-toast";
-import useSuccessModal from "@/hooks/useSuccessModal";
-import useCreateModal from "@/hooks/useLoginModal";
-import { useModal } from "@/hooks/useModalStore";
 import { ProgressBar } from "../../ProgressBar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
 import Textarea from "@/components/reusable/Textarea";
-import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
-import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns"
-import { Audit, User } from "@prisma/client";
+import { Audit, Project, User } from "@prisma/client";
 import useEditAuditModal from "@/hooks/editModalHooks/useEditAuditModal";
 import DateInput from "@/components/reusable/DateInput";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   DATE = 0,
@@ -39,11 +30,13 @@ enum STEPS {
 interface EditAuditModalProps {
   audit: Audit;
   user: User;
+  project: Project;
   onClose: () => void;
 }
 const EditAuditModal = ({
   audit,
   user,
+  project,
   onClose,
 }: EditAuditModalProps) => {
 
@@ -119,6 +112,7 @@ const EditAuditModal = ({
         editAuditModal.onClose();
         onClose();
     }
+    await mailUpdates(project.name, project.id);
   }
 
   const actionLabel = useMemo(() => {

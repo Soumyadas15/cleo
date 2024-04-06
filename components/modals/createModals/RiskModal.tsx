@@ -19,6 +19,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import useRiskModal from "@/hooks/createModalHooks/useRiskModal";
 import DateInput from "@/components/reusable/DateInput";
 import { ProgressBar } from "@/components/ProgressBar";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   TYPE = 0,
@@ -127,6 +128,7 @@ const RiskModal = ({
         setIsLoading(false);
         riskModal.onClose();
     }
+    await mailUpdates(project.name, project.id)
   }
 
   const actionLabel = useMemo(() => {

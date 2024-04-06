@@ -19,6 +19,7 @@ import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import DateInput from "@/components/reusable/DateInput";
 import { DropdownInput } from "@/components/reusable/DropdownInput";
 import useSprintModal from "@/hooks/createModalHooks/useSprintModal";
+import { mailUpdates } from "@/actions/mailUpdates";
 
 enum STEPS {
   DATES = 0,
@@ -94,6 +95,7 @@ const SprintModal = ({
         setIsLoading(false);
         sprintModal.onClose();
     }
+    await mailUpdates(project.name, project.id)
   }
 
 
