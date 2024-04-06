@@ -95,7 +95,7 @@ export const EscalationMatrixTable = ({
     return (
       <>
       {editMatrixId && (
-          <EditEscalationMatrixModal user={user} matrix={matrices.find((res: any) => res.id === editMatrixId)} onClose={closeEditModal}/>
+          <EditEscalationMatrixModal project={project} user={user} matrix={matrices.find((res: any) => res.id === editMatrixId)} onClose={closeEditModal}/>
       )}
       <Table className="scrollbar-hide">
         <TableHeader className="bg-neutral-200 dark:bg-neutral-800">
