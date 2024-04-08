@@ -50,7 +50,7 @@ jobs:
           username: ${{ secrets.AWS_USERNAME }}
           key: ${{ secrets.AWS_KEYPAIR }}
           source: "docker-compose.yaml"
-          target: "/home/azureuser/"
+          target: "~/"
 
       - name: SSH to AWS Instance and Pull Image
         uses: appleboy/ssh-action@master
@@ -65,7 +65,7 @@ jobs:
             echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
             echo "NEXT_PORT=${{ secrets.NEXT_PORT }}" >> .env
             echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
-            echo "HOME=${{ secrets.HOME }}" >> .env
+            echo "HOME=~/" >> .env
             echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
             echo "AUTH0_SECRET=${{ secrets.AUTH0_SECRET }}" >> .env
             echo "AUTH0_BASE_URL=${{ secrets.AUTH0_BASE_URL }}" >> .env
