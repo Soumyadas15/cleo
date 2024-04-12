@@ -47,7 +47,7 @@ jobs:
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.AWS_HOST }}
-          username: ${{ secrets.AWS_USERNAME }}
+          username: "azureuser"
           key: ${{ secrets.AWS_KEYPAIR }}
           source: "docker-compose.yaml"
           target: "~/"
@@ -56,7 +56,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AWS_HOST }}
-          username: ${{ secrets.AWS_USERNAME }}
+          username: "azureuser"
           key: ${{ secrets.AWS_KEYPAIR }}
           script: |
             touch .env
