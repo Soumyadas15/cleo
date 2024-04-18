@@ -18,6 +18,9 @@ import Textarea from "@/components/reusable/Textarea";
 import useAuditModal from "@/hooks/createModalHooks/useAuditModal";
 import DateInput from "@/components/reusable/DateInput";
 import { mailUpdates } from "@/actions/mailUpdates";
+import { DropdownInput } from "@/components/reusable/DropdownInput";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown";
+import { Button } from "@/components/ui/button";
 
 enum STEPS {
   DATE = 0,
@@ -29,10 +32,12 @@ enum STEPS {
 interface AuditModalProps {
   user: any;
   project: any;
+  managersAndAuditors: any,
 }
 const AuditModal = ({
   user,
   project,
+  managersAndAuditors,
 }: AuditModalProps) => {
 
   const router = useRouter();
@@ -40,6 +45,9 @@ const AuditModal = ({
   const [step, setStep] = useState(STEPS.DATE);
   const [isLoading, setIsLoading] = useState(false);
   const [date, setDate] = useState<Date>();
+  const [reviewedBy, setReviewedBy] = useState('Reviewed by');
+  const [reviewedSection, setReviewedBySection] = useState('Reviewed section');
+  const [status, setStatus] = useState('Status');
 
   const {
     register,
@@ -67,6 +75,22 @@ const AuditModal = ({
   const onNext = () => {
       setStep((value) => value + 1);
   }
+
+  const handleReviewedBySelect = (value : string) => {
+    setReviewedBy(value);
+    setValue("reviewedBy", value);
+  }
+
+  const handleReviewedSection = (value : string) => {
+    setReviewedBySection(value);
+    setValue("reviewedSection", value);
+  }
+
+  const handleStatusSelect = (value : string) => {
+    setStatus(value);
+    setValue("status", value);
+  }
+
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (step !== STEPS.ACTION){
@@ -161,13 +185,13 @@ const AuditModal = ({
               exit={{ opacity: 0, x: "100%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <Input
-              id="reviewedSection"
-              label="Reviewed section"
-              disabled={isLoading}
-              register={register}  
-              errors={errors}
-              required
+            <DropdownInput
+              menuItems={['Teams', 'Resources', 
+                          'Feedbacks', 'Updates', 'Versions', 'Sprints', 
+                          'MoM', 'Scope', 'Stakeholders', 'Escalation',
+                        'Risks', 'Milestones', 'Audits']}
+              label={reviewedSection}
+              onSelect={handleReviewedSection}
             />
           </motion.div>
 
@@ -178,15 +202,27 @@ const AuditModal = ({
               exit={{ opacity: 0, x: "100%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <Input
-              id="reviewedBy"
-              label="Reviewed by"
-              disabled={isLoading}
-              register={register}  
-              errors={errors}
-              required
-            />
-          </motion.div>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="w-full h-[4rem] ">
+                <Button variant="outline" className="w-full h-full border-neutral-300 flex justify-start">
+                  {reviewedBy}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-[29rem] rounded-[5px] max-h-[10rem] overflow-y-scroll scrollbar-hide z-[9999] bg-white">
+                <DropdownMenuGroup>
+                  {managersAndAuditors.map((item : any, index : any) => (
+                      <DropdownMenuItem  
+                          key={item.id}
+                          className="rounded-[5px] hover:cursor-pointer focus:bg-neutral-200"
+                          onClick={() => {handleReviewedBySelect(item.name)}}
+                      >
+                          <span>{item.name}</span>
+                      </DropdownMenuItem>
+                  ))}
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            </motion.div>
 
 
           <motion.div
@@ -196,13 +232,10 @@ const AuditModal = ({
               exit={{ opacity: 0, x: "100%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <Input
-              id="status"
-              label="Status"
-              disabled={isLoading}
-              register={register}  
-              errors={errors}
-              required
+            <DropdownInput
+              label={status}
+              menuItems={['Delayed', 'On-time', 'Pending']}
+              onSelect={handleStatusSelect}
             />
           </motion.div>
           

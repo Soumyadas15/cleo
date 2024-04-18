@@ -21,7 +21,7 @@ export const Sidebar = ({
     const router = useRouter();
 
     return (
-        <div className="h-full hidden md:block w-full bg-white dark:bg-black border-r-1 border-neutral-200 shadow-sm dark:border-neutral-700 transition p-5">
+        <div className="h-full hidden md:block w-full bg-white transition duration-300 dark:bg-black border-r-1 border-neutral-200 shadow-sm dark:border-neutral-700 p-5">
             <div className="h-[40%] w-full gap-12 flex flex-col">
                 <div className="flex items-center gap-2 hover:cursor-pointer" onClick={() => {router.push('/main/projects')}}>
                     <Image

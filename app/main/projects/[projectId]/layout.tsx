@@ -16,6 +16,7 @@ import { ProjectMembers } from "@/components/pages/projects/ProjectMembers";
 import { ProjectHeader } from "@/components/pages/projects/ProjectHeader";
 import EditProjectModal from "@/components/modals/editModals/EditProjectModal";
 import SprintModal from "@/components/modals/createModals/SprintModal";
+import getManagersAndAuditors from "@/actions/getManagersAndAuditors";
 
 interface IParams {
     projectId?: string;
@@ -32,10 +33,11 @@ export default async function ProjectLayout({
     const project = await getProjectById(params);
     const user = await initialProfile();
     const members = await getMembers(params);
+    const managersAndAuditors = await getManagersAndAuditors();
 
     return (  
         <>
-        <AuditModal project={project} user={user}/>
+        <AuditModal project={project} user={user} managersAndAuditors={managersAndAuditors}/>
         <ResourceModal project={project} user={user}/>
         <FeedbackModal project={project} user={user}/>
         <UpdateModal project={project} user={user}/>
