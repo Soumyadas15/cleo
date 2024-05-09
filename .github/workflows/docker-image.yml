@@ -46,7 +46,7 @@ jobs:
       - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.AWS_HOST }}
+          host: "cleo.centralindia.cloudapp.azure.com"
           username: "azureuser"
           key: ${{ secrets.AWS_KEYPAIR }}
           source: "docker-compose.yaml"
