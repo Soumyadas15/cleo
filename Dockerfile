@@ -5,6 +5,7 @@ RUN npm install
 COPY . .
 RUN touch .env
 RUN echo "NEXT_PUBLIC_BACKEND_SERVER=http://cleo.centralindia.cloudapp.azure.com:4000" > .env
+RUN echo "DATABASE_URL=postgresql://cleo_owner:Te4z8YVoKQpw@ep-shiny-wind-a5m56yud-pooler.us-east-2.aws.neon.tech/cleo?sslmode=require" >> .env
 RUN npx prisma generate
 RUN npx prisma db push
 RUN npm run build
