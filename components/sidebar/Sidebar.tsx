@@ -30,7 +30,7 @@ export const Sidebar = ({
                         height={36}
                         width={36}
                     />
-                    <div className="text-md leading-5 font-bold">Customer <br/>success</div>
+                    <div className="text-md leading-5 font-bold">Cleo</div>
                 </div>
                 <div className="flex flex-col h-[20%] w-full">
                     {(user.role === "ADMIN" || user.role === "AUDITOR") && (
