@@ -31,7 +31,7 @@ export const Intro = () => {
                 <div className="absolute pointer-events-none inset-0 flex items-center justify-center [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
                     <h1 className="text-3xl font-light text-neutral-400">Introducing</h1>
                     <motion.div variants={translateStatic} initial='initial' animate='enter' exit='exit'>
-                        <h1 className="text-4xl md:text-[10rem] bg-clip-text text-transparent bg-gradient-to-b from-cyan-300 to-cyan-900 font-bold mt-1 leading-none">Customer success</h1>
+                        <h1 className="text-4xl md:text-[10rem] bg-clip-text text-transparent bg-gradient-to-b from-cyan-300 to-cyan-900 font-bold mt-1 leading-none">Cleo</h1>
                     </motion.div>  
                 </>
                 }
