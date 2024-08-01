@@ -6,6 +6,7 @@ COPY . .
 RUN touch .env
 RUN echo "NEXT_PUBLIC_BACKEND_SERVER=http://cleo.centralindia.cloudapp.azure.com:4000" > .env
 RUN npx prisma generate
+RUN npx db push
 RUN npm run build
 RUN npm prune --production
 # --omit=dev
